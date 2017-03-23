@@ -38,7 +38,7 @@
 
 ## <a name = "organ">조직도</a>
 
-![조직도](https://github.com/201733cpb1/OurCompany/blob/master/organigation%20chart.png?raw=true)
+![조직도](https://github.com/201733cpb1/OurCompany/blob/master/organization%20chart.png?raw=true)
 
 
 ## <a name = "part">팀원 및 역할 소개</a>
