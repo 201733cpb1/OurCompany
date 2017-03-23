@@ -38,7 +38,12 @@
 
 ## <a name = "organ">조직도</a>
 
+![조직도](https://github.com/201733cpb1/OurCompany/blob/master/organigation chart.png?raw=true)
+
+
 ## <a name = "part">팀원 및 역할 소개</a>
+
+![팀원 및 역할소개](https://github.com/201733cpb1/OurCompany/blob/master/part.png?raw=true)
 
 ## <a name = "rule">팀 운영 규칙</a>
 
@@ -49,3 +54,5 @@
  3. 다른 사람들 위해 소스코드 옆에 주석을 기재
 
 ## <a name = "comment">개인별 다짐 한마디</a>
+
+![개인별 다짐 한마디](https://github.com/201733cpb1/OurCompany/blob/master/comment.png?raw=true)
