@@ -13,6 +13,6 @@ public class SnackFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState)
     {
-        return inflater.inflate(R.layout.activity_market_snack,container,false);
+        return inflater.inflate(R.layout.flagment_market_snack,container,false);
     }
 }

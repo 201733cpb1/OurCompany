@@ -13,7 +13,7 @@ public class FeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState)
     {
-        return inflater.inflate(R.layout.activity_market_feed,container,false);
+        return inflater.inflate(R.layout.flagment_market_feed,container,false);
     }
 
 }
