@@ -22,14 +22,6 @@
 		<res-auth>Container</res-auth>
 	</resource-ref>
 	
-	<servlet>
-		<servlet-name>condition-servlet</servlet-name>
-		<servlet-class>Servlet.ConditionServlet</servlet-class>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>condition-servlet</servlet-name>
-		<url-pattern>/Servlet/getCondition</url-pattern>
-	</servlet-mapping>
+
 	
 </web-app>
