@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="상품명을 입력해주세요"
+            android:textSize="25dp" />
+
+        <EditText
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="내용을 입력해주세요."
+            android:inputType="text"
+            android:textSize="15dp"
+
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+
+
+        <Button
+            android:id = "@+id/delivery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="택배비 포함"
+            android:layout_alignBottom="@+id/content"
+            />
+
+        <Button
+            android:id = "@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="주 거래지역"
+            android:layout_above="@id/delivery"
+            />
+
+        <TextView
+            android:id = "@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="가격을 입력해주세요"
+            android:layout_above="@id/location"
+            />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="카테고리 선택"
+            android:layout_above="@id/price"
+            android:onClick="onPopupButtonClick"
+            android:id="@+id/category" />
+
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

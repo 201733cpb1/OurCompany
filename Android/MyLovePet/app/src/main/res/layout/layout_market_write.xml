@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="상품명을 입력해주세요"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+
+                android:layout_below="@id/name"
+
+                android:hint="내용을 입력해주세요."
+                android:inputType="text"
+                android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/category"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/content"
+            android:text="카테고리 선택                                                              >"
+            />
+
+        <Button
+            android:id="@+id/photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/category"
+            android:text="대표사진 선택                                                              >"
+            />
+
+        <EditText
+            android:id="@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/photo"
+            android:hint="                     가격을 입력해주세요."
+            />
+
+        <Button
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/price"
+            android:text="주 거래지역                                                              >"
+            />
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/location"
+            android:text="           글쓰기 완료!           "
+            android:textSize="20dp"
+            />
+
+
+
+
+
+
+        </RelativeLayout>
+
+    </ScrollView>
