@@ -32,4 +32,23 @@
 		<url-pattern>/Servlet/getCondition</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>check-userid-servlet</servlet-name>
+		<servlet-class>Servlet.CheckOverlapJoin</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>check-userid-servlet</servlet-name>
+		<url-pattern>/Servlet/overlapCheck</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>user-join-servlet</servlet-name>
+		<servlet-class>Servlet.JoinServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>user-join-servlet</servlet-name>
+		<url-pattern>/Servlet/join</url-pattern>
+	</servlet-mapping>	
 </web-app>
