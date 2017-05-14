@@ -21,10 +21,12 @@
 
             oncomplete: function(data) {
                 var Addr;
-              
-                Addr = data.roadAddress;
+                var zcode;
 
-                window.android.setAddress(Addr);
+                Addr = data.roadAddress;
+                zcode = data.zonecode;
+
+                window.android.setAddress(zcode,Addr);
 
             },
             width: '100%',
