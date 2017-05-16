@@ -12,8 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".main.LoginActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
+
+
+        <activity android:name=".market.Market_Intro">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -22,6 +23,10 @@
 
         <activity android:name=".main.JoinActivity" android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity android:name=".main.MainActivity"/>
+        <activity android:name=".market.Market_Main"/>
+        <activity android:name=".market.Market_Write"/>
+        <activity android:name=".market.Market_Category"/>
+
     </application>
 
 </manifest>

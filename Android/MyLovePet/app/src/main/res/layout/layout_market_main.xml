@@ -14,11 +14,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-
-        <TextView
+        <Button
             android:layout_width="wrap_content"
-            android:layout_height="?attr/actionBarSize"
-            android:text="툴바" />
+            android:layout_height="wrap_content"
+            android:text="글쓰기"
+            android:layout_gravity="right"
+            android:onClick="writeStart"
+            />
 
     </android.support.v7.widget.Toolbar>
 
