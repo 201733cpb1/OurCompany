@@ -61,4 +61,14 @@
 		<servlet-name>login-servlet</servlet-name>
 		<url-pattern>/Servlet/login</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>animal-info-servlet</servlet-name>
+		<servlet-class>Servlet.AnimalInfoServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>animal-info-servlet</servlet-name>
+		<url-pattern>/Servlet/animalInfo</url-pattern>
+	</servlet-mapping>
 </web-app>
