@@ -41,26 +41,21 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         Position(int value){
             this.value = value;
         }
-        public int getValue(){
-            return value;
-        }
-        public static Position back(Position position){
-            switch (position){
-                case POS_ADDRESS:
-                    return POS_SUB_NAME;
-                case POS_SUB_NAME:
-                    return POS_NAME;
-                case POS_NAME:
-                    return POS_EMAIL;
-                case POS_EMAIL:
-                    return POS_PASSWORD_CHECK;
-                case POS_PASSWORD_CHECK:
-                    return POS_PASSWORD;
-                case POS_PASSWORD:
-                    return POS_ID;
-                default:
-                    return POS_ID;
-            }
+        public static Position getPosition(int pos){
+            if(pos == 0)
+                return POS_ID;
+            else if(pos == 1)
+                return POS_PASSWORD;
+            else if(pos == 2)
+                return POS_PASSWORD_CHECK;
+            else if(pos == 3)
+                return POS_EMAIL;
+            else if(pos == 4)
+                return POS_NAME;
+            else if(pos == 5)
+                return POS_SUB_NAME;
+            else
+                return POS_ADDRESS;
         }
     }
 
@@ -194,6 +189,12 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    private void nextPage(){
+        viewList[nowPos.ordinal()].setVisibility(View.INVISIBLE);
+        viewList[nowPos.ordinal()+1].setVisibility(View.VISIBLE);
+        nowPos = Position.getPosition(nowPos.ordinal()+1);
+    }
+
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
@@ -222,9 +223,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                     if (!passwordFilter.matcher(strPassword).matches())
                         Toast.makeText(this, "잘못된 입력", Toast.LENGTH_SHORT).show();
                     else {
-                        layoutPassword.setVisibility(View.INVISIBLE);
-                        layoutPasswordCheck.setVisibility(View.VISIBLE);
-                        nowPos = Position.POS_PASSWORD_CHECK;
+                        nextPage();
                     }
                     //비밀번호 형식이 맞는지 확인 끝
                 }
@@ -235,9 +234,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 if (isNotNull(strPasswordCheck, viewId)) {
                     //비밀번호를 비교해서 사용자가 원하는 비밀번호를 정확히 입력했는지 확인
                     if (strPassword.equals(strPasswordCheck)) {
-                        layoutPasswordCheck.setVisibility(View.INVISIBLE);
-                        layoutEmail.setVisibility(View.VISIBLE);
-                        nowPos = Position.POS_EMAIL;
+                        nextPage();
                     }
                     else Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                     //비밀번호를 비교해서 사용자가 원하는 비밀번호를 정확히 입력했는지 확인 끝
@@ -245,22 +242,21 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.buttonEmail:
                 strEmail = editTextEmail.getText().toString();
+                //내용이 있으면 다음페이지로
                 if (isNotNull(strEmail, viewId)) {
-                    layoutEmail.setVisibility(View.INVISIBLE);
-                    layoutName.setVisibility(View.VISIBLE);
-                    nowPos = Position.POS_NAME;
+                     nextPage();
                 }
                 break;
             case R.id.buttonName:
                 strName = editTextName.getText().toString();
+                //내용이 있으면 다음페이지로
                 if (isNotNull(strName, viewId)) {
-                    layoutName.setVisibility(View.INVISIBLE);
-                    layoutSubName.setVisibility(View.VISIBLE);
-                    nowPos = Position.POS_SUB_NAME;
+                    nextPage();
                 }
                 break;
             case R.id.buttonSubName:
                 strSubName = editTextSubName.getText().toString();
+                //내용이 있으면 다음페이지로
                 if (isNotNull(strSubName, viewId)) {
                     new SubNameCheck().execute(strSubName);
                 }
@@ -268,9 +264,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonAddress:
                 strAddress = editTextAddress.getText().toString();
                 strAddress2 = editTextAddress2.getText().toString();
-                //if (isNotNull(strAddress, viewId)) {
+                if (isNotNull(strAddress, viewId) && isNotNull(strAddress2,viewId)) {
                     new Join().execute(strId, strPassword, strEmail, strName, strSubName, strAddress);
-               // }
+                }
                 break;
         }
     }
@@ -289,258 +285,256 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         if(nowPos == Position.POS_ID)
             finish();
         else{
-            viewList[nowPos.getValue()].setVisibility(View.INVISIBLE);
-            viewList[nowPos.getValue()-1].setVisibility(View.VISIBLE);
-            nowPos = Position.back(nowPos);
+            viewList[nowPos.ordinal()].setVisibility(View.INVISIBLE);
+            viewList[nowPos.ordinal()-1].setVisibility(View.VISIBLE);
+            nowPos = Position.getPosition(nowPos.ordinal()-1);
         }
     }
 
-    private class IdCheck extends AsyncTask<String, Void, JSONObject> {
 
-        @Override
-        protected void onPreExecute() {
-            buttonId.setEnabled(false);
+
+private class IdCheck extends AsyncTask<String, Void, JSONObject> {
+
+    @Override
+    protected void onPreExecute() {
+        buttonId.setEnabled(false);
+    }
+
+    @Override
+    public JSONObject doInBackground(String... params) {
+        JSONObject jsonObject = null;
+        String parameter = "type=idCheck&id="+strId;
+
+        BufferedWriter writer = null;
+        InputStream inputStream = null;
+
+        try {
+            //HttpURLConnection을 이용해 url에 연결하기 위한 설정
+            //아이디 체크 url 적용
+            String url = "http://58.237.8.179/Servlet/overlapCheck";
+            URL obj = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+            //커넥션에 각종 정보 설정
+            conn.setRequestMethod("POST");
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type" , "application/x-www-form-urlencoded");
+
+
+            writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+
+            writer.write(parameter);
+            writer.flush();
+            writer.close();
+
+
+            //응답 http코드를 가져옴
+            int responseCode = conn.getResponseCode();
+
+            inputStream = null;
+
+            //응답이 성공적으로 완료되었을 때
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String str;
+                StringBuilder strBuffer = new StringBuilder();
+                while ((str = bufferedReader.readLine()) != null) {
+                    strBuffer.append(str);
+                }
+                jsonObject = new JSONObject(strBuffer.toString());
+                inputStream.close();
+                conn.disconnect();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("errorInfo", "error occured!" + e.getMessage());
         }
+        return jsonObject;
+    }
 
-        @Override
-        public JSONObject doInBackground(String... params) {
-            JSONObject jsonObject = null;
-            String parameter = "type=idCheck&id="+strId;
+    @Override
+    protected void onPostExecute(JSONObject jsonObject) {
+        buttonId.setEnabled(true);
+        boolean isAble = false;
+        if (jsonObject == null)
+            Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+        else {
 
-            BufferedWriter writer = null;
+            try {
+                jsonObject = jsonObject.getJSONObject("idCheck");
+                isAble = jsonObject.getBoolean("isAble");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (isAble) {
+                nextPage();
+            } else
+                Toast.makeText(getApplicationContext(), "이미 사용중인 아이디입니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+}
+
+private class SubNameCheck extends AsyncTask<String, Void, JSONObject> {
+
+    @Override
+    protected void onPreExecute() {
+        buttonSubName.setEnabled(false);
+    }
+
+    @Override
+    public JSONObject doInBackground(String... params) {
+        JSONObject jsonObject = null;
+        String parameter = "type=subNameCheck&subNameCheck="+strSubName;
+        try {
+            //HttpURLConnection을 이용해 url에 연결하기 위한 설정
+            //아이디 체크 url 적용
+            String url = "http://58.237.8.179/Servlet/overlapCheck";
+            URL obj = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+
+            //커넥션에 각종 정보 설정
+            conn.setRequestMethod("POST");
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type" , "application/x-www-form-urlencoded");
+
+
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            writer.write(parameter);
+            writer.flush();
+            writer.close();
+
+
+            //응답 http코드를 가져옴
+            int responseCode = conn.getResponseCode();
+
             InputStream inputStream = null;
 
-            try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                //아이디 체크 url 적용
-                String url = "http://58.237.8.179/Servlet/overlapCheck";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-                //커넥션에 각종 정보 설정
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.setRequestProperty("Content-Type" , "application/x-www-form-urlencoded");
+            //응답이 성공적으로 완료되었을 때
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
 
-
-                writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-
-                writer.write(parameter);
-                writer.flush();
-                writer.close();
-
-
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
-
-                inputStream = null;
-
-                //응답이 성공적으로 완료되었을 때
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String str;
-                    StringBuilder strBuffer = new StringBuilder();
-                    while ((str = bufferedReader.readLine()) != null) {
-                        strBuffer.append(str);
-                    }
-                    jsonObject = new JSONObject(strBuffer.toString());
-                    inputStream.close();
-                    conn.disconnect();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String str;
+                StringBuilder strBuffer = new StringBuilder();
+                while ((str = bufferedReader.readLine()) != null) {
+                    strBuffer.append(str);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
+                jsonObject = new JSONObject(strBuffer.toString());
+                inputStream.close();
+                conn.disconnect();
             }
-            return jsonObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("errorInfo", "error occured!" + e.getMessage());
         }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            buttonId.setEnabled(true);
-            boolean isAble = false;
-            if (jsonObject == null)
-                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
-            else {
-
-                try {
-                    jsonObject = jsonObject.getJSONObject("idCheck");
-                    isAble = jsonObject.getBoolean("isAble");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (isAble) {
-                    layoutId.setVisibility(View.INVISIBLE);
-                    layoutPassword.setVisibility(View.VISIBLE);
-                    nowPos = Position.POS_PASSWORD;
-                } else
-                    Toast.makeText(getApplicationContext(), "이미 사용중인 아이디입니다.", Toast.LENGTH_SHORT).show();
-            }
-        }
-
+        return jsonObject;
     }
 
-    private class SubNameCheck extends AsyncTask<String, Void, JSONObject> {
-
-        @Override
-        protected void onPreExecute() {
-            buttonSubName.setEnabled(false);
-        }
-
-        @Override
-        public JSONObject doInBackground(String... params) {
-            JSONObject jsonObject = null;
-            String parameter = "type=subNameCheck&subNameCheck="+strSubName;
+    @Override
+    protected void onPostExecute(JSONObject jsonObject) {
+        buttonSubName.setEnabled(true);
+        boolean isAble = false;
+        if (jsonObject == null)
+            Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+        else {
             try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                //아이디 체크 url 적용
-                String url = "http://58.237.8.179/Servlet/overlapCheck";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-
-                //커넥션에 각종 정보 설정
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.setRequestProperty("Content-Type" , "application/x-www-form-urlencoded");
-
-
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-                writer.write(parameter);
-                writer.flush();
-                writer.close();
-
-
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
-
-                InputStream inputStream = null;
-
-                //응답이 성공적으로 완료되었을 때
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.getInputStream();
-
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String str;
-                    StringBuilder strBuffer = new StringBuilder();
-                    while ((str = bufferedReader.readLine()) != null) {
-                        strBuffer.append(str);
-                    }
-                    jsonObject = new JSONObject(strBuffer.toString());
-                    inputStream.close();
-                    conn.disconnect();
-                }
-            } catch (Exception e) {
+                jsonObject = jsonObject.getJSONObject("subNameCheck");
+                isAble = jsonObject.getBoolean("isAble");
+            } catch (JSONException e) {
                 e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
             }
-            return jsonObject;
+            if (isAble) {
+                nextPage();
+            } else
+                Toast.makeText(getApplicationContext(), "이미 사용중인 닉네임 입니다.", Toast.LENGTH_SHORT).show();
         }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            buttonSubName.setEnabled(true);
-            boolean isAble = false;
-            if (jsonObject == null)
-                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
-            else {
-                try {
-                    jsonObject = jsonObject.getJSONObject("subNameCheck");
-                    isAble = jsonObject.getBoolean("isAble");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (isAble) {
-                    layoutSubName.setVisibility(View.INVISIBLE);
-                    layoutAddress.setVisibility(View.VISIBLE);
-                    nowPos = Position.POS_ADDRESS;
-                } else
-                    Toast.makeText(getApplicationContext(), "이미 사용중인 닉네임 입니다.", Toast.LENGTH_SHORT).show();
-            }
-        }
-
     }
 
-    private class Join extends AsyncTask<String, Void, JSONObject> {
+}
 
-        @Override
-        public JSONObject doInBackground(String... params) {
-            JSONObject jsonObject = null;
-            String parameter = "id="+strId+"&passwd="+strPassword+"&subName="+strSubName
-                    +"&name="+strName+"&city="+strAddress+"&streetAddr="+strAddress2+"&email="+strEmail+"&zoneCode="+strZoneCode;
-            try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                //아이디 체크 url 적용
-                String url = "http://58.237.8.179/Servlet/join";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+private class Join extends AsyncTask<String, Void, JSONObject> {
 
-                //커넥션에 각종 정보 설정
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
+    @Override
+    public JSONObject doInBackground(String... params) {
+        JSONObject jsonObject = null;
+        String parameter = "id="+strId+"&passwd="+strPassword+"&subName="+strSubName
+                +"&name="+strName+"&city="+strAddress+"&streetAddr="+strAddress2+"&email="+strEmail+"&zoneCode="+strZoneCode;
+        try {
+            //HttpURLConnection을 이용해 url에 연결하기 위한 설정
+            //아이디 체크 url 적용
+            String url = "http://58.237.8.179/Servlet/join";
+            URL obj = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+
+            //커넥션에 각종 정보 설정
+            conn.setRequestMethod("POST");
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
 
 
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-                writer.write(parameter);
-                writer.flush();
-                writer.close();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            writer.write(parameter);
+            writer.flush();
+            writer.close();
 
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
+            //응답 http코드를 가져옴
+            int responseCode = conn.getResponseCode();
 
-                InputStream inputStream = null;
+            InputStream inputStream = null;
 
-                //응답이 성공적으로 완료되었을 때
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.getInputStream();
+            //응답이 성공적으로 완료되었을 때
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
 
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String str;
-                    StringBuilder strBuffer = new StringBuilder();
-                    while ((str = bufferedReader.readLine()) != null) {
-                        strBuffer.append(str);
-                    }
-                    jsonObject = new JSONObject(strBuffer.toString());
-                    inputStream.close();
-                    conn.disconnect();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String str;
+                StringBuilder strBuffer = new StringBuilder();
+                while ((str = bufferedReader.readLine()) != null) {
+                    strBuffer.append(str);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
+                jsonObject = new JSONObject(strBuffer.toString());
+                inputStream.close();
+                conn.disconnect();
             }
-
-            return jsonObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("errorInfo", "error occured!" + e.getMessage());
         }
 
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            boolean isSuccessed = false;
-            if(jsonObject == null)
-                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
-            else {
-                try {
-                    jsonObject = jsonObject.getJSONObject("JoinReport");
-                    isSuccessed = jsonObject.getBoolean("isSuccessed");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        return jsonObject;
+    }
 
-                if(isSuccessed) {
-                    Toast.makeText(getApplicationContext(), "회원가입 완료", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                else
-                    Toast.makeText(getApplicationContext(), "회원가입 실패", Toast.LENGTH_SHORT).show();
+    @Override
+    protected void onPostExecute(JSONObject jsonObject) {
+        boolean isSuccessed = false;
+        if(jsonObject == null)
+            Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+        else {
+            try {
+                jsonObject = jsonObject.getJSONObject("JoinReport");
+                isSuccessed = jsonObject.getBoolean("isSuccessed");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
+            if(isSuccessed) {
+                Toast.makeText(getApplicationContext(), "회원가입 완료", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            else
+                Toast.makeText(getApplicationContext(), "회원가입 실패", Toast.LENGTH_SHORT).show();
         }
     }
+}
 
 }
 

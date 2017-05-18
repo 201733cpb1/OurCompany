@@ -54,7 +54,7 @@
     </style>
 
     <!-- 회원가입 버튼 스타일 -->
-    <style name="joinButtonStyle" parent="Base.Widget.AppCompat.Button.Borderless">
+    <style name="shapeButtonStyle" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:background">@drawable/button_join</item>
         <item name="android:text">다음</item>
         <item name="android:textColor">@drawable/button_join_text_color</item>
@@ -63,5 +63,9 @@
     </style>
 
 
+    <!-- 스피너 스타일 -->
+    <style name="MySpiner" parent="Widget.AppCompat.Spinner">
+        <item name="backgroundTint">@color/colorPrimaryDark</item>
+    </style>
 
 </resources>
