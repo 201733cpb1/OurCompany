@@ -82,7 +82,7 @@ public class CalendarView extends LinearLayout
 	private void initControl(Context context, AttributeSet attrs)
 	{
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.meal_calendar, this);
+		inflater.inflate(R.layout.control_calendar, this);
 
 		loadDateFormat(attrs);
 		assignUiElements();
@@ -110,11 +110,11 @@ public class CalendarView extends LinearLayout
 	private void assignUiElements()
 	{
 		// layout is inflated, assign local variables to components
-		header = (LinearLayout)findViewById(R.id.header);
-		btnPrev = (ImageView)findViewById(R.id.prev_button);
-		btnNext = (ImageView)findViewById(R.id.next_button);
+		header = (LinearLayout)findViewById(R.id.calendar_header);
+		btnPrev = (ImageView)findViewById(R.id.calendar_prev_button);
+		btnNext = (ImageView)findViewById(R.id.calendar_next_button);
 		txtDate = (TextView)findViewById(R.id.calendar_date_display);
-		grid = (GridView)findViewById(R.id.grid);
+		grid = (GridView)findViewById(R.id.calendar_grid);
 	}
 
 	private void assignClickHandlers() {
@@ -182,7 +182,7 @@ public class CalendarView extends LinearLayout
 
 		// update title
 		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-		txtDate.setText(sdf.format(currentDate.getTime())+"년");
+		txtDate.setText(sdf.format(currentDate.getTime()));
 
 		// set header color according to current season
 		int month = currentDate.get(Calendar.MONTH);
@@ -235,7 +235,7 @@ public class CalendarView extends LinearLayout
 							eventDate.getYear() == year)
 					{
 						// mark this day for event
-						view.setBackgroundResource(R.drawable.reminder);
+						view.setBackgroundResource(R.drawable.syringe1);
 						/*view.setBackgroundColor(view.getContext().getResources().getColor(R.color.spring));
 						((TextView) view).setTextColor(getResources().getColor(R.color.summer));*/
 						break;

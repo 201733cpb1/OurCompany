@@ -35,6 +35,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile files('libs/json-simple-1.1.1.jar')
     compile 'com.mikhaellopez:circularimageview:3.0.2'
+    compile files('libs/libDaumMapAndroid.jar')
 }
 
 

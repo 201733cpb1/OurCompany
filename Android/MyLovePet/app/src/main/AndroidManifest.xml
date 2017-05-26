@@ -11,6 +11,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -30,7 +35,7 @@
         </provider>
 
 
-        <activity android:name=".main.LoginActivity">
+        <activity android:name=".daummap.Gps_Check" android:hardwareAccelerated="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -45,13 +50,17 @@
 
         <activity android:name=".main.MainActivity"/>
 
-        <activity android:name=".main.MealActivity"/>
+        <!--<activity android:name=".main.MealActivity"/>-->
         <activity android:name=".main.MealCalendarActivity"/>
         <activity android:name=".main.UserSetProfileActivity"/>
         <activity android:name=".main.UserSettingActivity"/>
         <activity android:name=".main.UserSetPassActivity"/>
         <activity android:name=".main.PetWalkActivity"/>
         <activity android:name=".main.PetUpdateActivity"/>
+
+
+        <activity android:name=".daummap.Intro" android:hardwareAccelerated="false" />
+        <activity android:name=".daummap.MapActivity" android:hardwareAccelerated="false" />
 
 
     </application>

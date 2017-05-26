@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 public class Adapter extends PagerAdapter {
 
+
     @Override
     public int getCount() {
         return 0;
@@ -29,4 +30,7 @@ public class Adapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         super.destroyItem(container, position, object);
     }
+
+
+
 }
