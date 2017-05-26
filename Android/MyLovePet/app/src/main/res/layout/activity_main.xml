@@ -8,220 +8,239 @@
     android:layout_height="match_parent">
 
     <!-- 메인화면 -->
-    <LinearLayout
+
+    <android.support.design.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ccdeed"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:theme="@style/MyToolbar"/>
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-            <ScrollView
+        android:layout_height="match_parent">
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:background="#ccdeed"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:weightSum="1">
+                    android:minHeight="?attr/actionBarSize"
+                    app:theme="@style/MyToolbar">
+                </android.support.v7.widget.Toolbar>
 
-                    <ImageView
-                        android:id="@+id/imageView2"
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="30dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_weight="0.06"
-                        android:src="@drawable/image" />
+                        android:layout_height="wrap_content">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="115dp"
-                            android:layout_gravity="right"
-                            android:layout_weight="1"
-                            android:src="@drawable/temperature" />
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="115dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_weight="1"
-                            android:src="@drawable/activemass" />
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="115dp"
-                            android:layout_gravity="left"
-                            android:layout_weight="1"
-                            android:src="@drawable/heartrate" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            android:id="@+id/temp"
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="null"
-                            style="@style/mainTextStyle" />
+                            android:orientation="vertical"
+                            android:weightSum="1">
 
-                        <TextView
-                            android:id="@+id/walk"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            style="@style/mainTextStyle" />
+                            <com.mikhaellopez.circularimageview.CircularImageView
+                                android:id="@+id/profile_picture"
+                                android:layout_width="156dp"
+                                android:layout_height="150dp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="30dp"
+                                android:layout_marginTop="30dp"
+                                android:src="@drawable/image" />
 
-                        <TextView
-                            android:id="@+id/heartrate"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            style="@style/mainTextStyle" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="3">
 
-                    </LinearLayout>
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="115dp"
+                                    android:layout_gravity="right"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/temperature" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="40dp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="115dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/activemass" />
 
+                                <ImageView
+                                    android:layout_width="0dp"
+                                    android:layout_height="115dp"
+                                    android:layout_gravity="left"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/heartrate" />
 
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.50"
-                            android:src="@drawable/meal" />
+                            </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.50"
-                            android:src="@drawable/walk" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:orientation="horizontal"
+                                android:weightSum="3">
 
+                                <TextView
+                                    android:id="@+id/temp"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text="null"
+                                    style="@style/mainTextStyle" />
 
-                    </LinearLayout>
+                                <TextView
+                                    android:id="@+id/walk"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    style="@style/mainTextStyle" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                                <TextView
+                                    android:id="@+id/heartrate"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    style="@style/mainTextStyle" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.5"
-                            android:gravity="center"
-                            android:text="구현중."
-                            style="@style/mainTextStyle" />
+                            </LinearLayout>
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.5"
-                            android:gravity="center"
-                            android:text="구현중."
-                            style="@style/mainTextStyle" />
-
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/vaccination"
-                        android:layout_width="wrap_content"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="40dp"
-                        android:src="@drawable/vaccination" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center"
-                        android:text="구현중."
-                        style="@style/mainTextStyle" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginBottom="20dp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.05" />
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="61dp"
-                            android:layout_weight="0.91"
-                            android:background="@drawable/button_base"
-                            android:gravity="center"
-                            android:text="자가 진단"
-                            android:textColor="@drawable/button_base_text_color"
-                            android:textSize="30dp"
-                            android:textStyle="bold" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.05" />
-
-                    </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp"
+                                android:layout_marginTop="40dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
 
 
-                </LinearLayout>
+                                <ImageView
+                                    android:id="@+id/viewMeal"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.50"
+                                    android:src="@drawable/meal" />
 
-            </ScrollView>
+                                <ImageView
+                                    android:id="@+id/viewPetWalk"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.50"
+                                    android:src="@drawable/walk" />
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="0.5"
+                                    android:gravity="center"
+                                    android:text="구현중."
+                                    style="@style/mainTextStyle" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="0.5"
+                                    android:gravity="center"
+                                    android:text="구현중."
+                                    style="@style/mainTextStyle" />
 
 
-    </LinearLayout>
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/vaccination"
+                                android:layout_width="wrap_content"
+                                android:layout_height="100dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="40dp"
+                                android:src="@drawable/vaccination" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center"
+                                android:text="구현중."
+                                style="@style/mainTextStyle" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="30dp"
+                                android:layout_marginBottom="20dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.05" />
+
+                                <Button
+                                    style="@style/shapeButtonStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="61dp"
+                                    android:layout_weight="0.91"
+                                    android:gravity="center"
+                                    android:text="자가 진단"
+                                    android:textSize="30dp"
+                                    android:textStyle="bold" />
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.05" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                    </ScrollView>
+
+
+                </android.support.v4.widget.SwipeRefreshLayout>
+
+            </LinearLayout>
+
+
+        <include
+            android:id="@+id/floatingButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/floating_action_button" />
+
+
+    </android.support.design.widget.CoordinatorLayout>
+    <!-- 메인화면 끝 -->
+
 
     <!-- 네비게이션 -->
     <android.support.design.widget.NavigationView
@@ -247,8 +266,7 @@
             android:dividerHeight="10dp"/>
 
     </android.support.design.widget.NavigationView>
-
-
+    <!-- 네비게이션 끝-->
 </android.support.v4.widget.DrawerLayout>
 
 

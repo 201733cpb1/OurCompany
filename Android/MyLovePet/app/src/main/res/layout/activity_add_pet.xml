@@ -20,6 +20,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- 제품넘버 -->
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/layoutSerialNo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:id="@+id/textViewSerialNo"
+                style="@style/joinTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="제품번호"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.19999999" />
+
+            <EditText
+                android:id="@+id/editTextSerialNo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"
+                android:hint="아이디"
+                android:inputType="text|textNoSuggestions"
+                android:privateImeOptions="defaultInputmode=english"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSerialNo"
+                app:layout_constraintVertical_bias="0.089"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp" />
+
+            <Button
+                android:id="@+id/buttonSerialNo"
+                style="@style/shapeButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.93"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+        </android.support.constraint.ConstraintLayout>
+
         <!-- 동물 이름-->
         <android.support.constraint.ConstraintLayout
             android:id="@+id/layoutPetName"
@@ -227,7 +281,7 @@
 
             <Spinner
                 style="@style/MySpiner"
-                android:id="@+id/spinerType"
+                android:id="@+id/spinerType1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -239,6 +293,22 @@
                 app:layout_constraintVertical_bias="0.089"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp" />
+
+            <Spinner
+                style="@style/MySpiner"
+                android:id="@+id/spinerType2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="50dp"
+                android:layout_marginStart="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinerType1"
+                app:layout_constraintVertical_bias="0.089"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="8dp" />
 
             <Button
                 android:id="@+id/buttonType"
@@ -259,59 +329,7 @@
 
         </android.support.constraint.ConstraintLayout>
 
-        <!-- 제품넘버 -->
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/layoutSerialNo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFFFFF">
 
-            <TextView
-                android:id="@+id/textViewSerialNo"
-                style="@style/joinTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="제품번호"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.19999999" />
-
-            <EditText
-                android:id="@+id/editTextSerialNo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="50dp"
-                android:layout_marginStart="50dp"
-                android:hint="아이디"
-                android:inputType="text|textNoSuggestions"
-                android:privateImeOptions="defaultInputmode=english"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSerialNo"
-                app:layout_constraintVertical_bias="0.089"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp" />
-
-            <Button
-                android:id="@+id/buttonSerialNo"
-                style="@style/shapeButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.504"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.93"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
-
-        </android.support.constraint.ConstraintLayout>
 
     </FrameLayout>
 

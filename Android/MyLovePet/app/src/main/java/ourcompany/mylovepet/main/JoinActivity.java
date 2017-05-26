@@ -3,6 +3,7 @@ package ourcompany.mylovepet.main;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -69,8 +70,10 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
     private String strId, strPassword, strPasswordCheck, strEmail, strName, strSubName, strAddress,strAddress2,strZoneCode;
     private Button buttonId, buttonSubName;
 
-    Pattern idFilter;
-    Pattern passwordFilter;
+    private Pattern idFilter;
+    private Pattern passwordFilter;
+
+    private ActionBar actionBar;
 
 
     @Override
@@ -80,15 +83,16 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         inIt();
     }
 
-
+    //액티비티 초기화
     private void inIt() {
 
         idFilter = Pattern.compile("^[a-zA-Z0-9]*$");
         passwordFilter = Pattern.compile("^[!@#$%^&*()a-zA-Z0-9]*$");
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        getSupportActionBar().setTitle("아이디");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionBar =  getSupportActionBar();
+        actionBar.setTitle("아이디");
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         layoutId = findViewById(R.id.layoutId);
         layoutPassword = findViewById(R.id.layoutPassword);
@@ -156,6 +160,8 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
+    //사용자가 값을 입력했는지 확인
     private boolean isNotNull(String str, int id) {
         if (str.equals("")) {
             switch (id) {
@@ -188,13 +194,42 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
+    //다음 페이지로 화면을 넘기며 현재 위치정보와 타이틀을 바꾼다.
     private void nextPage(){
         viewList[nowPos.ordinal()].setVisibility(View.INVISIBLE);
         viewList[nowPos.ordinal()+1].setVisibility(View.VISIBLE);
         nowPos = Position.getPosition(nowPos.ordinal()+1);
+        changeTitle();
     }
 
+    //현재 위치정보를 이용하여 타이틀을 바꾼다
+    private void changeTitle(){
+        switch (nowPos){
+            case POS_ID:
+                actionBar.setTitle("아이디");
+                break;
+            case POS_PASSWORD:
+                actionBar.setTitle("패스워드");
+                break;
+            case POS_PASSWORD_CHECK:
+                actionBar.setTitle("패스워드 재입력");
+                break;
+            case POS_EMAIL:
+                actionBar.setTitle("이메일");
+                break;
+            case POS_NAME:
+                actionBar.setTitle("이름");
+                break;
+            case POS_SUB_NAME:
+                actionBar.setTitle("닉네임");
+                break;
+            case POS_ADDRESS:
+                actionBar.setTitle("주소");
+                break;
+        }
+    }
+
+    //버튼이 눌렸을때 해야할 동작을 정의
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
@@ -271,6 +306,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //타이틀에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){
@@ -280,6 +316,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+    //뒤로가기 버튼을 눌렀을떄 해야할 동작을 정의
     @Override
     public void onBackPressed() {
         if(nowPos == Position.POS_ID)
@@ -288,9 +325,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             viewList[nowPos.ordinal()].setVisibility(View.INVISIBLE);
             viewList[nowPos.ordinal()-1].setVisibility(View.VISIBLE);
             nowPos = Position.getPosition(nowPos.ordinal()-1);
+            changeTitle();
         }
     }
-
 
 
 private class IdCheck extends AsyncTask<String, Void, JSONObject> {

@@ -51,12 +51,11 @@
                         android:layout_weight="0.05" />
 
                     <Button
+                        style="@style/shapeButtonStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.9"
-                        android:background="@drawable/button_join"
                         android:text="추가"
-                        android:textColor="@drawable/button_join_text_color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -423,12 +422,11 @@
                         android:layout_weight="0.05" />
 
                     <Button
+                        style="@style/shapeButtonStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.9"
-                        android:background="@drawable/button_join"
                         android:text="글 등록"
-                        android:textColor="@drawable/button_join_text_color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
