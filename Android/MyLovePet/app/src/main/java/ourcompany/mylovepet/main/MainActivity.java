@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -76,13 +77,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     ConstraintLayout floatingButtonLayout;
 
     //포토
-    private static final int PICK_FROM_CAMERA = 0;
-    private static final int PICK_FROM_ALBUM = 1;
-    private static final int CROP_FROM_iMAGE = 2;
+    static final int REQUEST_IMAGE_CAPTURE = 0;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    static final int REQUEST_IMAGE_CROP = 2;
+    Uri photoURI, albumURI = null;
+    Boolean album = false;
     final Context context = this;
-    private Uri mImageCaptureUri;
     CircularImageView profile;
-    private String absoultePath;
     String mCurrentPhotoPath;
     //포토 끝
 
@@ -101,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         profile.addShadow();
         profile.setBorderWidth(4);
         profile.setOnClickListener(this);
-
     }
 
 
@@ -251,18 +251,18 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 startActivity(intent);
                 break;
             case R.id.profile_picture:
-                final CharSequence[] items = {"사진촬영", "갤러리", "취소"};
+                final CharSequence[] items = { "사진촬영", "갤러리","취소" };
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 // 제목셋팅
                 alertDialogBuilder.setTitle("선택해 주세요");
                 alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // 프로그램을 종료한다
-                        if (items[id] == "사진촬영") {
-                            doTakePhotoAction();
-                        } else if (items[id] == "갤러리") {
+                        if(items[id]=="사진촬영"){
+                            dispatchTakePictureIntent();
+                        }else if(items[id]=="갤러리"){
                             doTakeAlbumAction();
-                        } else {
+                        }else{
                             dialog.dismiss();
                         }
                         Toast.makeText(getApplicationContext(),
@@ -289,126 +289,111 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
 
-    /**
-     * 카메라에서 사진 촬영
-     **/
-    // 카메라 촬영 후 이미지 가져오기
-    public void doTakePhotoAction() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getPackageManager()) != null) {
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+        {
             File photoFile = null;
             try {
-                photoFile = createImageFile();
+                photoFile = createImageFile(); // 사진찍은 후 저장할 임시 파일//
             } catch (IOException ex) {
                 Toast.makeText(getApplicationContext(), "createImageFile Failed", Toast.LENGTH_LONG).show();
             }
             if (photoFile != null) {
-                mImageCaptureUri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", photoFile);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-                startActivityForResult(intent, PICK_FROM_CAMERA);
+                //photoURI = Uri.fromFile(photoFile); // 임시 파일의 위치,경로 가져옴
+                photoURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI); // 임시 파일 위치에 저장
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
-
     }
-
-    private File createImageFile() throws IOException {
-        String imageFileName = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
-        File storageDir = new File(Environment.getExternalStorageDirectory(), imageFileName);
+    private File createImageFile() throws IOException{
+        String imageFileName = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
+        File storageDir = new File(Environment.getExternalStorageDirectory(),imageFileName);
         mCurrentPhotoPath = storageDir.getAbsolutePath();
         return storageDir;
     }
 
-    /**
-     * 앨범에서 이미지 가져오기
-     */
-    public void doTakeAlbumAction() // 앨범에서 이미지 가져오기
-    {
-        // 앨범 호출
+    private void doTakeAlbumAction() { // 앨범 호출
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, PICK_FROM_ALBUM);
+        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK)
-            return;
-        switch (requestCode) {
-            case PICK_FROM_ALBUM: {
-                // 이후의 처리가 카메라와 같으므로 일단  break없이 진행합니다.
-                // 실제 코드에서는 좀더 합리적인 방법을 선택하시기 바랍니다.
-                mImageCaptureUri = data.getData();
-                Log.d("MyLovePet", mImageCaptureUri.getPath().toString());
-
-            }
-            case PICK_FROM_CAMERA: {
-                // 이미지를 가져온 이후의 리사이즈할 이미지 크기를 결정합니다.
-                // 이후에 이미지 크롭 어플리케이션을 호출하게 됩니다.
-                Intent intent = new Intent("com.android.camera.action.CROP");
-                intent.setDataAndType(mImageCaptureUri, "image/*");
-                // CROP할 이미지를 200*200 크기로 저장
-                intent.putExtra("outputX", 200); // CROP한 이미지의 x축 크기
-                intent.putExtra("outputY", 200); // CROP한 이미지의 y축 크기
-                intent.putExtra("aspectX", 1); // CROP 박스의 X축 비율
-                intent.putExtra("aspectY", 1); // CROP 박스의 Y축 비율
-                intent.putExtra("scale", true);
-                intent.putExtra("return-data", true);
-                startActivityForResult(intent, CROP_FROM_iMAGE); // CROP_FROM_CAMERA case문 이동
-                break;
-            }
-            case CROP_FROM_iMAGE: {
-                // 크롭이 된 이후의 이미지를 넘겨 받습니다.
-                // 이미지뷰에 이미지를 보여준다거나 부가적인 작업 이후에
-                // 임시 파일을 삭제합니다.
-                if (resultCode != RESULT_OK) {
-                    return;
-                }
-                final Bundle extras = data.getExtras();
-                // CROP된 이미지를 저장하기 위한 FILE 경로
-                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyLovePet/" + System.currentTimeMillis() + ".jpg";
-                if (extras != null) {
-                    Bitmap photo = extras.getParcelable("data"); // CROP된 BITMAP
-                    profile.setImageBitmap(photo); // 레이아웃의 이미지칸에 CROP된 BITMAP을 보여줌
-                    storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
-                    absoultePath = filePath;
-                    break;
-                }
-
-                // 임시 파일 삭제
-                File f = new File(mImageCaptureUri.getPath());
-                if (f.exists()) {
-                    f.delete();
-                }
-            }
+    private void cropImage() {
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+        cropIntent.setDataAndType(photoURI, "image/*");
+        /*cropIntent.putExtra("outputX", 200);
+        //crop한 이미지의 x축 크기
+        cropIntent.putExtra("outputY", 200);
+        // crop한 이미지의 y축 크기
+        cropIntent.putExtra("aspectX", 1);
+        // crop 박스의 x축 비율
+        cropIntent.putExtra("aspectY", 1);
+        // crop 박스의 y축 비율*/
+        cropIntent.putExtra("scale", true);
+        if(album == false) {
+            cropIntent.putExtra("output", photoURI); // 크랍된 이미지를 해당 경로에 저장
+        } else if(album == true){
+            cropIntent.putExtra("output", albumURI); // 크랍된 이미지를 해당 경로에 저장
         }
+        startActivityForResult(cropIntent, REQUEST_IMAGE_CROP);
     }
 
-    /*
- * Bitmap을 저장하는 부분
- */
-    private void storeCropImage(Bitmap bitmap, String filePath) {
-        // SmartWheel 폴더를 생성하여 이미지를 저장하는 방식이다.
-        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyLovePet";
-        File directory_MyLovePet = new File(dirPath);
-        if (!directory_MyLovePet.exists()) // SmartWheel 디렉터리에 폴더가 없다면 (새로 이미지를 저장할 경우에 속한다.)
-            directory_MyLovePet.mkdir();
-        File copyFile = new File(filePath);
-        BufferedOutputStream out = null;
-        try {
-            copyFile.createNewFile();
-            out = new BufferedOutputStream(new FileOutputStream(copyFile));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            // sendBroadcast를 통해 Crop된 사진을 앨범에 보이도록 갱신한다.
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if (resultCode != RESULT_OK) {
+            Toast.makeText(getApplicationContext(), "onActivityResult : RESULT_NOT_OK", Toast.LENGTH_LONG).show();
+        } else {
+            switch (requestCode) {
+                case REQUEST_TAKE_PHOTO: // 앨범 이미지 가져오기
+                    album = true;
+                    File albumFile = null;
+                    try {
+                        albumFile = createImageFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (albumFile != null) {
+                        albumURI = Uri.fromFile(albumFile); // 앨범 이미지 Crop한 결과는 새로운 위치 저장
+                    }
 
-            Uri photoURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", copyFile);
-            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                    photoURI));
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+                    photoURI = data.getData(); // 앨범 이미지의 경로
+
+                         /* profile에 띄우기*/
+                    Bitmap image_bitmap = null;
+                    try {
+                        image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    profile.setImageBitmap(image_bitmap);
+                    break;
+                case REQUEST_IMAGE_CAPTURE:
+                    Bitmap image_bitmap2 = null;
+                    try {
+                        image_bitmap2 = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    profile.setImageBitmap(image_bitmap2);
+                    break;
+                    /*cropImage();
+                    break;*/
+                case REQUEST_IMAGE_CROP:
+                    Bitmap photo = BitmapFactory.decodeFile(photoURI.getPath());
+                    profile.setImageBitmap(photo);
+
+                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE); // 동기화
+                    if (album == false) {
+                        mediaScanIntent.setData(photoURI); // 동기화
+                    } else if (album == true) {
+                        album = false;
+                        mediaScanIntent.setData(albumURI); // 동기화
+                    }
+                    this.sendBroadcast(mediaScanIntent); // 동기화
+                    break;
+            }
         }
     }
 

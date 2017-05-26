@@ -13,6 +13,34 @@ public class Pet {
     private String birth;
     private String photo_URL;
 
+    private int temperature = -1;
+    private int walk = -1;
+    private int heartrate = -1;
+
+    public int getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
+    }
+
+    public int getWalk() {
+        return walk;
+    }
+
+    public void setWalk(int walk) {
+        this.walk = walk;
+    }
+
+    public int getHeartrate() {
+        return heartrate;
+    }
+
+    public void setHeartrate(int heartrate) {
+        this.heartrate = heartrate;
+    }
+
     public int getAnimalNo() {
         return animalNo;
     }

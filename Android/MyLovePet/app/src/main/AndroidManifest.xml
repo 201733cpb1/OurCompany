@@ -35,7 +35,7 @@
         </provider>
 
 
-        <activity android:name=".daummap.Gps_Check" android:hardwareAccelerated="false">
+        <activity android:name=".Test">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -48,7 +48,6 @@
         <activity android:name=".market.Market_Write"/>
         <activity android:name=".market.Market_Category"/>
 
-        <activity android:name=".main.MainActivity"/>
 
         <!--<activity android:name=".main.MealActivity"/>-->
         <activity android:name=".main.MealCalendarActivity"/>

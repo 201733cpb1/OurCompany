@@ -59,7 +59,7 @@
                 android:weightSum="3">
 
                 <TextView
-                    android:id="@+id/temp"
+                    android:id="@+id/textViewTemperature"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -69,7 +69,7 @@
                     style="@style/mainTextStyle" />
 
                 <TextView
-                    android:id="@+id/walk"
+                    android:id="@+id/textViewWalk"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -78,7 +78,7 @@
                     style="@style/mainTextStyle" />
 
                 <TextView
-                    android:id="@+id/heartrate"
+                    android:id="@+id/textViewHeartrate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
