@@ -31,7 +31,6 @@
 
                 <!-- prev button -->
 
-
                 <ImageView
                     android:id="@+id/calendar_prev_button"
                     android:layout_width="30dp"

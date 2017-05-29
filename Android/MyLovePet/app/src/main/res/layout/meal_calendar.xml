@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
         <!-- date toolbar -->
         <LinearLayout
+            android:id="@+id/layout_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -128,48 +129,52 @@
                 android:numColumns="7" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:layout_weight="0.13"
+                android:weightSum="1">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="41dp"
-                    android:text="횟수 : "
-                    android:textColor="#000000"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                <Button
+                    android:id="@+id/meal_add"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:text="추가" />
 
-                <TextView
-                    android:id="@+id/count"
-                    android:layout_width="152dp"
-                    android:layout_height="41dp"
-                    android:padding="7dp"
-                    android:textColor="#000000"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
+                <Button
+                    android:id="@+id/meal_update"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="0.07"
+                    android:layout_marginLeft="120dp"
+                    android:text="저장" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_add"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical"
-                android:weightSum="1">
+                android:layout_height="match_parent"
+                android:weightSum="1"
+                android:layout_marginTop="30dp">
 
-                <TextView
-                    android:id="@+id/body"
-                    android:layout_width="326dp"
-                    android:layout_height="163dp"
-                    android:layout_gravity="center"
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/activemass" />
+                <EditText
+                    android:layout_width="220dp"
+                    android:layout_height="75dp"
                     android:background="@drawable/rect"
                     android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
                     android:padding="10dp"
-                    android:text=""
+                    android:textStyle="bold"
                     android:textColor="#000000"
                     android:textSize="13dp"
-                    android:textStyle="bold" />
+                    />
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
