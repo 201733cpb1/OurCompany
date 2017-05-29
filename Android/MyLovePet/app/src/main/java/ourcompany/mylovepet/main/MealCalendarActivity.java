@@ -1,4 +1,4 @@
-package com.example.kdm.mylovepet;
+package ourcompany.mylovepet.main;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -45,7 +45,6 @@ public class MealCalendarActivity extends AppCompatActivity
         li = (LinearLayout)findViewById(R.id.layout_main);
         cv = ((CalendarView)findViewById(R.id.calendar_view));
         cv.updateCalendar(events);
-        findViewById(R.id.z);
         // assign event handler
         cv.setEventHandler(new CalendarView.EventHandler()
         {
@@ -55,7 +54,7 @@ public class MealCalendarActivity extends AppCompatActivity
             {
                 // show returned day
                 DateFormat df = SimpleDateFormat.getDateInstance();
-                Toast.makeText(Meal_Calendar.this, df.format(date), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MealCalendarActivity.this, df.format(date), Toast.LENGTH_SHORT).show();
             }
             @Override
             public void setEvents() {
