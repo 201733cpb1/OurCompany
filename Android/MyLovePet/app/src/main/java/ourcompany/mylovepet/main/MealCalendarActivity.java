@@ -36,7 +36,7 @@ public class MealCalendarActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.meal_cal_main);
+        setContentView(R.layout.activity_meal_cal_main);
         events = new HashSet<>(); // 원하는 날짜에 마커
         events.add(new Date());
         events.add(getDate(2017,5,15));
