@@ -18,6 +18,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,8 +29,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -39,42 +41,39 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
+import ourcompany.mylovepet.customView.PetInfoAdapter;
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.petsitter.PetSitterAddActivity;
 
 /**
  * Created by REOS on 2017-05-07.
  */
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     Toolbar toolbar;
     DrawerLayout dlDrawer;
     ActionBarDrawerToggle dtToggle;
 
-    TextView temp;
-    TextView walk;
-    TextView heartrate;
     SwipeRefreshLayout swipeRefreshLayout;
 
     boolean isFloatedButton = false;
     FloatingActionButton fButtonParent, fButtonAdd, fButtonDel, fButtonSet;
     ConstraintLayout floatingButtonLayout;
+
+    //좌우 스크롤뷰
+    ViewPager viewPager;
 
     //포토
     static final int REQUEST_IMAGE_CAPTURE = 0;
@@ -87,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     String mCurrentPhotoPath;
     //포토 끝
 
+    //
+    AsyncTaskGetPets taskGetPets;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,16 +96,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setContentView(R.layout.activity_main);
         toolbarInit();
         inIt();
-
-        profile = (CircularImageView) findViewById(R.id.profile_picture);
-        // 클릭 이벤트
-        profile.setBorderColor(getResources().getColor(R.color.gray));
-        profile.setBorderWidth(10);
-        profile.addShadow();
-        profile.setBorderWidth(4);
-        profile.setOnClickListener(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        taskGetPets.cancel(true);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         dtToggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navi_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.naviView);
         navigationView.setNavigationItemSelectedListener(this);
 
         ListView listview;
@@ -134,29 +134,72 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         adapter = new ListViewAdapter();
 
         // 리스트뷰 참조 및 Adapter달기
-        listview = (ListView) findViewById(R.id.listview);
+        listview = (ListView) findViewById(R.id.listView);
         listview.setAdapter(adapter);
 
 
-        // 첫 번째 아이템 추가.
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sss), "홈");
-        // 두 번째 아이템 추가.
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sss), "통계");
-        // 세 번째 아이템 추가.
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sss), "펫등록");
+
+        adapter.addItem("펫 정보");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "홈");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "통계");
+
+        adapter.addItem("펫 시터");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "구하기");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "도움주기");
+
+        adapter.addItem("편의 기능");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "TIP");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "지름/알뜰 정보");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "중고장터");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "탐색");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "SNS");
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent;
+                switch (position){
+                    case 1:
+                        //홈화면
+                        intent = new Intent(getApplicationContext(),MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        Toast.makeText(getApplicationContext(),"설마?",Toast.LENGTH_SHORT).show();
+                        //통계 화면
+                        break;
+                    case 4:
+                        //펫시터 구하기 화면
+                        intent = new Intent(getApplicationContext(), PetSitterAddActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 5:
+                        //도움주기 화면
+                        break;
+                    case 7:
+                        //TIP 화면
+                        break;
+                    case 8:
+                        //지름/알뜰 정보 화면
+                        break;
+                    case 9:
+                        //지름/중고장터 정보 화면
+                        break;
+                    case 10:
+                        //탐색 화면
+                        break;
+                    case 11:
+                        //SNS 화면
+                        break;
+                }
+            }
+        });
     }
 
     private void inIt() {
-        temp = (TextView) findViewById(R.id.temp);
-        walk = (TextView) findViewById(R.id.walk);
-        heartrate = (TextView) findViewById(R.id.heartrate);
 
-        findViewById(R.id.viewPetWalk).setOnClickListener(this);
-        findViewById(R.id.viewMeal).setOnClickListener(this);
-
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        taskGetPets = new AsyncTaskGetPets();
 
         fButtonParent = (FloatingActionButton) findViewById(R.id.floatingButtonParent);
         fButtonAdd = (FloatingActionButton) findViewById(R.id.floatingButtonAdd);
@@ -169,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         fButtonDel.setOnClickListener(this);
         fButtonSet.setOnClickListener(this);
 
-        //플로팅 버튼이 눌렸을때 화면에 알파값 먹이기 위해서 레이아웃을 참조한다.
+        //플로팅 버튼이 눌렸을때 화면에 투명도를 위해서 플로팅 버튼을 포함하는 레이아웃을 참조한다.
         floatingButtonLayout = (ConstraintLayout) findViewById(R.id.floatingButtonLayout);
         floatingButtonLayout.setClickable(false);
         floatingButtonLayout.setOnClickListener(new View.OnClickListener() {
@@ -179,13 +222,18 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
 
+        //viewPager 참조
+        viewPager = (ViewPager)findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(10);
 
+        updateData();
     }
 
+
+    //상단 툴바에 새로고침 등록해서 아래 동작 정의..
     private void updateData() {
-        new GetPets().execute();
+        taskGetPets.execute();
     }
-
 
     //플로팅 버튼이 눌렀을떄의 동작
     private void floatingButton() {
@@ -213,12 +261,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         fButtonDel.setVisibility(View.INVISIBLE);
         fButtonSet.setVisibility(View.INVISIBLE);
     }
+    //플로팅 버튼이 눌렀을떄의 동작 끝
 
-
-    @Override
-    public void onRefresh() {
-        updateData();
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -240,14 +284,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 break;
             case R.id.floatingButtonSet:
                 intent = new Intent(getApplicationContext(), PetUpdateActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.viewPetWalk:
-                intent = new Intent(getApplicationContext(), PetWalkActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.viewMeal:
-                intent = new Intent(getApplicationContext(), MealActivity.class);
                 startActivity(intent);
                 break;
             case R.id.profile_picture:
@@ -307,6 +343,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         }
     }
+
     private File createImageFile() throws IOException{
         String imageFileName = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
         File storageDir = new File(Environment.getExternalStorageDirectory(),imageFileName);
@@ -320,27 +357,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
 
-    private void cropImage() {
-        Intent cropIntent = new Intent("com.android.camera.action.CROP");
-        cropIntent.setDataAndType(photoURI, "image/*");
-        /*cropIntent.putExtra("outputX", 200);
-        //crop한 이미지의 x축 크기
-        cropIntent.putExtra("outputY", 200);
-        // crop한 이미지의 y축 크기
-        cropIntent.putExtra("aspectX", 1);
-        // crop 박스의 x축 비율
-        cropIntent.putExtra("aspectY", 1);
-        // crop 박스의 y축 비율*/
-        cropIntent.putExtra("scale", true);
-        if(album == false) {
-            cropIntent.putExtra("output", photoURI); // 크랍된 이미지를 해당 경로에 저장
-        } else if(album == true){
-            cropIntent.putExtra("output", albumURI); // 크랍된 이미지를 해당 경로에 저장
-        }
-        startActivityForResult(cropIntent, REQUEST_IMAGE_CROP);
-    }
-
-    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
         if (resultCode != RESULT_OK) {
             Toast.makeText(getApplicationContext(), "onActivityResult : RESULT_NOT_OK", Toast.LENGTH_LONG).show();
@@ -398,155 +416,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
 
-    private class GetCondition extends AsyncTask<String, Void, JSONObject> {
-        @Override
-        public JSONObject doInBackground(String... params) {
-            InputStream inputStream = null;
-            JSONObject jsonObject = null;
-            String parameter = "id=admin";
-
-            try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                String url = "http://58.237.8.179/Servlet/getCondition";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-
-                //커넥션에 각종 정보 설정
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-                writer.write(parameter);
-                writer.flush();
-                writer.close();
-
-
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
-
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String str;
-                    StringBuilder strBuffer = new StringBuilder();
-                    while ((str = bufferedReader.readLine()) != null) {
-                        strBuffer.append(str);
-                    }
-                    jsonObject = new JSONObject(strBuffer.toString());
-                    inputStream.close();
-                    conn.disconnect();
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
-            }
-
-            return jsonObject;
-
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            if (jsonObject != null) {
-                try {
-                    jsonObject = jsonObject.getJSONObject("Condition");
-                    temp.setText(jsonObject.getString("avgtemp"));
-                    walk.setText(jsonObject.getString("step"));
-                    heartrate.setText(jsonObject.getString("avgheart"));
-                    Toast.makeText(getApplicationContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(getApplicationContext(), "업데이트 실패", Toast.LENGTH_SHORT).show();
-            }
-
-            swipeRefreshLayout.setRefreshing(false);
-        }
-
-    }
-
-    private class GetCondition2 extends AsyncTask<String, Void, JSONObject> {
-        @Override
-        public JSONObject doInBackground(String... params) {
-            InputStream inputStream = null;
-            JSONObject jsonObject = null;
-            String parameter = "id=admin";
-
-            try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                String url = "http://58.237.8.179/Servlet/getCondition";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-
-                //커넥션에 각종 정보 설정
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-                writer.write(parameter);
-                writer.flush();
-                writer.close();
-
-
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
-
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String str;
-                    StringBuilder strBuffer = new StringBuilder();
-                    while ((str = bufferedReader.readLine()) != null) {
-                        strBuffer.append(str);
-                    }
-                    jsonObject = new JSONObject(strBuffer.toString());
-                    inputStream.close();
-                    conn.disconnect();
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
-            }
-
-            return jsonObject;
-
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            if (jsonObject != null) {
-                try {
-                    jsonObject = jsonObject.getJSONObject("Condition");
-                    temp.setText(jsonObject.getString("avgtemp"));
-                    walk.setText(jsonObject.getString("step"));
-                    heartrate.setText(jsonObject.getString("avgheart"));
-                    Toast.makeText(getApplicationContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(getApplicationContext(), "업데이트 실패", Toast.LENGTH_SHORT).show();
-            }
-
-            swipeRefreshLayout.setRefreshing(false);
-        }
-
-    }
-
-    private class GetPets extends AsyncTask<String, Void, JSONObject> {
+    private class AsyncTaskGetPets extends AsyncTask<String, Void, JSONObject> {
 
         @Override
         protected JSONObject doInBackground(String... params) {
@@ -572,7 +442,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 //응답 http코드를 가져옴
                 int responseCode = conn.getResponseCode();
 
-                inputStream = null;
 
                 //응답이 성공적으로 완료되었을 때
                 if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -625,7 +494,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         }
                     }
                     user.setPets(pets);
-                    new GetCondition().execute();
+                    viewPager.setAdapter(PetInfoAdapter.createAdapter(getSupportFragmentManager()));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -635,6 +504,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
         }
+
     }
 
 }

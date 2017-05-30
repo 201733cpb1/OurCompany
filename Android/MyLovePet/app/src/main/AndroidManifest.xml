@@ -35,27 +35,30 @@
         </provider>
 
 
-        <activity android:name=".Test">
+        <activity android:name=".main.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".main.JoinActivity" android:windowSoftInputMode="stateAlwaysHidden"/>
+
         <activity android:name=".main.PetAddActivity"/>
         <activity android:name=".market.Market_Main"/>
         <activity android:name=".market.Market_Write"/>
         <activity android:name=".market.Market_Category"/>
 
 
-        <!--<activity android:name=".main.MealActivity"/>-->
+        <activity android:name=".main.MainActivity"/>
+        <activity android:name=".main.JoinActivity" android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name=".main.MealActivity"/>
         <activity android:name=".main.MealCalendarActivity"/>
         <activity android:name=".main.UserSetProfileActivity"/>
         <activity android:name=".main.UserSettingActivity"/>
         <activity android:name=".main.UserSetPassActivity"/>
         <activity android:name=".main.PetWalkActivity"/>
         <activity android:name=".main.PetUpdateActivity"/>
+        <activity android:name=".main.VaccineActivity"/>
 
 
         <activity android:name=".daummap.Intro" android:hardwareAccelerated="false" />

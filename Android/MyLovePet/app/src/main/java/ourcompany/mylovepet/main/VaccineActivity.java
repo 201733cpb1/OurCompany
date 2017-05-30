@@ -19,7 +19,8 @@ import ourcompany.mylovepet.customView.CalendarView;
 
 
 public class VaccineActivity extends AppCompatActivity
-{
+
+    {
     HashSet<Date> events;
     CalendarView cv;
     public static Date getDate(int year, int month, int date) {

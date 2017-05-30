@@ -40,7 +40,7 @@ public class ToobarActivity extends AppCompatActivity implements NavigationView.
 
         dtToggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navi_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.naviView);
         navigationView.setNavigationItemSelectedListener(this);
 
     }

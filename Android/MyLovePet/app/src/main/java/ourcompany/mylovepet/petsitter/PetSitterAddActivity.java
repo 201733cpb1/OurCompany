@@ -65,7 +65,7 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
 
         dtToggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navi_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.naviView);
         navigationView.setNavigationItemSelectedListener(this);
 
         ListView listview ;

@@ -153,6 +153,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         String cookie = conn.getHeaderField("Set-Cookie");
                         user.setCookie(cookie);
                         startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        finish();
                     }else
                         Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {

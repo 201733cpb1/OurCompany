@@ -30,7 +30,7 @@
         </FrameLayout>
 
         <android.support.design.widget.NavigationView
-            android:id="@+id/navi_view"
+            android:id="@+id/naviView"
             android:layout_width="320dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
