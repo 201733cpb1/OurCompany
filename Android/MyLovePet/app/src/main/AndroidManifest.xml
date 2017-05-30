@@ -49,6 +49,8 @@
         <activity android:name=".market.Market_Write"/>
         <activity android:name=".market.Market_Category"/>
 
+        <activity android:name=".petsitter.PetSitterAddActivity"/>
+        <activity android:name=".petsitter.PetSitterFindActivity"/>
 
         <activity android:name=".main.MainActivity"/>
         <activity android:name=".main.JoinActivity" android:windowSoftInputMode="stateAlwaysHidden"/>

@@ -55,6 +55,7 @@ import ourcompany.mylovepet.customView.PetInfoAdapter;
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
 import ourcompany.mylovepet.petsitter.PetSitterAddActivity;
+import ourcompany.mylovepet.petsitter.PetSitterFindActivity;
 
 /**
  * Created by REOS on 2017-05-07.
@@ -176,6 +177,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case 5:
                         //도움주기 화면
+                        intent = new Intent(getApplicationContext(), PetSitterFindActivity.class);
+                        startActivity(intent);
                         break;
                     case 7:
                         //TIP 화면
