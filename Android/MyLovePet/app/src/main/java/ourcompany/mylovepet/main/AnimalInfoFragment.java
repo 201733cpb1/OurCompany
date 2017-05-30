@@ -77,7 +77,6 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
         super.onStart();
 
     }
-
     @Override
     public void onClick(View v) {
         Intent intent;
@@ -96,7 +95,6 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
                 break;
         }
     }
-
     @Override
     public void onRefresh() {
         new GetCondition().execute();

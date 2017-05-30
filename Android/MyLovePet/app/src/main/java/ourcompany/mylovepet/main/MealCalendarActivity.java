@@ -4,15 +4,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -26,6 +20,8 @@ public class MealCalendarActivity extends AppCompatActivity
     HashSet<Date> events;
     CalendarView cv;
     LinearLayout li;
+    LinearLayout layout;
+    EditText et;
     public static Date getDate(int year, int month, int date) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month-1, date);
@@ -44,50 +40,33 @@ public class MealCalendarActivity extends AppCompatActivity
 
         li = (LinearLayout)findViewById(R.id.layout_main);
         cv = ((CalendarView)findViewById(R.id.calendar_view));
+        layout = (LinearLayout)findViewById(R.id.layout_add);
         cv.updateCalendar(events);
         // assign event handler
-        cv.setEventHandler(new CalendarView.EventHandler()
+        cv.setEventHandler(new CalendarView.EventHandler() // 달력 날짜 리스너
         {
-
             @Override
             public void onDayLongPress(Date date)
             {
+                layout.removeView(et);
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+                param.gravity = Gravity.CENTER;
+                et = new EditText(getApplicationContext());
+                et.setTextColor(Color.BLACK);
+                et.setTextSize(13);
+                et.setPadding(10,0,0,0);
+                et.setLayoutParams(param);
+                et.setText("");
+                et.setBackgroundResource(R.drawable.rect);
+
+                layout.addView(et);
                 // show returned day
-                DateFormat df = SimpleDateFormat.getDateInstance();
-                Toast.makeText(MealCalendarActivity.this, df.format(date), Toast.LENGTH_SHORT).show();
+               /* DateFormat df = SimpleDateFormat.getDateInstance();
+                Toast.makeText(Meal_Calendar.this, df.format(date), Toast.LENGTH_SHORT).show();*/
             }
             @Override
             public void setEvents() {
                 cv.updateCalendar(events);
-            }
-        });
-
-        findViewById(R.id.meal_add).setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v) {
-                final LinearLayout layout = new LinearLayout(getApplicationContext());
-                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                params2.gravity=Gravity.CENTER;
-                layout.setLayoutParams(params);
-
-                li.addView(layout);
-                final ImageView iv = new ImageView(getApplicationContext());
-                final EditText et = new EditText(getApplicationContext());
-
-                iv.setImageResource(R.drawable.activemass);
-                iv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-                layout.addView(iv);
-
-                et.setTextColor(Color.BLACK);
-                et.setCompoundDrawablePadding(10);
-                et.setTextSize(13);
-                et.setGravity(Gravity.CENTER);
-                et.setPadding(10,0,0,0);
-                et.setHeight(300);
-                et.setWidth(880);
-                et.setLayoutParams(params2);
-                et.setBackgroundResource(R.drawable.rect);
-                layout.addView(et);
             }
         });
     }
