@@ -1,3 +1,4 @@
+/*
 package ourcompany.mylovepet.main;
 
 import android.content.Intent;
@@ -9,9 +10,11 @@ import android.widget.LinearLayout;
 
 import ourcompany.mylovepet.R;
 
+*/
 /**
  * Created by KDM on 2017-05-16.
- */
+ *//*
+
 
 public class MealActivity extends AppCompatActivity {
     LinearLayout mealadd1;
@@ -32,3 +35,4 @@ public class MealActivity extends AppCompatActivity {
         });
     }
 }
+*/
