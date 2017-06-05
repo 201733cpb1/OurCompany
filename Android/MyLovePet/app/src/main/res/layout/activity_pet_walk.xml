@@ -32,6 +32,7 @@
             android:textSize="20dp"
             android:textStyle="bold" />
         <TextView
+            android:id="@+id/starttime"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
             android:layout_weight="0.86"
@@ -65,6 +66,7 @@
             android:textSize="20dp"
             android:textStyle="bold" />
         <TextView
+            android:id="@+id/endtime"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
             android:layout_weight="0.86"
@@ -120,7 +122,7 @@
 
         </View>
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/walkstart"
             android:layout_width="279dp"
             android:layout_height="243dp"
             android:text="산책 시작"
@@ -130,6 +132,30 @@
             android:background="@drawable/circle_button"
             android:textColor="@drawable/button_base_text_color"
             android:layout_weight="0.10" />
+        <Button
+            android:id="@+id/walkend"
+            android:layout_width="279dp"
+            android:layout_height="243dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.10"
+            android:background="@drawable/circle_button"
+            android:text="산책 종료"
+            android:textColor="@drawable/button_base_text_color"
+            android:textSize="30dp"
+            android:visibility="gone"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/end"
+            android:layout_width="279dp"
+            android:layout_height="243dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.10"
+            android:background="@drawable/circle_button"
+            android:text="종료"
+            android:textColor="@drawable/button_base_text_color"
+            android:textSize="30dp"
+            android:visibility="gone"
+            android:textStyle="bold" />
         <View
             android:layout_width="51dp"
             android:layout_height="32dp">
