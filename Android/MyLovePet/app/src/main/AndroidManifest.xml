@@ -54,7 +54,7 @@
 
         <activity android:name=".main.MainActivity"/>
         <activity android:name=".main.JoinActivity" android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity android:name=".main.MealActivity"/>
+        <!--<activity android:name=".main.MealActivity"/>-->
         <activity android:name=".main.MealCalendarActivity"/>
         <activity android:name=".main.UserSetProfileActivity"/>
         <activity android:name=".main.UserSettingActivity"/>
@@ -62,6 +62,7 @@
         <activity android:name=".main.PetWalkActivity"/>
         <activity android:name=".main.PetUpdateActivity"/>
         <activity android:name=".main.VaccineActivity"/>
+        <activity android:name=".main.StatisticsActivity"/>
 
 
         <activity android:name=".daummap.Intro" android:hardwareAccelerated="false" />

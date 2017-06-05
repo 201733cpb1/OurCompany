@@ -34,7 +34,8 @@ public class StatisticsActivity extends AppCompatActivity {
         LineDataSet lineDataSet = new LineDataSet(entries, "temperature");
         lineDataSet.setLineWidth(2);
         lineDataSet.setCircleRadius(6);
-        lineDataSet.setCircleColor(Color.WHITE);
+        lineDataSet.setValueTextSize(16);
+        lineDataSet.setCircleColor(Color.LTGRAY);
         lineDataSet.setCircleColorHole(Color.BLUE);
         //lineDataSet.setColor(Color.BLUE);
         lineDataSet.setDrawCircleHole(true);
@@ -47,10 +48,11 @@ public class StatisticsActivity extends AppCompatActivity {
 
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(Color.LTGRAY);
+        xAxis.setTextColor(Color.BLACK);
         xAxis.enableGridDashedLine(16, 12, 0);
         xAxis.setLabelCount(5); // x 축 갯수
         xAxis.setGranularity(1);
+        xAxis.setTextSize(20);
         YAxis yAxis = lineChart.getAxisRight();
         yAxis.setDrawLabels(false);
         yAxis.setDrawAxisLine(false);
