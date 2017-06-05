@@ -75,7 +75,7 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
     @Override
     public void onStart() {
         super.onStart();
-
+        
     }
     @Override
     public void onClick(View v) {
@@ -86,7 +86,7 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
                 startActivity(intent);
                 break;
             case R.id.viewMeal:
-                intent = new Intent(getContext(), MealActivity.class);
+                intent = new Intent(getContext(), MealCalendarActivity.class);
                 startActivity(intent);
                 break;
             case R.id.viewVaccination:
