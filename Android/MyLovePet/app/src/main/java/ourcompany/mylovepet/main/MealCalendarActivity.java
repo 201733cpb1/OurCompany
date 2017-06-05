@@ -12,13 +12,13 @@ import java.util.Date;
 import java.util.HashSet;
 
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.customView.CalendarView;
+import ourcompany.mylovepet.customView.CalendarView2;
 
 
 public class MealCalendarActivity extends AppCompatActivity
 {
     HashSet<Date> events;
-    CalendarView cv;
+    CalendarView2 cv;
     LinearLayout li;
     LinearLayout layout;
     EditText et;
@@ -39,11 +39,11 @@ public class MealCalendarActivity extends AppCompatActivity
         events.add(getDate(2017,6,5));
 
         li = (LinearLayout)findViewById(R.id.layout_main);
-        cv = ((CalendarView)findViewById(R.id.calendar_view));
+        cv = ((CalendarView2)findViewById(R.id.calendar_view));
         layout = (LinearLayout)findViewById(R.id.layout_add);
         cv.updateCalendar(events);
         // assign event handler
-        cv.setEventHandler(new CalendarView.EventHandler() // 달력 날짜 리스너
+        cv.setEventHandler(new CalendarView2.EventHandler() // 달력 날짜 리스너
         {
             @Override
             public void onDayLongPress(Date date)
