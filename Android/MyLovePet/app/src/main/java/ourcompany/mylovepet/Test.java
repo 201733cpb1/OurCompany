@@ -1,6 +1,7 @@
 package ourcompany.mylovepet;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,30 +26,60 @@ import ourcompany.mylovepet.main.userinfo.User;
 
 public class Test extends AppCompatActivity{
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.test);
+
+        ViewPager viewPager = (ViewPager)findViewById(R.id.viewPager2);
+
+        Pet[] pets = new Pet[2];
+        pets[0] = new Pet();
+        pets[0].setName("아아아");
+        pets[1] = new Pet();
+        pets[1].setName("ddddddd");
+
+        viewPager.setAdapter(new Adapter(getLayoutInflater(),pets));
+
+    }
 }
 
 
-class Adapter extends BaseAdapter{
+class Adapter extends PagerAdapter{
 
-    
+    Pet[] pets;
+    LayoutInflater inflater;
+
+    public Adapter(LayoutInflater inflater, Pet[] pets){
+        this.pets = pets;
+        this.inflater = inflater;
+    }
 
     @Override
     public int getCount() {
-        return 0;
+        return pets.length;
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public Object instantiateItem(ViewGroup container, int position) {
+
+        View view = inflater.inflate(R.layout.pet,container,false);
+
+        TextView textViewPetName = (TextView)view.findViewById(R.id.textViewPetName);
+        textViewPetName.setText(pets[position].getName());
+
+        container.addView(view);
+
+        return view;
     }
 
     @Override
-    public long getItemId(int position) {
-        return 0;
+    public boolean isViewFromObject(View view, Object object) {
+        return view == object;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        container.removeView((View)object);
     }
 }
