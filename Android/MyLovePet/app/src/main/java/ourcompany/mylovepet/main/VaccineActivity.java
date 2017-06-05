@@ -18,11 +18,10 @@ import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.CalendarView;
 
 
-public class VaccineActivity extends AppCompatActivity
-
-    {
+public class VaccineActivity extends AppCompatActivity {
     HashSet<Date> events;
     CalendarView cv;
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     public static Date getDate(int year, int month, int date) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month-1, date);
@@ -30,15 +29,14 @@ public class VaccineActivity extends AppCompatActivity
         return cal.getTime();
     }
 
-Button button1,button3;
-
+    Button button1,button3;
+    AlertDialog.Builder builder;
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vaccine);
-        getDate(2017,5,15);
+        builder = new AlertDialog.Builder(this);
         events = new HashSet<>(); // 원하는 날짜에 마커
         events.add(new Date());
         events.add(getDate(2017,5,15));
@@ -55,8 +53,8 @@ Button button1,button3;
             public void onDayLongPress(Date date)
             {
                 // show returned day
-                DateFormat df = SimpleDateFormat.getDateInstance();
                 Toast.makeText(VaccineActivity.this, df.format(date), Toast.LENGTH_SHORT).show();
+                
             }
             @Override
             public void setEvents() {
@@ -83,9 +81,8 @@ Button button1,button3;
     }
 
     private void showScheduleMessage() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("전체일정");
-        builder.setMessage("2017년 5월2일 1차접종\n2017년 8월3일 2차접종\n2017년 9월3일 3차접종\n");
+        builder.setMessage(events+"");
 
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {

@@ -7,6 +7,8 @@ import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -48,6 +50,8 @@ public class MealCalendarActivity extends AppCompatActivity
             @Override
             public void onDayLongPress(Date date)
             {
+
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 layout.removeView(et);
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
                 param.gravity = Gravity.CENTER;
@@ -56,7 +60,7 @@ public class MealCalendarActivity extends AppCompatActivity
                 et.setTextSize(13);
                 et.setPadding(10,0,0,0);
                 et.setLayoutParams(param);
-                et.setText("");
+                et.setText(df.format(date));
                 et.setBackgroundResource(R.drawable.rect);
 
                 layout.addView(et);
