@@ -4,8 +4,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,6 +26,7 @@ public class MealCalendarActivity extends AppCompatActivity
     LinearLayout li;
     LinearLayout layout;
     EditText et;
+    Date d;
     public static Date getDate(int year, int month, int date) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month-1, date);
@@ -36,9 +39,6 @@ public class MealCalendarActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_cal_main);
         events = new HashSet<>(); // 원하는 날짜에 마커
-        events.add(new Date());
-        events.add(getDate(2017,5,15));
-        events.add(getDate(2017,6,5));
 
         li = (LinearLayout)findViewById(R.id.layout_main);
         cv = ((CalendarView2)findViewById(R.id.calendar_view));
@@ -50,7 +50,6 @@ public class MealCalendarActivity extends AppCompatActivity
             @Override
             public void onDayLongPress(Date date)
             {
-
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 layout.removeView(et);
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
@@ -63,6 +62,8 @@ public class MealCalendarActivity extends AppCompatActivity
                 et.setText(df.format(date));
                 et.setBackgroundResource(R.drawable.rect);
 
+                d = date; // 선택한 날
+
                 layout.addView(et);
                 // show returned day
                /* DateFormat df = SimpleDateFormat.getDateInstance();
@@ -71,6 +72,24 @@ public class MealCalendarActivity extends AppCompatActivity
             @Override
             public void setEvents() {
                 cv.updateCalendar(events);
+            }
+        });
+        findViewById(R.id.meal_update).setOnClickListener(new View.OnClickListener() { // 원하는 날짜에 마커 표시
+            @Override
+            public void onClick(View v) {
+                Date a = new Date();
+                int compare = a.compareTo(d);
+
+                if(compare > 0){
+                    events.add(d);
+                    cv.updateCalendar(events);
+                }else if(compare < 0){
+                    Toast.makeText(MealCalendarActivity.this, "미래를 보는가?", Toast.LENGTH_SHORT).show();
+                }else{
+                    events.add(d);
+                    cv.updateCalendar(events);
+                }
+
             }
         });
     }

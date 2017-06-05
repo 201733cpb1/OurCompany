@@ -6,7 +6,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -52,9 +51,10 @@ public class VaccineActivity extends AppCompatActivity {
             @Override
             public void onDayLongPress(Date date)
             {
-                // show returned day
-                Toast.makeText(VaccineActivity.this, df.format(date), Toast.LENGTH_SHORT).show();
-                
+
+/*                // show returned day
+                Toast.makeText(VaccineActivity.this, df.format(date), Toast.LENGTH_SHORT).show();*/
+
             }
             @Override
             public void setEvents() {
