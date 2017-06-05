@@ -2,8 +2,8 @@ package ourcompany.mylovepet.petsitter;
 
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -13,7 +13,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,13 +26,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -48,11 +45,8 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 
-
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
-import ourcompany.mylovepet.customView.PetInfoAdapter;
-import ourcompany.mylovepet.customView.PostDialog;
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
 
@@ -67,13 +61,13 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
     LocalDate s_Date, e_Date;
     DateTimeFormatter dateTimeFormat;
 
-<<<<<<< HEAD
-=======
+/*<<<<<<< HEAD
+=======*/
     ViewPager viewPager;
 
     HashSet<Integer> petNoSet;
-
->>>>>>> 7ea96398b3eac48566e363ca2e5e87589c156264
+/*
+>>>>>>> 7ea96398b3eac48566e363ca2e5e87589c156264*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,7 +135,7 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
         //리스너 등록
         s_DateEditText.setOnClickListener(this);
         e_DateEditText.setOnClickListener(this);
-        findViewById(R.id.findPost_button).setOnClickListener(this);
+        //findViewById(R.id.findPost_button).setOnClickListener(this);
         findViewById(R.id.buttonAddBoard).setOnClickListener(this);
 
         viewPager = (ViewPager)findViewById(R.id.viewPagerPetList);

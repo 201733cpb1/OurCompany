@@ -31,16 +31,16 @@ public class PetWalkActivity extends AppCompatActivity {
     double total_distance;
     LocationManager locationManager;
     LocationListener locationListener;
-    
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_walk);
 
         start = (TextView) findViewById(R.id.starttime);
         end = (TextView) findViewById(R.id.endtime) ;
+        distance = (TextView) findViewById(R.id.total_distance);
         walkstart = (Button) findViewById(R.id.walkstart);
         walkend = (Button) findViewById(R.id.walkend);
-        totalend = (Button) findViewById(R.id.end);
         totalend = (Button) findViewById(R.id.end);
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -53,7 +53,7 @@ public class PetWalkActivity extends AppCompatActivity {
                 // 현재시간을 date 변수에 저장한다.
                 Date date = new Date(now);
                 // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
-                SimpleDateFormat sdfNow = new SimpleDateFormat("HH:mm:ss");
+                SimpleDateFormat sdfNow = new SimpleDateFormat("HH : mm : ss");
                 // nowDate 변수에 값을 저장한다.
                 final String formatDate = sdfNow.format(date);
                 start.setText(formatDate);
@@ -62,7 +62,7 @@ public class PetWalkActivity extends AppCompatActivity {
 
                 locationListener = new LocationListener() {
                     public void onLocationChanged(Location location) {
-                        Location lo1 = new Location("A"); // 현재 위치
+                        Location lo1 = new Location("A"); // 위치 저장
 
                         if(lo1==null){
                             lo1 = location;
@@ -110,7 +110,7 @@ public class PetWalkActivity extends AppCompatActivity {
                 // 현재시간을 date 변수에 저장한다.
                 Date date = new Date(now);
                 // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
-                SimpleDateFormat sdfNow = new SimpleDateFormat("HH:mm:ss");
+                SimpleDateFormat sdfNow = new SimpleDateFormat("HH : mm : ss");
                 // nowDate 변수에 값을 저장한다.
                 final String formatDate = sdfNow.format(date);
                 end.setText(formatDate);

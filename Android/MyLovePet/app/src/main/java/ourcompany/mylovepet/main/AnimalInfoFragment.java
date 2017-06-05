@@ -39,6 +39,7 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
 
     Pet pet;
 
+
     public AnimalInfoFragment(){
     }
 
@@ -67,6 +68,7 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
         view.findViewById(R.id.viewPetWalk).setOnClickListener(this);
         view.findViewById(R.id.viewMeal).setOnClickListener(this);
         view.findViewById(R.id.viewVaccination).setOnClickListener(this);
+        view.findViewById(R.id.viewTemperature).setOnClickListener(this);
         onRefresh();
 
         return view;
@@ -75,7 +77,7 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
     @Override
     public void onStart() {
         super.onStart();
-        
+
     }
     @Override
     public void onClick(View v) {
@@ -98,6 +100,7 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
                 startActivity(intent);
                 break;
         }
+
     }
     @Override
     public void onRefresh() {
