@@ -27,7 +27,7 @@ public class Gps_Check extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gps_check);
 
-findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+    findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         chkGpsService();
@@ -63,4 +63,4 @@ findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
         }
         return false;
     }
-    }
+}

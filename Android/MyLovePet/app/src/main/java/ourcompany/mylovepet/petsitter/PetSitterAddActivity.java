@@ -43,7 +43,6 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
     LocalDate s_Date, e_Date;
     DateTimeFormatter dateTimeFormat;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

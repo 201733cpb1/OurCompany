@@ -93,6 +93,10 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
                 intent = new Intent(getContext(),VaccineActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.viewTemperature:
+                intent = new Intent(getContext(),StatisticsActivity.class);
+                startActivity(intent);
+                break;
         }
     }
     @Override
