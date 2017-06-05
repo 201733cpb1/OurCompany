@@ -150,19 +150,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="182dp"
                 android:layout_marginTop="5dp"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:orientation="horizontal">
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:background="@drawable/rect"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:textColor="#000000"
-                    android:textSize="13dp"
-                    android:textStyle="bold"
-                    />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
