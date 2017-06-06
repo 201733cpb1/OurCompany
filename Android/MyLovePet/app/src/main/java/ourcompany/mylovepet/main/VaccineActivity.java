@@ -28,18 +28,31 @@ public class VaccineActivity extends AppCompatActivity {
         return cal.getTime();
     }
 
+    public void DateCalculation(int count,Date date){
+        events.removeAll(events);
+        String[] token = df.format(date).split("-");
+        int year = Integer.parseInt(token[0]);
+        int month = Integer.parseInt(token[1]);
+        int day = Integer.parseInt(token[2]);
+        events.add(getDate(year,month,day));
+
+        int j = 14;
+        for(int i = count+1;i<6;i++){
+            events.add(getDate(year,month,day+j));
+            j +=14;
+        }
+        cv.updateCalendar(events);
+    }
     Button button1,button3;
-    AlertDialog.Builder builder;
+    AlertDialog.Builder builder2;
+    int a=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vaccine);
-        builder = new AlertDialog.Builder(this);
+        builder2 = new AlertDialog.Builder(this);
         events = new HashSet<>(); // 원하는 날짜에 마커
-        events.add(new Date());
-        events.add(getDate(2017,5,15));
-        events.add(getDate(2017,6,5));
 
         cv = ((CalendarView)findViewById(R.id.calendar_view));
         cv.updateCalendar(events);
@@ -49,12 +62,22 @@ public class VaccineActivity extends AppCompatActivity {
         {
 
             @Override
-            public void onDayLongPress(Date date)
+            public void onDayLongPress(final Date date)
             {
 
 /*                // show returned day
                 Toast.makeText(VaccineActivity.this, df.format(date), Toast.LENGTH_SHORT).show();*/
-
+                final CharSequence[] items = {"1차", "2차", "3차","4차","5차","6차"};
+                // 여기서 부터는 알림창의 속성 설정
+                builder2.setTitle("차수를 선택하세요")        // 제목 설
+                        .setItems(items, new DialogInterface.OnClickListener(){    // 목록 클릭시 설정
+                            public void onClick(DialogInterface dialog, int index){
+                                //Toast.makeText(VaccineActivity.this, df.format(date)+"은 "+items[index]+"예방접종 날입니다.", Toast.LENGTH_SHORT).show();
+                                DateCalculation(index,date);
+                            }
+                        });
+                AlertDialog dialog = builder2.create();    // 알림창 객체 생성
+                dialog.show();    // 알림창 띄우기]
             }
             @Override
             public void setEvents() {
@@ -81,6 +104,7 @@ public class VaccineActivity extends AppCompatActivity {
     }
 
     private void showScheduleMessage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("전체일정");
         builder.setMessage(events+"");
 
@@ -89,8 +113,6 @@ public class VaccineActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         AlertDialog dialog = builder.create();
         dialog.show();
