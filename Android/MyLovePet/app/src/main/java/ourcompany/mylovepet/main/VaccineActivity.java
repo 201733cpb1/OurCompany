@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -21,6 +22,8 @@ public class VaccineActivity extends AppCompatActivity {
     HashSet<Date> events;
     CalendarView cv;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    //String[] totalSchedule = new String[6];
+    ArrayList<String> totalSchedule = new ArrayList<>();
     public static Date getDate(int year, int month, int date) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month-1, date);
@@ -30,14 +33,18 @@ public class VaccineActivity extends AppCompatActivity {
 
     public void DateCalculation(int count,Date date){
         events.removeAll(events);
+        totalSchedule.removeAll(totalSchedule);
         String[] token = df.format(date).split("-");
         int year = Integer.parseInt(token[0]);
         int month = Integer.parseInt(token[1]);
         int day = Integer.parseInt(token[2]);
         events.add(getDate(year,month,day));
 
+        totalSchedule.add( count+1+"차  "+df.format(getDate(year,month,day))+"\n");
+
         int j = 14;
         for(int i = count+1;i<6;i++){
+            totalSchedule.add( i+1+"차  "+df.format(getDate(year,month,day+j))+"\n");
             events.add(getDate(year,month,day+j));
             j +=14;
         }
@@ -106,7 +113,7 @@ public class VaccineActivity extends AppCompatActivity {
     private void showScheduleMessage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("전체일정");
-        builder.setMessage(events+"");
+        builder.setMessage(totalSchedule+"");
 
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
