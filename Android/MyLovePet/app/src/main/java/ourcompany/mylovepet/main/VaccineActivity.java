@@ -48,10 +48,11 @@ public class VaccineActivity extends AppCompatActivity {
 
         int j = 14;
         for(int i = count+1;i<6;i++){
-            totalSchedule.add( i+1+"차  "+df.format(getDate(year,month,day+j))+"\n");
+            totalSchedule.add( i+"차  "+df.format(getDate(year,month,day+j))+"\n");
             events.add(getDate(year,month,day+j));
             j +=14;
         }
+        totalSchedule.add( 6+"차  "+df.format(getDate(year,month,day+j))+"\n");
         cv.updateCalendar(events);
     }
 
