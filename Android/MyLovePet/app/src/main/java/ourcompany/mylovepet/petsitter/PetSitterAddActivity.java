@@ -159,7 +159,6 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
     private void updatePetCount(){
         int size = petNoSet.size();
         editTextPetCount.setText(size+" 마리");
-
     }
 
     @Override
@@ -205,7 +204,11 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
             }, e_Date.getYear(), e_Date.getMonthOfYear() - 1, e_Date.getDayOfMonth()).show();
             //다이얼 로그 끝
         }else if (v.getId() == R.id.buttonAddBoard){
-            new AddPetSitter().execute();
+            if(petNoSet.size() == 0){
+                Toast.makeText(getApplicationContext(),"펫을 추가 해주세요",Toast.LENGTH_SHORT).show();
+            }else {
+                new AddPetSitter().execute();
+            }
         }
 
     }
@@ -235,17 +238,11 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
 
             jsonArray = new JSONArray();
 
-            List list = new ArrayList(petNoSet);
-
-            for(int i = 0 ; i < list.size();i++){
-                int no = ((Integer)list.get(i)).intValue();
+            for(int no : petNoSet){
                 jsonArray.put(no);
             }
-
-
-
-
         }
+
         @Override
         public JSONObject doInBackground(String... params) {
             JSONObject jsonObject = null;
