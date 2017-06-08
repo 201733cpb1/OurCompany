@@ -139,18 +139,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listview.setAdapter(adapter);
 
         adapter.addItem("펫 정보");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "홈");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "통계");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "홈"); //1
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "통계"); //2
 
         adapter.addItem("펫 시터");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "구하기");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "도움주기");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "구하기"); //4
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "도움주기"); //5
 
         adapter.addItem("편의 기능");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "TIP");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "중고장터");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "탐색");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "SNS");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "TIP"); //7
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "중고장터"); //8
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "탐색"); //9
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "SNS"); //10
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -164,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startActivity(intent);
                         break;
                     case 2:
-
                         //통계 화면
                         break;
                     case 4:
@@ -186,13 +185,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startActivity(intent);
                         break;
                     case 9:
-                        //탐색 화면  daum intro
-                        intent = new Intent(getApplicationContext(), Intro.class);
-                        startActivity(intent);
+                        chkGpsService();
                         break;
                     case 10:
                         //탐색 화면
-                        chkGpsService();
                         break;
                     case 11:
                         //SNS 화면
