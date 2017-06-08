@@ -45,6 +45,7 @@ public class MealCalendarActivity extends AppCompatActivity
         layout = (LinearLayout)findViewById(R.id.layout_add);
         cv.updateCalendar(events);
         // assign event handler
+
         cv.setEventHandler(new CalendarView2.EventHandler() // 달력 날짜 리스너
         {
             @Override

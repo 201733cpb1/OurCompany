@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,11 @@ public class VaccineActivity extends AppCompatActivity {
     HashSet<Date> events;
     CalendarView cv;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    Button button1,button3;
+    AlertDialog.Builder builder2;
+    int a=0;
+    TextView textViewdday;
+    String dday = "00";
     //String[] totalSchedule = new String[6];
     ArrayList<String> totalSchedule = new ArrayList<>();
     public static Date getDate(int year, int month, int date) {
@@ -40,8 +46,6 @@ public class VaccineActivity extends AppCompatActivity {
         int day = Integer.parseInt(token[2]);
         events.add(getDate(year,month,day));
 
-        totalSchedule.add( count+1+"차  "+df.format(getDate(year,month,day))+"\n");
-
         int j = 14;
         for(int i = count+1;i<6;i++){
             totalSchedule.add( i+1+"차  "+df.format(getDate(year,month,day+j))+"\n");
@@ -50,9 +54,7 @@ public class VaccineActivity extends AppCompatActivity {
         }
         cv.updateCalendar(events);
     }
-    Button button1,button3;
-    AlertDialog.Builder builder2;
-    int a=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -64,6 +66,9 @@ public class VaccineActivity extends AppCompatActivity {
         cv = ((CalendarView)findViewById(R.id.calendar_view));
         cv.updateCalendar(events);
 
+        textViewdday = (TextView) findViewById(R.id.dday);
+
+        textViewdday.setText("접종날까지 D-"+dday+"일 남았습니다!");
         // assign event handler
         cv.setEventHandler(new CalendarView.EventHandler()
         {
