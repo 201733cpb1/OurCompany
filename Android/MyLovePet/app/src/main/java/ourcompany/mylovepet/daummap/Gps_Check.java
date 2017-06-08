@@ -1,3 +1,4 @@
+/*
 package ourcompany.mylovepet.daummap;
 
 import android.Manifest;
@@ -13,9 +14,12 @@ import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
 
-/**
+*/
+/*
  * Created by 쫑티 on 2017-05-25.
- */
+ *//*
+
+
 
 public class Gps_Check extends AppCompatActivity {
 
@@ -35,7 +39,7 @@ public class Gps_Check extends AppCompatActivity {
 });
 
     }
-    private boolean chkGpsService() {
+    public boolean chkGpsService() {
 
         //GPS가 켜져 있는지 확인함.
         gpsEnabled = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
@@ -64,3 +68,4 @@ public class Gps_Check extends AppCompatActivity {
         return false;
     }
 }
+*/

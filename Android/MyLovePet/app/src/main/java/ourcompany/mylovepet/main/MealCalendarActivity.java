@@ -45,6 +45,7 @@ public class MealCalendarActivity extends AppCompatActivity
         layout = (LinearLayout)findViewById(R.id.layout_add);
         cv.updateCalendar(events);
         // assign event handler
+
         cv.setEventHandler(new CalendarView2.EventHandler() // 달력 날짜 리스너
         {
             @Override
@@ -59,15 +60,13 @@ public class MealCalendarActivity extends AppCompatActivity
                 et.setTextSize(13);
                 et.setPadding(10,0,0,0);
                 et.setLayoutParams(param);
-                et.setText(df.format(date));
+
+                et.setText(""); // 입력한 먹이 출력
                 et.setBackgroundResource(R.drawable.rect);
 
                 d = date; // 선택한 날
 
                 layout.addView(et);
-                // show returned day
-               /* DateFormat df = SimpleDateFormat.getDateInstance();
-                Toast.makeText(Meal_Calendar.this, df.format(date), Toast.LENGTH_SHORT).show();*/
             }
             @Override
             public void setEvents() {

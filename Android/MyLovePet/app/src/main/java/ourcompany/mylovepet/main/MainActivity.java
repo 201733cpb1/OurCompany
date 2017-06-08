@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
     DrawerLayout dlDrawer;
     ActionBarDrawerToggle dtToggle;
+
+    String gpsEnabled;
 
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -189,6 +192,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startActivity(intent);
                         break;
                     case 10:
+<<<<<<< HEAD
+=======
+                        //탐색 화면
+                        chkGpsService();
+                        break;
+                    case 11:
+>>>>>>> origin/AndroidUI
                         //SNS 화면
                         break;
                 }
@@ -507,5 +517,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
+    private boolean chkGpsService() {
 
+        //GPS가 켜져 있는지 확인함.
+        gpsEnabled = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+        if (!(gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
+            //gps가 사용가능한 상태가 아니면
+            new AlertDialog.Builder(this).setTitle("GPS 설정").setMessage("GPS가 꺼져 있습니다. \nGPS를 활성화 하시겠습니까?").setPositiveButton("GPS 켜기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    //GPS 설정 화면을 띄움
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            }).setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            }).create().show();
+
+        }else if((gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
+            Toast.makeText(getApplicationContext(), "정보를 읽어오는 중입니다.", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, Intro.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
+            startActivity(intent);
+        }
+        return false;
+    }
 }

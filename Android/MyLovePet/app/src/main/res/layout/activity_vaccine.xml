@@ -12,11 +12,11 @@
     android:weightSum="1">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/dday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="접종날까지 D-13일 남았습니다!"
+        android:text=""
         android:textSize="25dp"
         android:textColor="#000000"
         android:textStyle="bold"
