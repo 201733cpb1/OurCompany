@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         taskGetPets.cancel(true);
-
     }
 
     @Override
@@ -192,13 +191,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startActivity(intent);
                         break;
                     case 10:
-<<<<<<< HEAD
-=======
                         //탐색 화면
                         chkGpsService();
                         break;
                     case 11:
->>>>>>> origin/AndroidUI
                         //SNS 화면
                         break;
                 }
