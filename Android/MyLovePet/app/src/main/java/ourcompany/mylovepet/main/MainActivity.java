@@ -50,8 +50,10 @@ import java.net.URL;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.customView.PetInfoAdapter;
+import ourcompany.mylovepet.daummap.Intro;
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.market.Market_Intro;
 import ourcompany.mylovepet.petsitter.PetSitterAddActivity;
 import ourcompany.mylovepet.petsitter.PetSitterFindActivity;
 
@@ -85,14 +87,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String mCurrentPhotoPath;
     //포토 끝
     //
-    AsyncTaskGetPets taskGetPets;
+    GetPets taskGetPets;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbarInit();
-        inIt();
+        init();
     }
 
     @Override
@@ -134,8 +136,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listview = (ListView) findViewById(R.id.listView);
         listview.setAdapter(adapter);
 
-
-
         adapter.addItem("펫 정보");
         adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "홈");
         adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "통계");
@@ -146,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         adapter.addItem("편의 기능");
         adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "TIP");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "지름/알뜰 정보");
         adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "중고장터");
         adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "탐색");
         adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "SNS");
@@ -163,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startActivity(intent);
                         break;
                     case 2:
-                        Toast.makeText(getApplicationContext(),"설마?",Toast.LENGTH_SHORT).show();
+
                         //통계 화면
                         break;
                     case 4:
@@ -180,15 +179,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         //TIP 화면
                         break;
                     case 8:
-                        //지름/알뜰 정보 화면
+                        //지름/중고장터 정보 화면 intro
+                        intent = new Intent(getApplication(), Market_Intro.class);
+                        startActivity(intent);
                         break;
                     case 9:
-                        //지름/중고장터 정보 화면
+                        //탐색 화면  daum intro
+                        intent = new Intent(getApplicationContext(), Intro.class);
+                        startActivity(intent);
                         break;
                     case 10:
-                        //탐색 화면
-                        break;
-                    case 11:
                         //SNS 화면
                         break;
                 }
@@ -196,9 +196,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void inIt() {
+    private void init() {
 
-        taskGetPets = new AsyncTaskGetPets();
+        taskGetPets = new GetPets();
 
         fButtonParent = (FloatingActionButton) findViewById(R.id.floatingButtonParent);
         fButtonAdd = (FloatingActionButton) findViewById(R.id.floatingButtonAdd);
@@ -280,6 +280,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.floatingButtonDel:
+                Pet[] pets = User.getIstance().getPets();
+                int petNo = pets[viewPager.getCurrentItem()].getPetNo();
                 break;
             case R.id.floatingButtonSet:
                 intent = new Intent(getApplicationContext(), PetUpdateActivity.class);
@@ -415,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    private class AsyncTaskGetPets extends AsyncTask<String, Void, JSONObject> {
+    private class GetPets extends AsyncTask<String, Void, JSONObject> {
 
         @Override
         protected JSONObject doInBackground(String... params) {
@@ -480,8 +482,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         try {
                             Pet pet = new Pet();
                             JSONObject object = jsonArray.getJSONObject(i);
-                            pet.setAnimalNo(object.getInt("iAnimalNo"));
-                            pet.setAnimalIndex(object.getInt("iAnimalIndex"));
+                            pet.setPetNo(object.getInt("iAnimalNo"));
+                            pet.setPetKind(object.getInt("iAnimalIndex"));
                             pet.setSerialNo(object.getInt("iSerialNo"));
                             pet.setName(object.getString("strName"));
                             pet.setGender(object.getString("strGender"));

@@ -48,6 +48,7 @@
         <activity android:name=".market.Market_Main"/>
         <activity android:name=".market.Market_Write"/>
         <activity android:name=".market.Market_Category"/>
+        <activity android:name=".market.Market_Intro"/>
 
         <activity android:name=".petsitter.PetSitterAddActivity"/>
         <activity android:name=".petsitter.PetSitterFindActivity"/>

@@ -74,6 +74,7 @@ public class MealCalendarActivity extends AppCompatActivity
                 cv.updateCalendar(events);
             }
         });
+
         findViewById(R.id.meal_update).setOnClickListener(new View.OnClickListener() { // 원하는 날짜에 마커 표시
             @Override
             public void onClick(View v) {

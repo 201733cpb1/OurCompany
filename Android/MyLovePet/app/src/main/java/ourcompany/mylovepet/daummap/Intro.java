@@ -9,25 +9,19 @@ import ourcompany.mylovepet.R;
 
 public class Intro extends AppCompatActivity {
 
-    public Context mContext;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_intro);
-
-
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-
-
                     Thread.sleep(3000);
                     finish();
                     Intent intent = new Intent(getApplicationContext(),MapActivity.class);
                     startActivity(intent);
-
+                    finish();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

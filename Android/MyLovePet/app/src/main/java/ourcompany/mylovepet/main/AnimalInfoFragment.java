@@ -64,6 +64,7 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
         textViewTemperature = (TextView)view.findViewById(R.id.textViewTemperature);
         textViewWalk = (TextView)view.findViewById(R.id.textViewWalk);
         textViewHeartrate = (TextView)view.findViewById(R.id.textViewHeartrate);
+        ((TextView)view.findViewById(R.id.textViewPetName)).setText(pet.getName());
 
         view.findViewById(R.id.viewPetWalk).setOnClickListener(this);
         view.findViewById(R.id.viewMeal).setOnClickListener(this);
