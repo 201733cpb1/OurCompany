@@ -5,8 +5,8 @@ package ourcompany.mylovepet.main.userinfo;
  */
 
 public class Pet {
-    private int animalNo;
-    private int animalIndex;
+    private int petNo;
+    private int petKind;
     private int serialNo;
     private String name;
     private String gender;
@@ -14,20 +14,20 @@ public class Pet {
     private String photo_URL;
 
 
-    public int getAnimalNo() {
-        return animalNo;
+    public int getPetNo() {
+        return petNo;
     }
 
-    public void setAnimalNo(int animalNo) {
-        this.animalNo = animalNo;
+    public void setPetNo(int petNo) {
+        this.petNo = petNo;
     }
 
-    public int getAnimalIndex() {
-        return animalIndex;
+    public int getPetKind() {
+        return petKind;
     }
 
-    public void setAnimalIndex(int animalIndex) {
-        this.animalIndex = animalIndex;
+    public void setPetKind(int petKind) {
+        this.petKind = petKind;
     }
 
     public int getSerialNo() {

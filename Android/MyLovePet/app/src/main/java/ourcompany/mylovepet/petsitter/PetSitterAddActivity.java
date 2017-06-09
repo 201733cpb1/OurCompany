@@ -61,13 +61,10 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
     LocalDate s_Date, e_Date;
     DateTimeFormatter dateTimeFormat;
 
-/*<<<<<<< HEAD
-=======*/
     ViewPager viewPager;
 
     HashSet<Integer> petNoSet;
-/*
->>>>>>> 7ea96398b3eac48566e363ca2e5e87589c156264*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,7 +159,6 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
     private void updatePetCount(){
         int size = petNoSet.size();
         editTextPetCount.setText(size+" 마리");
-
     }
 
     @Override
@@ -208,7 +204,11 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
             }, e_Date.getYear(), e_Date.getMonthOfYear() - 1, e_Date.getDayOfMonth()).show();
             //다이얼 로그 끝
         }else if (v.getId() == R.id.buttonAddBoard){
-            new AddPetSitter().execute();
+            if(petNoSet.size() == 0){
+                Toast.makeText(getApplicationContext(),"펫을 추가 해주세요",Toast.LENGTH_SHORT).show();
+            }else {
+                new AddPetSitter().execute();
+            }
         }
 
     }
@@ -238,17 +238,11 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
 
             jsonArray = new JSONArray();
 
-            List list = new ArrayList(petNoSet);
-
-            for(int i = 0 ; i < list.size();i++){
-                int no = ((Integer)list.get(i)).intValue();
+            for(int no : petNoSet){
                 jsonArray.put(no);
             }
-
-
-
-
         }
+
         @Override
         public JSONObject doInBackground(String... params) {
             JSONObject jsonObject = null;
@@ -256,8 +250,7 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
                     "&Title="+ strTitle +"&Feedback="+strBody+"&petList="+jsonArray.toString();
             try {
                 //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                //아이디 체크 url 적용
-                String url = "http://58.237.8.179/Servlet/createAnimal";
+                String url = "http://58.237.8.179/Servlet/addPetsitter";
                 URL obj = new URL(url);
                 HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
 
@@ -325,7 +318,7 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onClick(View v) {
                 int position = viewPager.getCurrentItem();
-                petNoSet.add(pets[position].getAnimalNo());
+                petNoSet.add(pets[position].getPetNo());
                 ((Button)v).setText("취소");
                 v.setOnClickListener(deleteListener);
                 Log.d("테스트",petNoSet.toString());
@@ -337,7 +330,7 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onClick(View v) {
                 int position = viewPager.getCurrentItem();
-                petNoSet.remove(pets[position].getAnimalNo());
+                petNoSet.remove(pets[position].getPetNo());
                 ((Button)v).setText("추가");
                 v.setOnClickListener(addListener);
                 Log.d("테스트",petNoSet.toString());

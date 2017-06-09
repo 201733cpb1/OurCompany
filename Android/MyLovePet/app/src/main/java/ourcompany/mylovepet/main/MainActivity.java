@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -51,8 +52,10 @@ import java.net.URL;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.customView.PetInfoAdapter;
+import ourcompany.mylovepet.daummap.Intro;
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.market.Market_Intro;
 import ourcompany.mylovepet.petsitter.PetSitterAddActivity;
 import ourcompany.mylovepet.petsitter.PetSitterFindActivity;
 
@@ -65,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
     DrawerLayout dlDrawer;
     ActionBarDrawerToggle dtToggle;
+
+    String gpsEnabled;
 
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -86,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String mCurrentPhotoPath;
     //포토 끝
     //
-    AsyncTaskGetPets taskGetPets;
+    GetPets taskGetPets;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,18 +104,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         toolbarInit();
-        inIt();
-
-        // 푸쉬알람
-
-
+        init();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         taskGetPets.cancel(true);
-
     }
 
     @Override
@@ -145,22 +145,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listview = (ListView) findViewById(R.id.listView);
         listview.setAdapter(adapter);
 
-
-
         adapter.addItem("펫 정보");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "홈");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "통계");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "홈"); //1
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "통계"); //2
 
         adapter.addItem("펫 시터");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "구하기");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "도움주기");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "구하기"); //4
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "도움주기"); //5
 
         adapter.addItem("편의 기능");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "TIP");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "지름/알뜰 정보");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "중고장터");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "탐색");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "SNS");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "TIP"); //7
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "중고장터"); //8
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "탐색"); //9
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.walk), "SNS"); //10
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -174,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startActivity(intent);
                         break;
                     case 2:
-                        Toast.makeText(getApplicationContext(),"설마?",Toast.LENGTH_SHORT).show();
                         //통계 화면
                         break;
                     case 4:
@@ -191,10 +187,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         //TIP 화면
                         break;
                     case 8:
-                        //지름/알뜰 정보 화면
+                        //지름/중고장터 정보 화면 intro
+                        intent = new Intent(getApplication(), Market_Intro.class);
+                        startActivity(intent);
                         break;
                     case 9:
-                        //지름/중고장터 정보 화면
+                        chkGpsService();
                         break;
                     case 10:
                         //탐색 화면
@@ -207,9 +205,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void inIt() {
+    private void init() {
 
-        taskGetPets = new AsyncTaskGetPets();
+        taskGetPets = new GetPets();
 
         fButtonParent = (FloatingActionButton) findViewById(R.id.floatingButtonParent);
         fButtonAdd = (FloatingActionButton) findViewById(R.id.floatingButtonAdd);
@@ -291,6 +289,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.floatingButtonDel:
+                Pet[] pets = User.getIstance().getPets();
+                int petNo = pets[viewPager.getCurrentItem()].getPetNo();
                 break;
             case R.id.floatingButtonSet:
                 intent = new Intent(getApplicationContext(), PetUpdateActivity.class);
@@ -426,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    private class AsyncTaskGetPets extends AsyncTask<String, Void, JSONObject> {
+    private class GetPets extends AsyncTask<String, Void, JSONObject> {
 
         @Override
         protected JSONObject doInBackground(String... params) {
@@ -491,8 +491,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         try {
                             Pet pet = new Pet();
                             JSONObject object = jsonArray.getJSONObject(i);
-                            pet.setAnimalNo(object.getInt("iAnimalNo"));
-                            pet.setAnimalIndex(object.getInt("iAnimalIndex"));
+                            pet.setPetNo(object.getInt("iAnimalNo"));
+                            pet.setPetKind(object.getInt("iAnimalIndex"));
                             pet.setSerialNo(object.getInt("iSerialNo"));
                             pet.setName(object.getString("strName"));
                             pet.setGender(object.getString("strGender"));
@@ -516,5 +516,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
+    private boolean chkGpsService() {
 
+        //GPS가 켜져 있는지 확인함.
+        gpsEnabled = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+        if (!(gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
+            //gps가 사용가능한 상태가 아니면
+            new AlertDialog.Builder(this).setTitle("GPS 설정").setMessage("GPS가 꺼져 있습니다. \nGPS를 활성화 하시겠습니까?").setPositiveButton("GPS 켜기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    //GPS 설정 화면을 띄움
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            }).setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            }).create().show();
+
+        }else if((gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
+            Toast.makeText(getApplicationContext(), "정보를 읽어오는 중입니다.", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, Intro.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
+            startActivity(intent);
+        }
+        return false;
+    }
 }

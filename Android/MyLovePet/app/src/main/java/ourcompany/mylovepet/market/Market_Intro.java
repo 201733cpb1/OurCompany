@@ -18,6 +18,7 @@ public class Market_Intro extends AppCompatActivity {
                     Thread.sleep(5000);
                     Intent intent = new Intent(getApplicationContext(),Market_Category.class);
                     startActivity(intent);
+                    finish();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

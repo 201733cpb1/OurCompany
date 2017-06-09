@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,37 +23,74 @@ public class VaccineActivity extends AppCompatActivity {
     HashSet<Date> events;
     CalendarView cv;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    Button button1,button3;
+    AlertDialog.Builder builder2;
+
+    String dDay = "";
+    TextView textViewdday;
+
     //String[] totalSchedule = new String[6];
     ArrayList<String> totalSchedule = new ArrayList<>();
+    ArrayList<Date> dateArrayList = new ArrayList<>();
+
     public static Date getDate(int year, int month, int date) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month-1, date);
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
+    public void dayCalculation(int count,Date date){ // d-day 계산
+        String[] token = df.format(date).split("-");
+        int year = Integer.parseInt(token[0]);
+        int month = Integer.parseInt(token[1]);
+        int day = Integer.parseInt(token[2]);
+        dateArrayList.removeAll(dateArrayList);
+        dateArrayList.add(getDate(year,month,day));
+        int j = 14;
+        for(int i = count+1;i<6;i++){
+            dateArrayList.add(getDate(year,month,day+j));
+            j +=14;
+        }
 
-    public void DateCalculation(int count,Date date){
+        Date nowDate = new Date();
+
+        while(true){
+            if(dateArrayList.get(0).getDay() == nowDate.getDay()){
+                dDay = "day";
+                textViewdday.setText("접종날 D-"+dDay);
+                break;
+            }
+            int compare = nowDate.compareTo(dateArrayList.get(0));
+
+            if(compare > 0){
+                dateArrayList.remove(0);
+            }else if(compare < 0){
+                dDay = dateArrayList.get(0).getDate()-nowDate.getDate()+"";
+                break;
+            }
+        }
+        textViewdday.setText("접종날까지 D-"+dDay);
+    }
+    public void dateCalculation(int count,Date date){ // 차수 계산
         events.removeAll(events);
         totalSchedule.removeAll(totalSchedule);
         String[] token = df.format(date).split("-");
         int year = Integer.parseInt(token[0]);
         int month = Integer.parseInt(token[1]);
         int day = Integer.parseInt(token[2]);
-        events.add(getDate(year,month,day));
 
-        totalSchedule.add( count+1+"차  "+df.format(getDate(year,month,day))+"\n");
+        events.add(getDate(year,month,day));
 
         int j = 14;
         for(int i = count+1;i<6;i++){
-            totalSchedule.add( i+1+"차  "+df.format(getDate(year,month,day+j))+"\n");
+            totalSchedule.add( i+"차  "+df.format(getDate(year,month,day+j))+"\n");
             events.add(getDate(year,month,day+j));
             j +=14;
         }
+        totalSchedule.add( 6+"차  "+df.format(getDate(year,month,day+j))+"\n");
         cv.updateCalendar(events);
     }
-    Button button1,button3;
-    AlertDialog.Builder builder2;
-    int a=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -63,6 +101,8 @@ public class VaccineActivity extends AppCompatActivity {
 
         cv = ((CalendarView)findViewById(R.id.calendar_view));
         cv.updateCalendar(events);
+
+        textViewdday = (TextView) findViewById(R.id.dday);
 
         // assign event handler
         cv.setEventHandler(new CalendarView.EventHandler()
@@ -80,7 +120,8 @@ public class VaccineActivity extends AppCompatActivity {
                         .setItems(items, new DialogInterface.OnClickListener(){    // 목록 클릭시 설정
                             public void onClick(DialogInterface dialog, int index){
                                 //Toast.makeText(VaccineActivity.this, df.format(date)+"은 "+items[index]+"예방접종 날입니다.", Toast.LENGTH_SHORT).show();
-                                DateCalculation(index,date);
+                                dateCalculation(index,date);
+                                dayCalculation(index,date);
                             }
                         });
                 AlertDialog dialog = builder2.create();    // 알림창 객체 생성

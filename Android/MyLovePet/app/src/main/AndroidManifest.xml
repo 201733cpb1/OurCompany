@@ -48,6 +48,7 @@
         <activity android:name=".market.Market_Main"/>
         <activity android:name=".market.Market_Write"/>
         <activity android:name=".market.Market_Category"/>
+        <activity android:name=".market.Market_Intro"/>
 
         <activity android:name=".petsitter.PetSitterAddActivity"/>
         <activity android:name=".petsitter.PetSitterFindActivity"/>
@@ -67,7 +68,6 @@
 
         <activity android:name=".daummap.Intro" android:hardwareAccelerated="false" />
         <activity android:name=".daummap.MapActivity" android:hardwareAccelerated="false" />
-<activity android:name=".pushAlram.PushActivityMain"/>
 
         <!--푸쉬알람 추가-->
         <service
