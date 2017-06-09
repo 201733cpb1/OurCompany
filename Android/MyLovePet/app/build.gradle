@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 25
@@ -36,6 +37,11 @@ dependencies {
     compile files('libs/json-simple-1.1.1.jar')
     compile 'com.mikhaellopez:circularimageview:3.0.2'
     compile files('libs/libDaumMapAndroid.jar')
+    compile 'com.google.firebase:firebase-messaging:9.0.2'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+
+
 }
+
 
 
