@@ -1,5 +1,6 @@
 package ourcompany.mylovepet.main;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,12 +23,18 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.main.userinfo.User;
 
@@ -263,169 +270,117 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-    private class AddPet extends AsyncTask<String, Void, JSONObject> {
+
+
+    private class AddPet extends AsyncTask<String, Void, Response> {
+
+        private OkHttpClient client = new OkHttpClient();
+
 
         @Override
-        public JSONObject doInBackground(String... params) {
-            JSONObject jsonObject = null;
-            String parameter = "AnimalIndex="+-1+"&SerialNo="+strSerialNo+"&Name="+strPetName
-                    +"&Gender="+strGender+"&Birth="+strBirth;
+        public Response doInBackground(String... params) {
+            RequestBody body= new FormBody.Builder()
+                    .add("AnimalIndex",-1+"")
+                    .add("SerialNo", strSerialNo)
+                    .add("Name", strPetName)
+                    .add("Gender", strGender)
+                    .add("Birth", strBirth)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .addHeader("Cookie",User.getIstance().getCookie())
+                    .url("http://58.237.8.179/Servlet/createAnimal")
+                    .post(body)
+                    .build();
+
             try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                //아이디 체크 url 적용
-                String url = "http://58.237.8.179/Servlet/createAnimal";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-
-                //커넥션에 각종 정보 설정
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.setRequestProperty("Cookie", User.getIstance().getCookie());
-
-
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-                writer.write(parameter);
-                writer.flush();
-                writer.close();
-
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
-
-                InputStream inputStream = null;
-
-                //응답이 성공적으로 완료되었을 때
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.getInputStream();
-
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String str;
-                    StringBuilder strBuffer = new StringBuilder();
-                    while ((str = bufferedReader.readLine()) != null) {
-                        strBuffer.append(str);
-                    }
-                    jsonObject = new JSONObject(strBuffer.toString());
-                    inputStream.close();
-                    conn.disconnect();
-                }
-            } catch (Exception e) {
+                Response response = client.newCall(request).execute();
+                return response;
+            } catch (IOException e) {
                 e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
             }
-
-            return jsonObject;
+            return null;
         }
 
         @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            boolean isSuccessed = false;
-            if(jsonObject == null)
-                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
-            else {
-                try {
-                    jsonObject = jsonObject.getJSONObject("CreateAnimalReulst");
-                    isSuccessed = jsonObject.getBoolean("isSuccessed");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        protected void onPostExecute(Response response) {
+            if(response == null | response.code() != 200) {
+                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            try {
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                jsonObject = jsonObject.getJSONObject("CreateAnimalReulst");
+                boolean isSuccessed = false;
+                isSuccessed = jsonObject.getBoolean("isSuccessed");
                 if(isSuccessed) {
                     Toast.makeText(getApplicationContext(), "펫 추가 완료", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 else
                     Toast.makeText(getApplicationContext(), "펫 추가 실패", Toast.LENGTH_SHORT).show();
+
+            } catch (JSONException | IOException e ) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
             }
+
+
         }
     }
 
+    private class SerialNoCheck extends AsyncTask<String, Void, Response> {
 
-    private class SerialNoCheck extends AsyncTask<String, Void, JSONObject> {
+        private OkHttpClient client = new OkHttpClient();
 
         @Override
         protected void onPreExecute() {
             buttonSerial.setEnabled(false);
         }
 
+
         @Override
-        public JSONObject doInBackground(String... params) {
-            JSONObject jsonObject = null;
-            String parameter = "serialNo="+strSerialNo;
-
-            BufferedWriter writer = null;
-            InputStream inputStream = null;
-
+        public Response doInBackground(String... params) {
+            RequestBody body= new FormBody.Builder().add("serialNo",strSerialNo).build();
+            Request request = new Request.Builder()
+                    .url("http://58.237.8.179/Servlet/checkSerial")
+                    .post(body)
+                    .build();
             try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                //아이디 체크 url 적용/
-                String url = "http://58.237.8.179/Servlet/checkSerial";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-                //커넥션에 각종 정보 설정
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.setRequestProperty("Content-Type" , "application/x-www-form-urlencoded");
-
-
-                writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-
-                writer.write(parameter);
-                writer.flush();
-                writer.close();
-
-
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
-
-                inputStream = null;
-
-                //응답이 성공적으로 완료되었을 때
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String str;
-                    StringBuilder strBuffer = new StringBuilder();
-                    while ((str = bufferedReader.readLine()) != null) {
-                        strBuffer.append(str);
-                    }
-                    jsonObject = new JSONObject(strBuffer.toString());
-                    inputStream.close();
-                    conn.disconnect();
-                }
-            } catch (Exception e) {
+                Response response = client.newCall(request).execute();
+                return response;
+            } catch (IOException e) {
                 e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
             }
-            return jsonObject;
+            return null;
         }
 
         @Override
-        protected void onPostExecute(JSONObject jsonObject) {
+        protected void onPostExecute(Response response) {
             buttonSerial.setEnabled(true);
-            boolean isAble = false;
-            if (jsonObject == null)
-                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
-            else {
+            if(response == null | response.code() != 200) {
+                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                try {
-                    jsonObject = jsonObject.getJSONObject("CheckResult");
-                    isAble = jsonObject.getBoolean("isMattched");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            try {
+                boolean isAble = false;
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                jsonObject = jsonObject.getJSONObject("CheckResult");
+                isAble = jsonObject.getBoolean("isMattched");
                 if (isAble) {
                     nextPage();
                 } else
                     Toast.makeText(getApplicationContext(), "사용 불가능한 시리얼 번호 입니다.", Toast.LENGTH_SHORT).show();
+
+            } catch (JSONException | IOException e ) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
             }
+
+
         }
-
     }
-
 
 }

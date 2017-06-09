@@ -18,14 +18,21 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.main.userinfo.Pet;
+import ourcompany.mylovepet.main.userinfo.User;
 
 /**
  * Created by REOS on 2017-05-26.
@@ -108,7 +115,10 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
         new GetCondition().execute();
     }
 
-    private class GetCondition extends AsyncTask<String, Void, JSONObject> {
+
+    private class GetCondition extends AsyncTask<String, Void, Response> {
+
+        private OkHttpClient client = new OkHttpClient();
 
         @Override
         protected void onPreExecute() {
@@ -118,89 +128,54 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
         }
 
         @Override
-        public JSONObject doInBackground(String... params) {
-            InputStream inputStream = null;
-            JSONObject jsonObject = null;
+        public Response doInBackground(String... params) {
             int serialNo = pet.getSerialNo();
-            String parameter = "serialNo="+serialNo;
-
+            RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
+            Request request = new Request.Builder()
+                    .url("http://58.237.8.179/Servlet/getCondition")
+                    .post(body)
+                    .build();
             try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                String url = "http://58.237.8.179/Servlet/getCondition";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-
-                //커넥션에 각종 정보 설정
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-                writer.write(parameter);
-                writer.flush();
-                writer.close();
-
-
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
-
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String str;
-                    StringBuilder strBuffer = new StringBuilder();
-                    while ((str = bufferedReader.readLine()) != null) {
-                        strBuffer.append(str);
-                    }
-                    jsonObject = new JSONObject(strBuffer.toString());
-                    inputStream.close();
-                    conn.disconnect();
-                }
-
-
-            } catch (Exception e) {
+                Response response = client.newCall(request).execute();
+                return response;
+            } catch (IOException e) {
                 e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
             }
-
-            return jsonObject;
-
+            return null;
         }
 
         @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            if (jsonObject != null) {
-                try {
-                    jsonObject = jsonObject.getJSONObject("Condition");
-                    int temperate = jsonObject.getInt("avgtemp");
-                    int step = jsonObject.getInt("step");
-                    int heartrate = jsonObject.getInt("avgheart");
-
-                    textViewTemperature.setText(temperate+"");
-                    textViewWalk.setText(step+"");
-                    textViewHeartrate.setText(heartrate+"");
-
-                    // -1 이라면 정보가 없는것.
-                    if(temperate == -1 && step == -1 && heartrate == -1){
-                        Toast.makeText(getContext(), "정보가 존재 하지 않습니다.", Toast.LENGTH_SHORT).show();
-                    }else {
-                        Toast.makeText(getContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
+        protected void onPostExecute(Response response) {
+            if(response == null | response.code() != 200) {
                 Toast.makeText(getContext(), "업데이트 실패 다시 시도해주세요", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            //새로고침 애니메이션 취소하기
+            try {
+                JSONObject jsonObject = new JSONObject(response.body().string());
+
+                jsonObject = jsonObject.getJSONObject("Condition");
+                int temperate = jsonObject.getInt("avgtemp");
+                int step = jsonObject.getInt("step");
+                int heartrate = jsonObject.getInt("avgheart");
+
+                textViewTemperature.setText(temperate+"");
+                textViewWalk.setText(step+"");
+                textViewHeartrate.setText(heartrate+"");
+
+                // -1 이라면 정보가 없는것.
+                if(temperate == -1 && step == -1 && heartrate == -1){
+                    Toast.makeText(getContext(), "정보가 존재 하지 않습니다.", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException | IOException e ) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+            }
             swipeRefreshLayout.setRefreshing(false);
         }
-
     }
 
 }

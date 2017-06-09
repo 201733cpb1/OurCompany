@@ -31,10 +31,12 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -45,6 +47,11 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.main.userinfo.Pet;
@@ -223,7 +230,7 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
 
 
 
-    private class AddPetSitter extends AsyncTask<String, Void, JSONObject> {
+    private class AddPetSitter1 extends AsyncTask<String, Void, JSONObject> {
 
         String strSDate,strEDate,strBody, strTitle;
 
@@ -307,6 +314,82 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
 
         }
 
+    }
+
+
+
+    private class AddPetSitter extends AsyncTask<String, Void, Response> {
+
+        private OkHttpClient client = new OkHttpClient();
+
+        String strSDate,strEDate,strBody, strTitle;
+
+        JSONArray jsonArray;
+
+        @Override
+        protected void onPreExecute() {
+            strSDate = s_DateEditText.getText().toString();
+            strEDate = e_DateEditText.getText().toString();
+            strTitle = editTextTitle.getText().toString();
+            strBody = editTextBody.getText().toString();
+
+            jsonArray = new JSONArray();
+
+            for(int no : petNoSet){
+                jsonArray.put(no);
+            }
+        }
+
+        @Override
+        public Response doInBackground(String... params) {
+            RequestBody body= new FormBody.Builder()
+                    .add("Date", strSDate)
+                    .add("Term", strEDate)
+                    .add("Title", strTitle)
+                    .add("Feedback", strBody)
+                    .add("petList", jsonArray.toString())
+                    .build();
+
+            Request request = new Request.Builder()
+                    .addHeader("Cookie",User.getIstance().getCookie())
+                    .url("http://58.237.8.179/Servlet/addPetsitter")
+                    .post(body)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                return response;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Response response) {
+            if(response == null | response.code() != 200) {
+                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try {
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                jsonObject = jsonObject.getJSONObject("AddPetSitter");
+                boolean isSuccessed = false;
+                isSuccessed = jsonObject.getBoolean("isSuccessed");
+
+                if(isSuccessed){
+                    Toast.makeText(getApplicationContext(),"글 등록 완료",Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(),"등록 실패",Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
     }
 
     private class PetViewPager extends PagerAdapter{

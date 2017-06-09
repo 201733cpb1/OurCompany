@@ -49,6 +49,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.customView.PetInfoAdapter;
@@ -425,97 +430,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
-    private class GetPets extends AsyncTask<String, Void, JSONObject> {
-
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            InputStream inputStream = null;
-            JSONObject jsonObject = null;
-
-            try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                //아이디 체크 url 적용
-                String url = "http://58.237.8.179/Servlet/animalInfo";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-                //커넥션에 각종 정보 설정
-
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                conn.setRequestProperty("Cookie", User.getIstance().getCookie());
-
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
-
-
-                //응답이 성공적으로 완료되었을 때
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String str;
-                    StringBuilder strBuffer = new StringBuilder();
-                    while ((str = bufferedReader.readLine()) != null) {
-                        strBuffer.append(str);
-                    }
-                    jsonObject = new JSONObject(strBuffer.toString());
-                    inputStream.close();
-                    conn.disconnect();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
-            }
-            return jsonObject;
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-
-            if (jsonObject == null) {
-                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            JSONArray jsonArray = null;
-            try {
-                jsonArray = jsonObject.getJSONArray("AnimalList");
-                if (jsonArray != null) {
-                    User user = User.getIstance();
-                    int length = jsonArray.length();
-                    Pet[] pets = new Pet[length];
-                    for (int i = 0; i < length; i++) {
-                        try {
-                            Pet pet = new Pet();
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            pet.setPetNo(object.getInt("iAnimalNo"));
-                            pet.setPetKind(object.getInt("iAnimalIndex"));
-                            pet.setSerialNo(object.getInt("iSerialNo"));
-                            pet.setName(object.getString("strName"));
-                            pet.setGender(object.getString("strGender"));
-                            pet.setBirth(object.getString("strBirth"));
-                            pet.setPhoto_URL(object.getString("strPhoto"));
-                            pets[i] = pet;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    user.setPets(pets);
-                    viewPager.setAdapter(PetInfoAdapter.createAdapter(getSupportFragmentManager()));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "데이터 전송 오류", Toast.LENGTH_SHORT).show();
-
-            }
-
-
-        }
-
-    }
     private boolean chkGpsService() {
 
         //GPS가 켜져 있는지 확인함.
@@ -544,4 +458,73 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return false;
     }
+
+
+    private class GetPets extends AsyncTask<String, Void, Response> {
+
+        private OkHttpClient client = new OkHttpClient();
+
+
+        @Override
+        public Response doInBackground(String... params) {
+            RequestBody body= new FormBody.Builder().build();
+            Request request = new Request.Builder()
+                    .addHeader("Cookie",User.getIstance().getCookie())
+                    .url("http://58.237.8.179/Servlet/animalInfo")
+                    .post(body)
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                return response;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Response response) {
+            if(response == null | response.code() != 200) {
+                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try {
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                JSONArray jsonArray;
+                jsonArray = jsonObject.getJSONArray("AnimalList");
+
+                if (jsonArray != null) {
+                    User user = User.getIstance();
+                    int length = jsonArray.length();
+                    Pet[] pets = new Pet[length];
+                    for (int i = 0; i < length; i++) {
+                        try {
+                            Pet pet = new Pet();
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            pet.setPetNo(object.getInt("iAnimalNo"));
+                            pet.setPetKind(object.getInt("iAnimalIndex"));
+                            pet.setSerialNo(object.getInt("iSerialNo"));
+                            pet.setName(object.getString("strName"));
+                            pet.setGender(object.getString("strGender"));
+                            pet.setBirth(object.getString("strBirth"));
+                            pet.setPhoto_URL(object.getString("strPhoto"));
+                            pets[i] = pet;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    user.setPets(pets);
+                    viewPager.setAdapter(PetInfoAdapter.createAdapter(getSupportFragmentManager()));
+                }
+
+            } catch (JSONException | IOException e ) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
 }
