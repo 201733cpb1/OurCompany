@@ -194,7 +194,6 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
     //스피너의 펫 종류 선택시 호출
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this,"Dd",Toast.LENGTH_SHORT).show();
         if(parent.getAdapter() == spinnerAdapterType){
             if(position == 0){
                 spinnerType2.setAdapter(spinnerAdapterDog);

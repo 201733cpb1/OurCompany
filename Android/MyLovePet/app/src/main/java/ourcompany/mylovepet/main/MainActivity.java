@@ -41,13 +41,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -76,8 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     String gpsEnabled;
 
-    SwipeRefreshLayout swipeRefreshLayout;
-
+    //플로팅 버튼 변수
     boolean isFloatedButton = false;
     FloatingActionButton fButtonParent, fButtonAdd, fButtonDel, fButtonSet;
     ConstraintLayout floatingButtonLayout;
@@ -95,7 +89,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     CircularImageView profile;
     String mCurrentPhotoPath;
     //포토 끝
-    //
+
+
+    //AsyncTask 클래스
     GetPets taskGetPets;
 
     @Override
@@ -243,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    //상단 툴바에 새로고침 등록해서 아래 동작 정의..
+    //유저의 펫 정보를 서버에서 가져온다
     private void updateData() {
         taskGetPets.execute();
     }
@@ -298,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 int petNo = pets[viewPager.getCurrentItem()].getPetNo();
                 break;
             case R.id.floatingButtonSet:
-                intent = new Intent(getApplicationContext(), PetUpdateActivity.class);
+                intent = new Intent(getApplicationContext(), PetListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.profile_picture:
@@ -460,6 +456,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    //유저의 펫 정보를 가져오고 AnimalInfoFragment클래스를 생성하여 viewPager에 등록
     private class GetPets extends AsyncTask<String, Void, Response> {
 
         private OkHttpClient client = new OkHttpClient();

@@ -54,6 +54,7 @@ public class PostDialog extends Dialog{
         this.onPostSetListener = onPostSetListener;
     }
 
+
     final class JavaScriptMethods{
         public JavaScriptMethods(){}
 

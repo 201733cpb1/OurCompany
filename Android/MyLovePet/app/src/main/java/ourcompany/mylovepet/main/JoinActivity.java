@@ -150,12 +150,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        findViewById(R.id.buttonPostSearch).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               new PostDialog(JoinActivity.this,onPostSetListener).show();
-            }
-        });
+        findViewById(R.id.buttonPostSearch).setOnClickListener(this);
 
 
     }
@@ -296,6 +291,8 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                     new SubNameCheck().execute(strSubName);
                 }
                 break;
+            case R.id.buttonPostSearch:
+                new PostDialog(JoinActivity.this,onPostSetListener).show();
             case R.id.buttonAddress:
                 strAddress = editTextAddress.getText().toString();
                 strAddress2 = editTextAddress2.getText().toString();

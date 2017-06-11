@@ -1,6 +1,7 @@
 package ourcompany.mylovepet.main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -53,11 +54,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         inIt();
-
-
-
-
-
     }
 
     private void inIt(){
@@ -68,16 +64,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonLogin.setOnClickListener(this);
         findViewById(R.id.buttonJoin).setOnClickListener(this);
         findViewById(R.id.buttonSearch).setOnClickListener(this);
-
-
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadAccount();
+    }
 
     @Override
     public void onClick(View v) {
 
         switch (v.getId()){
             case R.id.buttonLogin:
+                strId = editTextId.getText().toString();
+                strPassword = editTextPassword.getText().toString();
                 new Login().execute();
                 break;
             case R.id.buttonJoin:
@@ -95,9 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected void onPreExecute() {
             buttonLogin.setEnabled(false);
-            strId = editTextId.getText().toString();
-            strPassword = editTextPassword.getText().toString();
-        }
+         }
 
         @Override
         public Response doInBackground(String... params) {
@@ -129,6 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 boolean isSuccessed = false;
                 isSuccessed = jsonObject.getBoolean("isSuccessed");
                 if (isSuccessed){
+                    saveAccount();
                     User user = User.getIstance();
                     String cookie = response.header("Set-Cookie");
                     user.setCookie(cookie);
@@ -144,6 +144,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         }
+
+    }
+
+
+    private void loadAccount(){
+        SharedPreferences sharedPreferences = getSharedPreferences("account",0);
+        strId = sharedPreferences.getString("id",null);
+        strPassword = sharedPreferences.getString("password",null);
+
+        if(strId == null || strPassword == null){
+            return;
+        }else {
+            new Login().execute();
+        }
+    }
+
+    private void saveAccount(){
+        SharedPreferences sharedPreferences = getSharedPreferences("account",0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("id",strId);
+        editor.putString("password",strPassword);
+        editor.commit();
     }
 
 
