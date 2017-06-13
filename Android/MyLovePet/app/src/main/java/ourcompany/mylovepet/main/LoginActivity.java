@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected void onPostExecute(Response response) {
             buttonLogin.setEnabled(true);
-            if(response == null | response.code() != 200) {
+            if(response == null || response.code() != 200) {
                 Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
                 return;
             }
