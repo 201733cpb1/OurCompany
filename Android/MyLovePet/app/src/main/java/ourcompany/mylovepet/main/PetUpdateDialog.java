@@ -30,9 +30,7 @@ import ourcompany.mylovepet.main.userinfo.User;
 
 public class PetUpdateDialog extends Dialog implements View.OnClickListener{
 
-
     Pet pet;
-
 
     public PetUpdateDialog(@NonNull Context context,Pet pet) {
         super(context);
@@ -124,7 +122,6 @@ public class PetUpdateDialog extends Dialog implements View.OnClickListener{
                         }
                     }
                     user.setPets(pets);
-
                 }
 
             } catch (JSONException | IOException e) {

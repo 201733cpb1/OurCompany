@@ -43,7 +43,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.appicon);
 
 
         NotificationManager notificationManager =

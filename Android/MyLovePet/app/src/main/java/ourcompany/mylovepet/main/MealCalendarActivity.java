@@ -82,11 +82,13 @@ public class MealCalendarActivity extends AppCompatActivity
 
                 if(compare > 0){
                     events.add(d);
+                    Toast.makeText(MealCalendarActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                     cv.updateCalendar(events);
                 }else if(compare < 0){
                     Toast.makeText(MealCalendarActivity.this, "미래를 보는가?", Toast.LENGTH_SHORT).show();
                 }else{
                     events.add(d);
+                    Toast.makeText(MealCalendarActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                     cv.updateCalendar(events);
                 }
 
