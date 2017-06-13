@@ -303,7 +303,7 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         protected void onPostExecute(Response response) {
-            if(response == null | response.code() != 200) {
+            if(response == null || response.code() != 200) {
                 Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -358,7 +358,7 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPostExecute(Response response) {
             buttonSerial.setEnabled(true);
-            if(response == null | response.code() != 200) {
+            if(response == null || response.code() != 200) {
                 Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
                 return;
             }

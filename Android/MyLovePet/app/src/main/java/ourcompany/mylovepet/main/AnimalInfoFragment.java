@@ -146,7 +146,7 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
 
         @Override
         protected void onPostExecute(Response response) {
-            if(response == null | response.code() != 200) {
+            if(response == null || response.code() != 200) {
                 Toast.makeText(getContext(), "업데이트 실패 다시 시도해주세요", Toast.LENGTH_SHORT).show();
                 return;
             }
