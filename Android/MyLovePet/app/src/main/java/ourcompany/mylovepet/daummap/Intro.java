@@ -1,6 +1,5 @@
 package ourcompany.mylovepet.daummap;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,10 +20,11 @@ public class Intro extends AppCompatActivity {
                     finish();
                     Intent intent = new Intent(getApplicationContext(),MapActivity.class);
                     startActivity(intent);
-                    finish();
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                finish();
             }
         });
 

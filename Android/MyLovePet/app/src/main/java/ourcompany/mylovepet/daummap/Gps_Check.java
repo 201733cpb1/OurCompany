@@ -1,5 +1,6 @@
-/*
+
 package ourcompany.mylovepet.daummap;
+
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -13,13 +14,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
-
-*/
-/*
- * Created by 쫑티 on 2017-05-25.
- *//*
-
-
 
 public class Gps_Check extends AppCompatActivity {
 
@@ -68,4 +62,4 @@ public class Gps_Check extends AppCompatActivity {
         return false;
     }
 }
-*/
+
