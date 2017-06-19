@@ -1,5 +1,6 @@
 package ourcompany.mylovepet.main;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,11 +18,11 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -94,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //AsyncTask 클래스
     GetPets taskGetPets;
 
+    String[] p = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,};
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d("FCM_Token", token);
-
+        permissionSetting(p);
 
         toolbarInit();
         init();
@@ -522,6 +526,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         }
+    }
+
+    // 권한 되어있는지 요청 하여 없을 시 셋팅(최초 셋팅)
+    public void permissionSetting(String[] permissionValues) {
+        ActivityCompat.requestPermissions(this,permissionValues,1);
     }
 
 }
