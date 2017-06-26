@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -90,6 +91,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     CircularImageView profile;
     String mCurrentPhotoPath;
     //포토 끝
+
+    //펫 추가 액티비티 응답코드
+    static final int SUCESS_PET_ADD = 100;
 
 
     //AsyncTask 클래스
@@ -197,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startActivity(intent);
                         break;
                     case 9:
-                        chkGpsService();
+                        requestGPSPermission();
                         break;
                     case 10:
                         //탐색 화면
@@ -291,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.floatingButtonAdd:
                 intent = new Intent(getApplicationContext(), PetAddActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,100);
                 break;
             case R.id.floatingButtonDel:
                 Pet[] pets = User.getIstance().getPets();
@@ -375,6 +379,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
+
+        if (resultCode == SUCESS_PET_ADD){
+            taskGetPets = null;
+            taskGetPets = new GetPets();
+            taskGetPets.execute();
+            return;
+        }
         if (resultCode != RESULT_OK) {
             Toast.makeText(getApplicationContext(), "onActivityResult : RESULT_NOT_OK", Toast.LENGTH_LONG).show();
         } else {
@@ -457,6 +468,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }
         return false;
+    }
+
+    private void requestGPSPermission() {
+        String permission = Manifest.permission.ACCESS_FINE_LOCATION;
+        int grant = ContextCompat.checkSelfPermission(this, permission);
+        if ( grant != PackageManager.PERMISSION_GRANTED) {
+            String[] permission_list = new String[1];
+            permission_list[0] = permission;
+            ActivityCompat.requestPermissions(this, permission_list, 1);
+        }else {
+            chkGpsService();
+        }
     }
 
 

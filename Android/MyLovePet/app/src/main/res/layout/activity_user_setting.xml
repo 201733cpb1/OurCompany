@@ -11,6 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <Switch
                 android:id="@+id/switch1"
                 android:layout_width="match_parent"
@@ -22,6 +23,7 @@
                 android:textSize="15dp"
                 android:textStyle="bold"
                 android:trackTint="#649bf4" />
+
             <Button
                 android:id="@+id/user_info_update"
                 android:layout_width="match_parent"
@@ -50,6 +52,7 @@
                 android:trackTint="#649bf4"
                 android:visibility="gone"
                 />
+
             <Button
                 android:id="@+id/password_update"
                 android:layout_width="match_parent"
@@ -64,7 +67,9 @@
                 android:trackTint="#649bf4"
                 android:visibility="gone"
                 />
+
             <Button
+                android:id="@+id/buttonLogOut"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:background="@drawable/rect2"
@@ -76,6 +81,7 @@
                 android:textStyle="bold"
                 android:trackTint="#649bf4"
                 />
+
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>

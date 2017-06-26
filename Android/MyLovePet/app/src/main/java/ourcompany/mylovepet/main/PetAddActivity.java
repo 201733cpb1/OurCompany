@@ -268,9 +268,6 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-
-
-
     private class AddPet extends AsyncTask<String, Void, Response> {
 
         private OkHttpClient client = new OkHttpClient();
@@ -311,10 +308,11 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
             try {
                 JSONObject jsonObject = new JSONObject(response.body().string());
                 jsonObject = jsonObject.getJSONObject("CreateAnimalReulst");
-                boolean isSuccessed = false;
+                boolean isSuccessed;
                 isSuccessed = jsonObject.getBoolean("isSuccessed");
                 if(isSuccessed) {
                     Toast.makeText(getApplicationContext(), "펫 추가 완료", Toast.LENGTH_SHORT).show();
+                    setResult(MainActivity.SUCESS_PET_ADD);
                     finish();
                 }
                 else
