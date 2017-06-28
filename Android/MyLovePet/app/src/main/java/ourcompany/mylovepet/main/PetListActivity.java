@@ -54,7 +54,7 @@ public class PetListActivity extends AppCompatActivity {
                 int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
 
 
-        /*  if group item clicked */
+                /*  if group item clicked */
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
                     new PetUpdateDialog(PetListActivity.this, user.getPet(groupPosition)).show();
                 }

@@ -53,7 +53,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
-import ourcompany.mylovepet.customView.PetInfoAdapter;
 import ourcompany.mylovepet.daummap.Intro;
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
@@ -80,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //좌우 스크롤뷰
     ViewPager viewPager;
+
+    //좌우 커서 view
+    View leftCursor, rightCursor;
 
     //포토
     static final int REQUEST_IMAGE_CAPTURE = 0;
@@ -239,16 +241,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        leftCursor = findViewById(R.id.leftCursor);
+        rightCursor = findViewById(R.id.rightCursor);
+
         //viewPager 참조
         viewPager = (ViewPager)findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(10);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                int pageSize = viewPager.getAdapter().getCount();
+
+                if(position == 0 ){
+                    leftCursor.setVisibility(View.INVISIBLE);
+                    rightCursor.setVisibility(View.VISIBLE);
+                }else if(position == (pageSize-1)){
+                    leftCursor.setVisibility(View.VISIBLE);
+                    rightCursor.setVisibility(View.INVISIBLE);
+                }else {
+                    leftCursor.setVisibility(View.VISIBLE);
+                    rightCursor.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        //펫 정보를 서버에서 가져온다.
         updateData();
     }
 
 
     //유저의 펫 정보를 서버에서 가져온다
     private void updateData() {
+        taskGetPets = null;
+        taskGetPets = new GetPets();
         taskGetPets.execute();
     }
 
@@ -381,9 +415,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode,resultCode,data);
 
         if (resultCode == SUCESS_PET_ADD){
-            taskGetPets = null;
-            taskGetPets = new GetPets();
-            taskGetPets.execute();
+            updateData();
             return;
         }
         if (resultCode != RESULT_OK) {
@@ -488,7 +520,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         private OkHttpClient client = new OkHttpClient();
 
-
         @Override
         public Response doInBackground(String... params) {
             RequestBody body= new FormBody.Builder().build();
@@ -539,7 +570,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     }
                     user.setPets(pets);
-                    viewPager.setAdapter(PetInfoAdapter.createAdapter(getSupportFragmentManager()));
+                    viewPager.setAdapter(new PetInfoAdapter(getSupportFragmentManager()));
+                    viewPager.setOffscreenPageLimit(pets.length);
+
+                    //펫이 2마리 이상이면 오른쪽 커서를 보이게 한다
+                    if (pets.length > 1){
+                        rightCursor.setVisibility(View.VISIBLE);
+                    }
+
                 }
 
             } catch (JSONException | IOException e ) {
@@ -549,6 +587,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         }
+
     }
 
     // 권한 되어있는지 요청 하여 없을 시 셋팅(최초 셋팅)

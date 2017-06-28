@@ -1,11 +1,10 @@
-package ourcompany.mylovepet.customView;
+package ourcompany.mylovepet.main;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import ourcompany.mylovepet.main.AnimalInfoFragment;
-import ourcompany.mylovepet.main.MainActivity;
+import ourcompany.mylovepet.main.PetInfoFragment;
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
 
@@ -16,31 +15,23 @@ import ourcompany.mylovepet.main.userinfo.User;
 public class PetInfoAdapter extends FragmentPagerAdapter {
 
 
-    public static PetInfoAdapter createAdapter(FragmentManager fm){
-        PetInfoAdapter adapter = new PetInfoAdapter(fm);
-
-        //user 클래스에 들어있는 펫 정보를 가져온다.
-        Pet[] pets = User.getIstance().getPets();
-
-        //애니멀 갯수만큼 플래그먼트를 생성한다.
-        AnimalInfoFragment[] fragments = new AnimalInfoFragment[pets.length];
-
-        //플래그먼트 초기화
-        for (int i = 0 ; i < pets.length; i++){
-            AnimalInfoFragment fragment = new AnimalInfoFragment();
-            fragment.setPet(pets[i]);
-            fragments[i] = fragment;
-        }
-
-        adapter.setFragment(fragments);
-
-        return adapter;
-    }
-
     Fragment[] fragments;
 
-    private PetInfoAdapter(FragmentManager fm) {
+    public PetInfoAdapter(FragmentManager fm) {
         super(fm);
+        //user 클래스에 들어있는 펫 정보를 가져온다.
+        int petArraySize = User.getIstance().getPets().length;
+
+        //애니멀 갯수만큼 플래그먼트를 생성한다.
+        PetInfoFragment[] fragments = new PetInfoFragment[petArraySize];
+
+        //플래그먼트 초기화
+        for (int i = 0 ; i < petArraySize; i++){
+            PetInfoFragment fragment = new PetInfoFragment();
+            fragment.setPetIndex(i);
+            fragments[i] = fragment;
+        }
+        setFragment(fragments);
     }
 
     public void setFragment(Fragment[] fragments){

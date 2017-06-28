@@ -38,20 +38,19 @@ import ourcompany.mylovepet.main.userinfo.User;
  * Created by REOS on 2017-05-26.
  */
 
-public class AnimalInfoFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener{
+public class PetInfoFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener{
 
     TextView textViewTemperature, textViewWalk, textViewHeartrate;
 
     SwipeRefreshLayout swipeRefreshLayout;
 
-    Pet pet;
+    int petIndex;
 
-
-    public AnimalInfoFragment(){
+    public PetInfoFragment(){
     }
 
-    public void setPet(Pet pet){
-        this.pet = pet;
+    public void setPetIndex(int petIndex){
+        this.petIndex = petIndex;
     }
 
     @Override
@@ -71,7 +70,7 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
         textViewTemperature = (TextView)view.findViewById(R.id.textViewTemperature);
         textViewWalk = (TextView)view.findViewById(R.id.textViewWalk);
         textViewHeartrate = (TextView)view.findViewById(R.id.textViewHeartrate);
-        ((TextView)view.findViewById(R.id.textViewPetName)).setText(pet.getName());
+        ((TextView)view.findViewById(R.id.textViewPetName)).setText(User.getIstance().getPet(petIndex).getName());
 
         view.findViewById(R.id.viewPetWalk).setOnClickListener(this);
         view.findViewById(R.id.viewMeal).setOnClickListener(this);
@@ -87,6 +86,7 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
         super.onStart();
 
     }
+
     @Override
     public void onClick(View v) {
         Intent intent;
@@ -110,11 +110,11 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
         }
 
     }
+
     @Override
     public void onRefresh() {
         new GetCondition().execute();
     }
-
 
     private class GetCondition extends AsyncTask<String, Void, Response> {
 
@@ -129,7 +129,7 @@ public class AnimalInfoFragment extends Fragment implements View.OnClickListener
 
         @Override
         public Response doInBackground(String... params) {
-            int serialNo = pet.getSerialNo();
+            int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
             RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
             Request request = new Request.Builder()
                     .url("http://58.237.8.179/Servlet/getCondition")

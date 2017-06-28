@@ -1,6 +1,6 @@
 package ourcompany.mylovepet.main.userinfo;
 
-import java.util.ArrayList;
+
 
 /**
  * Created by REOS on 2017-05-16.
@@ -13,15 +13,12 @@ public class User {
     public static User getIstance(){
         if(instance == null){
             instance = new User();
-            return instance;
-        }else {
-            return instance;
         }
+        return instance;
     }
 
     private String cookie;
     private Pet[] pets;
-
 
     private User(){}
 
@@ -40,8 +37,13 @@ public class User {
     public Pet[] getPets() {
         return pets;
     }
+
     public void setPets(Pet[] pets) {
         this.pets = pets;
     }
+
+
+
+
 
 }
