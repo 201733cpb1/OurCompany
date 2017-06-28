@@ -39,6 +39,7 @@ public class VaccineActivity extends AppCompatActivity {
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
+
     public void dayCalculation(int count,Date date){ // d-day 계산
         String[] token = df.format(date).split("-");
         int year = Integer.parseInt(token[0]);
@@ -63,13 +64,35 @@ public class VaccineActivity extends AppCompatActivity {
             int compare = nowDate.compareTo(dateArrayList.get(0));
 
             if(compare > 0){
+                if(count == 5){
+                    dDay = "1~6차를 모두 접종하셨습니다.";
+                    textViewdday.setText(dDay);
+                    break;
+                }
                 dateArrayList.remove(0);
             }else if(compare < 0){
+                if(nowDate.getMonth() != dateArrayList.get(0).getMonth()) {
+                    if(dateArrayList.get(0).getMonth()==1||dateArrayList.get(0).getMonth()==3||dateArrayList.get(0).getMonth()==5||dateArrayList.get(0).getMonth()==7||
+                            dateArrayList.get(0).getMonth()==8||dateArrayList.get(0).getMonth()==10||dateArrayList.get(0).getMonth()==12){
+                        dDay = dateArrayList.get(0).getDate()+(31-nowDate.getDate())+"";
+                        textViewdday.setText("접종날까지 D-"+dDay);
+                        break;
+                    }else if(dateArrayList.get(0).getMonth()==2){
+                        dDay = dateArrayList.get(0).getDate()+(28-nowDate.getDate())+"";
+                        textViewdday.setText("접종날까지 D-"+dDay);
+                        break;
+                    }else{
+                        dDay = dateArrayList.get(0).getDate()+(30-nowDate.getDate())+"";
+                        textViewdday.setText("접종날까지 D-"+dDay);
+                        break;
+                    }
+                }
                 dDay = dateArrayList.get(0).getDate()-nowDate.getDate()+"";
+                textViewdday.setText("접종날까지 D-"+dDay);
                 break;
             }
         }
-        textViewdday.setText("접종날까지 D-"+dDay);
+
     }
     public void dateCalculation(int count,Date date){ // 차수 계산
         events.removeAll(events);
