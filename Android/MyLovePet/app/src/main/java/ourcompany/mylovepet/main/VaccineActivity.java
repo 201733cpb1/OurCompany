@@ -128,7 +128,7 @@ public class VaccineActivity extends AppCompatActivity {
         textViewdday = (TextView) findViewById(R.id.dday);
 
         // assign event handler
-        cv.setEventHandler(new CalendarView.EventHandler()
+        cv.setEventHandler(new CalendarView.EventHandler() // 달력 날짜 눌렀을때
         {
 
             @Override

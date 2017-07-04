@@ -242,7 +242,6 @@ public class CalendarView extends LinearLayout
 					}
 				}
 			}
-
 			// clear styling
 			((TextView)view).setTypeface(null, Typeface.NORMAL);
 			((TextView)view).setTextColor(Color.BLACK);
