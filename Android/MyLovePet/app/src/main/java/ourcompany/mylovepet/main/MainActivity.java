@@ -84,16 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     View leftCursor, rightCursor;
 
 
-    //포토
-    public static final int REQUEST_IMAGE_CAPTURE = 0;
-    public static final int REQUEST_TAKE_PHOTO = 1;
-    public static final int REQUEST_IMAGE_CROP = 2;
-    Uri albumURI = null;
-    Boolean album = false;
-    CircularImageView profile;
-    //포토 끝
-
-
     //펫 추가 액티비티 응답코드
     static final int SUCESS_PET_ADD = 100;
 
@@ -360,70 +350,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             updateData();
             return;
         }
-/*
-        if (resultCode != RESULT_OK) {
-            Toast.makeText(getApplicationContext(), "onActivityResult : RESULT_NOT_OK", Toast.LENGTH_LONG).show();
-        } else {
-            switch (requestCode) {
-               *//* case REQUEST_TAKE_PHOTO: // 앨범 이미지 가져오기
-                    album = true;
-                    File albumFile = null;
-                    try {
-                        albumFile = createImageFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (albumFile != null) {
-                        albumURI = Uri.fromFile(albumFile); // 앨범 이미지 Crop한 결과는 새로운 위치 저장
-                    }
 
-                    photoURI = data.getData(); // 앨범 이미지의 경로
-
-                         *//**//* profile에 띄우기*//**//*
-                    Bitmap image_bitmap = null;
-                    try {
-                        image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    profile.setImageBitmap(image_bitmap);
-                    break;*//*
-                case REQUEST_IMAGE_CAPTURE:
-                    Bitmap image_bitmap2 = null;
-
-                    try {
-                        image_bitmap2 = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    profile.setImageBitmap(image_bitmap2);
-                    break;
-                    *//*cropImage();
-                    break;*//*
-                case REQUEST_IMAGE_CROP:
-                    Bitmap photo = BitmapFactory.decodeFile(photoURI.getPath());
-                    profile.setImageBitmap(photo);
-
-                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE); // 동기화
-                    if (album == false) {
-                        mediaScanIntent.setData(photoURI); // 동기화
-                    } else if (album == true) {
-                        album = false;
-                        mediaScanIntent.setData(albumURI); // 동기화
-                    }
-                    this.sendBroadcast(mediaScanIntent); // 동기화
-                    break;
-            }
-        }*/
     }
 
-
-/*    private File createImageFile() throws IOException{
-        String imageFileName = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
-        File storageDir = new File(Environment.getExternalStorageDirectory(),imageFileName);
-        mCurrentPhotoPath = storageDir.getAbsolutePath();
-        return storageDir;
-    }*/
 
     private boolean chkGpsService() {
 
@@ -464,6 +393,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else {
             chkGpsService();
         }
+    }
+
+    // 권한 되어있는지 요청 하여 없을 시 셋팅(최초 셋팅)
+    public void permissionSetting(String[] permissionValues) {
+        ActivityCompat.requestPermissions(this,permissionValues,1);
     }
 
 
@@ -540,11 +474,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-    }
-
-    // 권한 되어있는지 요청 하여 없을 시 셋팅(최초 셋팅)
-    public void permissionSetting(String[] permissionValues) {
-        ActivityCompat.requestPermissions(this,permissionValues,1);
     }
 
 }

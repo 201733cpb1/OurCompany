@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -198,6 +199,19 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 }
                 profile.setImageBitmap(image_bitmap2);
                 break;
+            /*case REQUEST_IMAGE_CROP:
+                Bitmap photo = BitmapFactory.decodeFile(photoURI.getPath());
+                profile.setImageBitmap(photo);
+
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE); // 동기화
+                if (album == false) {
+                    mediaScanIntent.setData(photoURI); // 동기화
+                } else if (album == true) {
+                    album = false;
+                    mediaScanIntent.setData(albumURI); // 동기화
+                }
+                this.sendBroadcast(mediaScanIntent); // 동기화
+                break;*/
         }
     }
 
@@ -215,13 +229,9 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 //photoURI = Uri.fromFile(photoFile); // 임시 파일의 위치,경로 가져옴
                 photoURI = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI); // 임시 파일 위치에 저장
-                startActivityForResult(takePictureIntent, MainActivity.REQUEST_IMAGE_CAPTURE);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
-    }
-
-    public Uri getPhotoURI(){
-        return photoURI;
     }
 
     private File createImageFile() throws IOException{
@@ -231,11 +241,10 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         return storageDir;
     }
 
-
     private void doTakeAlbumAction() { // 앨범 호출
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, MainActivity.REQUEST_TAKE_PHOTO);
+        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
 
 
