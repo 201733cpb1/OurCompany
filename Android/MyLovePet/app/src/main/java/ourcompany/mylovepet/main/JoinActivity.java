@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -27,8 +27,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.Pattern;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.customView.PostDialog;
+import ourcompany.mylovepet.customView.PostSearchDialog;
 
 /**
  * Created by REOS on 2017-05-08.
@@ -60,7 +65,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    PostDialog.OnPostSetListener onPostSetListener;
+    PostSearchDialog.OnPostSetListener onPostSetListener;
 
     private Position nowPos;
 
@@ -142,7 +147,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.buttonAddress).setOnClickListener(this);
 
 
-        onPostSetListener = new PostDialog.OnPostSetListener() {
+        onPostSetListener = new PostSearchDialog.OnPostSetListener() {
             @Override
             public void onPostSet(String zoneCode, String address) {
                 strZoneCode = zoneCode;
@@ -292,7 +297,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.buttonPostSearch:
-                new PostDialog(JoinActivity.this,onPostSetListener).show();
+                new PostSearchDialog(JoinActivity.this,onPostSetListener).show();
             case R.id.buttonAddress:
                 strAddress = editTextAddress.getText().toString();
                 strAddress2 = editTextAddress2.getText().toString();
@@ -412,7 +417,9 @@ private class IdCheck extends AsyncTask<String, Void, JSONObject> {
 
 }
 
-private class SubNameCheck extends AsyncTask<String, Void, JSONObject> {
+private class SubNameCheck extends AsyncTask<String, Void, Response> {
+
+    private OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onPreExecute() {
@@ -420,145 +427,88 @@ private class SubNameCheck extends AsyncTask<String, Void, JSONObject> {
     }
 
     @Override
-    public JSONObject doInBackground(String... params) {
-        JSONObject jsonObject = null;
-        String parameter = "type=subNameCheck&subNameCheck="+strSubName;
+    public Response doInBackground(String... params) {
+        RequestBody body= new FormBody.Builder()
+                .add("type","subNameCheck")
+                .add("subNameCheck",strSubName).build();
+        Request request = new Request.Builder()
+                .url("http://58.237.8.179/Servlet/overlapCheck")
+                .post(body)
+                .build();
         try {
-            //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-            //아이디 체크 url 적용
-            String url = "http://58.237.8.179/Servlet/overlapCheck";
-            URL obj = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-
-            //커넥션에 각종 정보 설정
-            conn.setRequestMethod("POST");
-            conn.setReadTimeout(15000);
-            conn.setConnectTimeout(15000);
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            conn.setRequestProperty("Content-Type" , "application/x-www-form-urlencoded");
-
-
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            writer.write(parameter);
-            writer.flush();
-            writer.close();
-
-
-            //응답 http코드를 가져옴
-            int responseCode = conn.getResponseCode();
-
-            InputStream inputStream = null;
-
-            //응답이 성공적으로 완료되었을 때
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                inputStream = conn.getInputStream();
-
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String str;
-                StringBuilder strBuffer = new StringBuilder();
-                while ((str = bufferedReader.readLine()) != null) {
-                    strBuffer.append(str);
-                }
-                jsonObject = new JSONObject(strBuffer.toString());
-                inputStream.close();
-                conn.disconnect();
-            }
-        } catch (Exception e) {
+            Response response = client.newCall(request).execute();
+            return response;
+        } catch (IOException e) {
             e.printStackTrace();
-            Log.i("errorInfo", "error occured!" + e.getMessage());
         }
-        return jsonObject;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(JSONObject jsonObject) {
+    protected void onPostExecute(Response response) {
         buttonSubName.setEnabled(true);
         boolean isAble = false;
-        if (jsonObject == null)
-            Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
-        else {
-            try {
-                jsonObject = jsonObject.getJSONObject("subNameCheck");
-                isAble = jsonObject.getBoolean("isAble");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        if(response == null || response.code() != 200) {
+            Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            jsonObject = jsonObject.getJSONObject("subNameCheck");
+            isAble = jsonObject.getBoolean("isAble");
             if (isAble) {
                 nextPage();
             } else
                 Toast.makeText(getApplicationContext(), "이미 사용중인 닉네임 입니다.", Toast.LENGTH_SHORT).show();
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
         }
     }
 
 }
 
-private class Join extends AsyncTask<String, Void, JSONObject> {
+private class Join extends AsyncTask<String, Void, Response> {
+
+    private OkHttpClient client = new OkHttpClient();
 
     @Override
-    public JSONObject doInBackground(String... params) {
-        JSONObject jsonObject = null;
-        String parameter = "id="+strId+"&passwd="+strPassword+"&subName="+strSubName
-                +"&name="+strName+"&city="+strAddress+"&streetAddr="+strAddress2+"&email="+strEmail+"&zoneCode="+strZoneCode;
+    public Response doInBackground(String... params) {
+        RequestBody body= new FormBody.Builder()
+                .add("id",strId)
+                .add("passwd",strPassword)
+                .add("subName",strSubName)
+                .add("name",strName)
+                .add("city",strAddress)
+                .add("streetAddr",strAddress2)
+                .add("zoneCode",strZoneCode)
+                .add("email",strEmail).build();
+
+        Request request = new Request.Builder()
+                .url("http://58.237.8.179/Servlet/join")
+                .post(body)
+                .build();
         try {
-            //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-            //아이디 체크 url 적용
-            String url = "http://58.237.8.179/Servlet/join";
-            URL obj = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-
-            //커넥션에 각종 정보 설정
-            conn.setRequestMethod("POST");
-            conn.setReadTimeout(15000);
-            conn.setConnectTimeout(15000);
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-
-
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            writer.write(parameter);
-            writer.flush();
-            writer.close();
-
-            //응답 http코드를 가져옴
-            int responseCode = conn.getResponseCode();
-
-            InputStream inputStream = null;
-
-            //응답이 성공적으로 완료되었을 때
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                inputStream = conn.getInputStream();
-
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String str;
-                StringBuilder strBuffer = new StringBuilder();
-                while ((str = bufferedReader.readLine()) != null) {
-                    strBuffer.append(str);
-                }
-                jsonObject = new JSONObject(strBuffer.toString());
-                inputStream.close();
-                conn.disconnect();
-            }
-        } catch (Exception e) {
+            Response response = client.newCall(request).execute();
+            return response;
+        } catch (IOException e) {
             e.printStackTrace();
-            Log.i("errorInfo", "error occured!" + e.getMessage());
         }
-
-        return jsonObject;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(JSONObject jsonObject) {
+    protected void onPostExecute(Response response) {
         boolean isSuccessed = false;
-        if(jsonObject == null)
-            Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
-        else {
-            try {
-                jsonObject = jsonObject.getJSONObject("JoinReport");
-                isSuccessed = jsonObject.getBoolean("isSuccessed");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        if(response == null || response.code() != 200) {
+            Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            jsonObject.getJSONObject("JoinReport");
+            isSuccessed = jsonObject.getBoolean("isSuccessed");
 
             if(isSuccessed) {
                 Toast.makeText(getApplicationContext(), "회원가입 완료", Toast.LENGTH_SHORT).show();
@@ -566,6 +516,9 @@ private class Join extends AsyncTask<String, Void, JSONObject> {
             }
             else
                 Toast.makeText(getApplicationContext(), "회원가입 실패", Toast.LENGTH_SHORT).show();
+
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
         }
     }
 }

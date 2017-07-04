@@ -80,19 +80,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //좌우 스크롤뷰
     ViewPager viewPager;
 
-    //좌우 커서 view
+    //좌우 커서 이미지 아이콘 view
     View leftCursor, rightCursor;
 
+
     //포토
-    static final int REQUEST_IMAGE_CAPTURE = 0;
-    static final int REQUEST_TAKE_PHOTO = 1;
-    static final int REQUEST_IMAGE_CROP = 2;
-    Uri photoURI, albumURI = null;
+    public static final int REQUEST_IMAGE_CAPTURE = 0;
+    public static final int REQUEST_TAKE_PHOTO = 1;
+    public static final int REQUEST_IMAGE_CROP = 2;
+    Uri albumURI = null;
     Boolean album = false;
-    final Context context = this;
     CircularImageView profile;
-    String mCurrentPhotoPath;
     //포토 끝
+
 
     //펫 추가 액티비티 응답코드
     static final int SUCESS_PET_ADD = 100;
@@ -339,31 +339,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 intent = new Intent(getApplicationContext(), PetListActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.profile_picture:
-                final CharSequence[] items = { "사진촬영", "갤러리","취소" };
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                // 제목셋팅
-                alertDialogBuilder.setTitle("선택해 주세요");
-                alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // 프로그램을 종료한다
-                        if(items[id]=="사진촬영"){
-                            dispatchTakePictureIntent();
-                        }else if(items[id]=="갤러리"){
-                            doTakeAlbumAction();
-                        }else{
-                            dialog.dismiss();
-                        }
-                        Toast.makeText(getApplicationContext(),
-                                items[id] + " 선택했습니다.",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-                // 다이얼로그 생성
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                // 다이얼로그 보여주기
-                alertDialog.show();
-                break;
         }
     }
 
@@ -377,39 +352,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null)
-        {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile(); // 사진찍은 후 저장할 임시 파일//
-            } catch (IOException ex) {
-                Toast.makeText(getApplicationContext(), "createImageFile Failed", Toast.LENGTH_LONG).show();
-            }
-            if (photoFile != null) {
-                //photoURI = Uri.fromFile(photoFile); // 임시 파일의 위치,경로 가져옴
-                photoURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI); // 임시 파일 위치에 저장
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-        }
-    }
-
-    private File createImageFile() throws IOException{
-        String imageFileName = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
-        File storageDir = new File(Environment.getExternalStorageDirectory(),imageFileName);
-        mCurrentPhotoPath = storageDir.getAbsolutePath();
-        return storageDir;
-    }
-
-    private void doTakeAlbumAction() { // 앨범 호출
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
@@ -418,11 +360,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             updateData();
             return;
         }
+/*
         if (resultCode != RESULT_OK) {
             Toast.makeText(getApplicationContext(), "onActivityResult : RESULT_NOT_OK", Toast.LENGTH_LONG).show();
         } else {
             switch (requestCode) {
-                case REQUEST_TAKE_PHOTO: // 앨범 이미지 가져오기
+               *//* case REQUEST_TAKE_PHOTO: // 앨범 이미지 가져오기
                     album = true;
                     File albumFile = null;
                     try {
@@ -436,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     photoURI = data.getData(); // 앨범 이미지의 경로
 
-                         /* profile에 띄우기*/
+                         *//**//* profile에 띄우기*//**//*
                     Bitmap image_bitmap = null;
                     try {
                         image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
@@ -444,9 +387,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         e.printStackTrace();
                     }
                     profile.setImageBitmap(image_bitmap);
-                    break;
+                    break;*//*
                 case REQUEST_IMAGE_CAPTURE:
                     Bitmap image_bitmap2 = null;
+
                     try {
                         image_bitmap2 = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
                     } catch (IOException e) {
@@ -454,8 +398,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                     profile.setImageBitmap(image_bitmap2);
                     break;
-                    /*cropImage();
-                    break;*/
+                    *//*cropImage();
+                    break;*//*
                 case REQUEST_IMAGE_CROP:
                     Bitmap photo = BitmapFactory.decodeFile(photoURI.getPath());
                     profile.setImageBitmap(photo);
@@ -470,8 +414,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     this.sendBroadcast(mediaScanIntent); // 동기화
                     break;
             }
-        }
+        }*/
     }
+
+
+/*    private File createImageFile() throws IOException{
+        String imageFileName = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
+        File storageDir = new File(Environment.getExternalStorageDirectory(),imageFileName);
+        mCurrentPhotoPath = storageDir.getAbsolutePath();
+        return storageDir;
+    }*/
 
     private boolean chkGpsService() {
 
@@ -555,15 +507,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Pet[] pets = new Pet[length];
                     for (int i = 0; i < length; i++) {
                         try {
-                            Pet pet = new Pet();
                             JSONObject object = jsonArray.getJSONObject(i);
-                            pet.setPetNo(object.getInt("iAnimalNo"));
-                            pet.setPetKind(object.getInt("iAnimalIndex"));
-                            pet.setSerialNo(object.getInt("iSerialNo"));
-                            pet.setName(object.getString("strName"));
-                            pet.setGender(object.getString("strGender"));
-                            pet.setBirth(object.getString("strBirth"));
-                            pet.setPhoto_URL(object.getString("strPhoto"));
+                            Pet.Builder builder = new Pet.Builder(object.getInt("iAnimalNo"));
+                            builder.petKind(object.getInt("iAnimalIndex"))
+                                    .serialNo(object.getInt("iSerialNo"))
+                                    .name(object.getString("strName"))
+                                    .gender(object.getString("strGender"))
+                                    .birth(object.getString("strBirth"))
+                                    .photo_URL(object.getString("strPhoto"));
+                            Pet pet = builder.build();
                             pets[i] = pet;
                         } catch (JSONException e) {
                             e.printStackTrace();

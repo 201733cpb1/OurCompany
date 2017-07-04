@@ -17,17 +17,13 @@ import android.webkit.WebView;
 
 import ourcompany.mylovepet.R;
 
-public class PostDialog extends Dialog{
+public class PostSearchDialog extends Dialog{
 
-    WebView webView;
-    OnPostSetListener onPostSetListener;
-    Handler handler = new Handler();
+    private WebView webView;
+    private OnPostSetListener onPostSetListener;
+    private Handler handler = new Handler();
 
-    public PostDialog(@NonNull Context context) {
-        super(context);
-    }
-
-    public PostDialog(@NonNull Context context, OnPostSetListener onPostSetListener) {
+    public PostSearchDialog(@NonNull Context context, OnPostSetListener onPostSetListener) {
         super(context);
         this.onPostSetListener = onPostSetListener;
     }
@@ -50,12 +46,8 @@ public class PostDialog extends Dialog{
         webView.loadUrl("http://58.237.8.179/postSearch.jsp");
     }
 
-    public void setOnPostSetListener(OnPostSetListener onPostSetListener){
-        this.onPostSetListener = onPostSetListener;
-    }
 
-
-    final class JavaScriptMethods{
+    final private class JavaScriptMethods{
         public JavaScriptMethods(){}
 
         @android.webkit.JavascriptInterface
@@ -63,13 +55,12 @@ public class PostDialog extends Dialog{
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if(onPostSetListener != null) onPostSetListener.onPostSet(zcode,address);
+                    onPostSetListener.onPostSet(zcode,address);
                     dismiss();
                 }
             });
         }
     }
-
 
 
     public interface OnPostSetListener{

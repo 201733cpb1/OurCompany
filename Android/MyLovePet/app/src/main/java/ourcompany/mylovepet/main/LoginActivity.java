@@ -80,6 +80,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    private void loadAccount(){
+        SharedPreferences sharedPreferences = getSharedPreferences("account",0);
+        strId = sharedPreferences.getString("id",null);
+        strPassword = sharedPreferences.getString("password",null);
+
+        if(strId == null || strPassword == null){
+            return;
+        }else {
+            new Login().execute();
+        }
+    }
+
+    private void saveAccount(){
+        SharedPreferences sharedPreferences = getSharedPreferences("account",0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("id",strId);
+        editor.putString("password",strPassword);
+        editor.commit();
+    }
+
+
     private class Login extends AsyncTask<String, Void, Response> {
 
         private OkHttpClient client = new OkHttpClient();
@@ -87,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected void onPreExecute() {
             buttonLogin.setEnabled(false);
-         }
+        }
 
         @Override
         public Response doInBackground(String... params) {
@@ -119,10 +142,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 boolean isSuccessed = false;
                 isSuccessed = jsonObject.getBoolean("isSuccessed");
                 if (isSuccessed){
+                    //아이디 비밀번호 저장
                     saveAccount();
+                    //유저 정보 클래스 불러오기
                     User user = User.getIstance();
+                    //세션 정보를 저장
                     String cookie = response.header("Set-Cookie");
                     user.setCookie(cookie);
+                    //메인 화면 실행
                     startActivity(new Intent(getApplicationContext(),MainActivity.class));
                     finish();
                 }else {
@@ -137,31 +164,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
-
-
-    private void loadAccount(){
-        SharedPreferences sharedPreferences = getSharedPreferences("account",0);
-        strId = sharedPreferences.getString("id",null);
-        strPassword = sharedPreferences.getString("password",null);
-
-        if(strId == null || strPassword == null){
-            return;
-        }else {
-            new Login().execute();
-        }
-    }
-
-    private void saveAccount(){
-        SharedPreferences sharedPreferences = getSharedPreferences("account",0);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putString("id",strId);
-        editor.putString("password",strPassword);
-        editor.commit();
-    }
-
-
 
 
 }

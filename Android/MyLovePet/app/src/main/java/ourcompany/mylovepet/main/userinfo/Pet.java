@@ -5,7 +5,7 @@ package ourcompany.mylovepet.main.userinfo;
  */
 
 public class Pet {
-    private int petNo;
+    private final int petNo;
     private int petKind;
     private int serialNo;
     private String name;
@@ -13,60 +13,92 @@ public class Pet {
     private String birth;
     private String photo_URL;
 
+    private Pet(Builder builder){
+        this.petNo = builder.petNo;
+        this.petKind = builder.petKind;
+        this.serialNo = builder.serialNo;
+        this.name = builder.name;
+        this.gender = builder.gender;
+        this.birth = builder.birth;
+        this.photo_URL = builder.photo_URL;
+    }
 
     public int getPetNo() {
         return petNo;
-    }
-
-    public void setPetNo(int petNo) {
-        this.petNo = petNo;
     }
 
     public int getPetKind() {
         return petKind;
     }
 
-    public void setPetKind(int petKind) {
-        this.petKind = petKind;
-    }
-
     public int getSerialNo() {
         return serialNo;
-    }
-
-    public void setSerialNo(int serialNo) {
-        this.serialNo = serialNo;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getGender() {
         return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public String getBirth() {
         return birth;
     }
 
-    public void setBirth(String birth) {
-        this.birth = birth;
-    }
-
     public String getPhoto_URL() {
         return photo_URL;
     }
 
-    public void setPhoto_URL(String photo_URL) {
-        this.photo_URL = photo_URL;
+    public static class Builder{
+        private final int petNo;
+        private int petKind;
+        private int serialNo;
+        private String name;
+        private String gender;
+        private String birth;
+        private String photo_URL;
+
+        public Builder(int petNo){
+            this.petNo = petNo;
+        }
+
+        public Builder petKind(int petKind){
+            this.petKind = petKind;
+            return this;
+        }
+
+        public Builder serialNo(int serialNo){
+            this.serialNo = serialNo;
+            return this;
+        }
+
+        public Builder name(String name){
+            this.name = name;
+            return this;
+        }
+
+        public Builder gender(String gender){
+            this.gender = gender;
+            return this;
+        }
+
+        public Builder birth(String birth){
+            this.birth = birth;
+            return this;
+        }
+
+        public Builder photo_URL(String photo_URL){
+            this.photo_URL = photo_URL;
+            return this;
+        }
+
+        public Pet build(){
+            return new Pet(this);
+        }
+
     }
+
+
 }

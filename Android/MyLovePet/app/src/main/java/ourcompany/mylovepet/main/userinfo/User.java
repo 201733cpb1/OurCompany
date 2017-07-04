@@ -42,8 +42,4 @@ public class User {
         this.pets = pets;
     }
 
-
-
-
-
 }

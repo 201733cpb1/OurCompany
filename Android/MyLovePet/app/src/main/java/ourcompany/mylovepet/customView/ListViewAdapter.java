@@ -47,7 +47,6 @@ public class ListViewAdapter extends BaseAdapter {
                 case TYPE_HEADER:
                     convertView = inflater.inflate(R.layout.menu_header,parent,false);
                     TextView header = (TextView)convertView.findViewById(R.id.header);
-
                     MenuItem headerItem = menuItemsList.get(position);
                     header.setText(headerItem.getHeader());
                     break;

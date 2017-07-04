@@ -1,11 +1,19 @@
 package ourcompany.mylovepet.main;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +21,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mikhaellopez.circularimageview.CircularImageView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -46,6 +57,20 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
 
     int petIndex;
 
+    //포토
+    public static final int REQUEST_IMAGE_CAPTURE = 0;
+    public static final int REQUEST_TAKE_PHOTO = 1;
+    public static final int REQUEST_IMAGE_CROP = 2;
+
+    String mCurrentPhotoPath;
+    Uri photoURI, albumURI = null;
+    CircularImageView profile;
+    Boolean album = false;
+
+
+
+
+
     public PetInfoFragment(){
     }
 
@@ -72,6 +97,9 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         textViewHeartrate = (TextView)view.findViewById(R.id.textViewHeartrate);
         ((TextView)view.findViewById(R.id.textViewPetName)).setText(User.getIstance().getPet(petIndex).getName());
 
+        profile = (CircularImageView)view.findViewById(R.id.profile_picture);
+        profile.setOnClickListener(this);
+
         view.findViewById(R.id.viewPetWalk).setOnClickListener(this);
         view.findViewById(R.id.viewMeal).setOnClickListener(this);
         view.findViewById(R.id.viewVaccination).setOnClickListener(this);
@@ -84,7 +112,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     @Override
@@ -107,9 +134,111 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 intent = new Intent(getContext(),StatisticsActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.profile_picture:
+                final CharSequence[] items = { "사진촬영", "갤러리","취소" };
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                // 제목셋팅
+                alertDialogBuilder.setTitle("선택해 주세요");
+                alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // 프로그램을 종료한다
+                        if(items[id]=="사진촬영"){
+                            dispatchTakePictureIntent();
+                        }else if(items[id]=="갤러리"){
+                            doTakeAlbumAction();
+                        }else{
+                            dialog.dismiss();
+                        }
+                        Toast.makeText(getContext(), items[id] + " 선택했습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                // 다이얼로그 생성
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                // 다이얼로그 보여주기
+                alertDialog.show();
+                break;
         }
 
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case REQUEST_TAKE_PHOTO: // 앨범 이미지 가져오기
+                album = true;
+                File albumFile = null;
+                try {
+                    albumFile = createImageFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (albumFile != null) {
+                    albumURI = Uri.fromFile(albumFile); // 앨범 이미지 Crop한 결과는 새로운 위치 저장
+                }
+
+                photoURI = data.getData(); // 앨범 이미지의 경로
+                /* profile에 띄우기*/
+                Bitmap image_bitmap = null;
+                try {
+                    image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoURI);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                profile.setImageBitmap(image_bitmap);
+                break;
+            case REQUEST_IMAGE_CAPTURE:
+                Bitmap image_bitmap2 = null;
+
+                try {
+                    image_bitmap2 = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoURI);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                profile.setImageBitmap(image_bitmap2);
+                break;
+        }
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null)
+        {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile(); // 사진찍은 후 저장할 임시 파일//
+            } catch (IOException ex) {
+                Toast.makeText(getContext(), "createImageFile Failed", Toast.LENGTH_LONG).show();
+            }
+            if (photoFile != null) {
+                //photoURI = Uri.fromFile(photoFile); // 임시 파일의 위치,경로 가져옴
+                photoURI = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI); // 임시 파일 위치에 저장
+                startActivityForResult(takePictureIntent, MainActivity.REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    public Uri getPhotoURI(){
+        return photoURI;
+    }
+
+    private File createImageFile() throws IOException{
+        String imageFileName = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
+        File storageDir = new File(Environment.getExternalStorageDirectory(),imageFileName);
+        mCurrentPhotoPath = storageDir.getAbsolutePath();
+        return storageDir;
+    }
+
+
+    private void doTakeAlbumAction() { // 앨범 호출
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, MainActivity.REQUEST_TAKE_PHOTO);
+    }
+
+
 
     @Override
     public void onRefresh() {

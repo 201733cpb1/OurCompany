@@ -12,6 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:gravity="center"
         android:weightSum="1">
 
         <TextView
@@ -32,12 +33,12 @@
 
             />
     </LinearLayout>
-    <View
-        android:layout_width="100dp"
-        android:layout_height="26dp"/>
+
     <LinearLayout
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:gravity="center"
         android:weightSum="1">
         <TextView
             android:id="@+id/textView10"
@@ -56,24 +57,22 @@
             android:layout_weight="0.71"
             />
     </LinearLayout>
+
     <View
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_weight="0.51" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:weightSum="1"
+        android:gravity="center"
         android:layout_weight="0.15">
-        <View
-            android:layout_width="50dp"
-            android:layout_height="match_parent" />
         <Button
             style="@style/shapeButtonStyle"
             android:layout_width="269dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:layout_weight="0.4"
             android:text="찾 기"
             android:textSize="30dp"
             android:textStyle="bold" />
