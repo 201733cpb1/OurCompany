@@ -10,11 +10,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -23,9 +25,12 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import ourcompany.mylovepet.R;
+
+import static ourcompany.mylovepet.R.id.chart;
 
 public class StatisticsActivity extends AppCompatActivity implements View.OnClickListener {
     LineChart lineChart;
@@ -44,7 +49,7 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
-        lineChart = (LineChart) findViewById(R.id.chart);
+        lineChart = (LineChart) findViewById(chart);
         start_temp = (EditText) findViewById(R.id.start_temp_statistic);
         end_temp = (EditText) findViewById(R.id.end_temp_statistic);
         dateTimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
@@ -57,25 +62,65 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
 
     }
     private void updateDate(){
-        start_temp.setText(s_Date.toString(dateTimeFormat));
-        end_temp.setText(e_Date.toString(dateTimeFormat));
         count = Days.daysBetween(s_Date,e_Date).getDays()+1;
-        graph(count);
+        graph(count,s_Date,e_Date);
     }
-    private void graph(int count){
+    private void graph(int count,LocalDate start, LocalDate end){
         int cnt;
         cnt = count;
         entries = new ArrayList<>();
+        int[] numArr = new int[count];
+        final HashMap<Integer, String> numMap = new HashMap<>();
+        String[] token = start.toString(dateTimeFormat).split("-");
+        int year = Integer.parseInt(token[0]);
+        int month = Integer.parseInt(token[1]);
+        int day = Integer.parseInt(token[2]);
+        String[] token2 = end.toString(dateTimeFormat).split("-");
+        int year2 = Integer.parseInt(token2[0]);
+        int month2 = Integer.parseInt(token2[1]);
+        int day2 = Integer.parseInt(token2[2]);
+
         for(int i = 0;i<cnt;i++){
-            entries.add(new Entry(i, cnt)); // x축 y축 값
+
+            numMap.put(i,day+""); // 여기 i 값에 온도를 넣어주면 됨
+
+            if(month ==1||month==3||month==5||month==7||month==8||month==10||month==12){
+                if(day == 31){
+                    day = 1;
+                    month = month +1;
+                }else{
+                    day = day + 1;
+                }
+
+            }else if(month==2){
+                if(day == 28){
+                    day = 1;
+                    month = month +1;
+                }else{
+                    day = day + 1;
+                }
+            }else{
+                if(day == 30){
+                    day = 1;
+                    month = month +1;
+                }else{
+                    day = day + 1;
+                }
+            }
         }
+
+        for(int i = 0 ; i< count ; i++) {
+            numArr[i] = i;
+        }
+
+        for(int num : numArr){ entries.add(new Entry(num, num)); }
+
         lineDataSet = new LineDataSet(entries, "temperature");
         lineDataSet.setLineWidth(2);
         lineDataSet.setCircleRadius(6);
         lineDataSet.setValueTextSize(16);
         lineDataSet.setCircleColor(Color.LTGRAY);
         lineDataSet.setCircleColorHole(Color.BLUE);
-        //lineDataSet.setColor(Color.BLUE);
         lineDataSet.setDrawCircleHole(true);
         lineDataSet.setDrawCircles(true);
         lineDataSet.setDrawHorizontalHighlightIndicator(false);
@@ -91,6 +136,13 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         xAxis.setLabelCount(cnt); // x 축 갯수
         xAxis.setGranularity(1);
         xAxis.setTextSize(20);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override public String getFormattedValue(float value, AxisBase axis) {
+                return numMap.get((int)value);
+            }
+            public int getDecimalDigits() {
+                return 0; } });
+        lineChart.setData(lineData);
 
         yAxis = lineChart.getAxisRight();
         yAxis.setDrawLabels(false);
@@ -99,6 +151,7 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         yAxis.setSpaceTop(25);
         yAxis.setSpaceBottom(25);
 
+
         yAxisLeft = lineChart.getAxisLeft();
         yAxisLeft.setDrawLabels(false);
         yAxisLeft.setDrawAxisLine(false);
@@ -106,6 +159,7 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         yAxis.setSpaceTop(25);
         yAxis.setSpaceBottom(25);
 
+        lineChart.setAutoScaleMinMaxEnabled(true);
         lineChart.invalidate();
     }
     @Override
@@ -128,7 +182,7 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
                         s_Date = s_Date.plusDays(1);
                     }
                     //날짜 수정
-                    updateDate();
+                    start_temp.setText(s_Date.toString(dateTimeFormat));
                 }
             }, s_Date.getYear(), s_Date.getMonthOfYear() - 1, s_Date.getDayOfMonth()).show();
             //다이얼 로그 끝
@@ -146,11 +200,30 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
                         e_Date = s_Date.plusDays(1);
                     }
                     //날짜 수정
+                    end_temp.setText(e_Date.toString(dateTimeFormat));
                     updateDate();
                 }
             }, e_Date.getYear(), e_Date.getMonthOfYear() - 1, e_Date.getDayOfMonth()).show();
             //다이얼 로그 끝
         }
+    }
+    public class MyXAxisValueFormatter implements IAxisValueFormatter {
+
+        private String[] mValues;
+
+        public MyXAxisValueFormatter(String[] values) {
+            this.mValues = values;
+        }
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            // "value" represents the position of the label on the axis (x or y)
+            return mValues[(int) value];
+        }
+
+        /** this is only needed if numbers are returned, else return 0 */
+
+        public int getDecimalDigits() { return 0; }
     }
 }
 
