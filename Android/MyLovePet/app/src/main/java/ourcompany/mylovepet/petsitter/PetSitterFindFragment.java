@@ -15,7 +15,7 @@ import ourcompany.mylovepet.R;
  * Created by KDM on 2017-05-10.
  */
 
-public class PetSitterFindActivity extends Fragment {
+public class PetSitterFindFragment extends Fragment {
 
     @Nullable
     @Override
