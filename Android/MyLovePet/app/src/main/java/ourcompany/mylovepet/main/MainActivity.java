@@ -148,8 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //SNS 화면
                 break;
         }
-
-
+        dlDrawer.closeDrawers();
     }
 
 }
