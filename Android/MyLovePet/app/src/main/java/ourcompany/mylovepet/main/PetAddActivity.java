@@ -1,12 +1,10 @@
 package ourcompany.mylovepet.main;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,14 +19,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -312,7 +303,7 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
                 isSuccessed = jsonObject.getBoolean("isSuccessed");
                 if(isSuccessed) {
                     Toast.makeText(getApplicationContext(), "펫 추가 완료", Toast.LENGTH_SHORT).show();
-                    setResult(MainActivity.SUCESS_PET_ADD);
+                    setResult(MainActivity.SUCCESS_PET_ADD);
                     finish();
                 }
                 else

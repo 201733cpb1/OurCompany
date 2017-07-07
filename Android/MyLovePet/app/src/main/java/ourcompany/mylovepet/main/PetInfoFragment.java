@@ -69,9 +69,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
     Boolean album = false;
 
 
-
-
-
     public PetInfoFragment(){
     }
 
