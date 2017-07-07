@@ -61,9 +61,9 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
     DrawerLayout dlDrawer;
     ActionBarDrawerToggle dtToggle;
 
-    EditText editTextPetCount,editTextBody,editTextTitle;
-    EditText s_DateEditText, e_DateEditText,totalDay;
-    LocalDate s_Date, e_Date;
+    EditText editTextPetCount, editTextBody, editTextTitle;
+    EditText startDateEditText, endDateEditText, totalDay;
+    LocalDate sDate, eDate;
     DateTimeFormatter dateTimeFormat;
 
     ViewPager viewPager;
@@ -120,23 +120,23 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
         editTextTitle = (EditText)findViewById(R.id.editTextTitle);
 
         //날짜 관련 뷰 찾기
-        s_DateEditText = (EditText) findViewById(R.id.input_sDate);
-        e_DateEditText = (EditText) findViewById(R.id.input_eDate);
+        startDateEditText = (EditText) findViewById(R.id.input_sDate);
+        endDateEditText = (EditText) findViewById(R.id.input_eDate);
         totalDay = (EditText)findViewById(R.id.total_day);
 
         //타임 포맷 지정
         dateTimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-        s_Date = LocalDate.now();
-        e_Date = LocalDate.now();
+        sDate = LocalDate.now();
+        eDate = LocalDate.now();
 
         //현재 날짜로 설정
-        s_DateEditText.setText(s_Date.toString(dateTimeFormat));
-        e_DateEditText.setText(e_Date.toString(dateTimeFormat));
+        startDateEditText.setText(sDate.toString(dateTimeFormat));
+        endDateEditText.setText(eDate.toString(dateTimeFormat));
 
         //리스너 등록
-        s_DateEditText.setOnClickListener(this);
-        e_DateEditText.setOnClickListener(this);
+        startDateEditText.setOnClickListener(this);
+        endDateEditText.setOnClickListener(this);
         //findViewById(R.id.findPost_button).setOnClickListener(this);
         findViewById(R.id.buttonAddBoard).setOnClickListener(this);
 
@@ -152,13 +152,13 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void updateDate(){
-        s_DateEditText.setText(s_Date.toString(dateTimeFormat));
-        e_DateEditText.setText(e_Date.toString(dateTimeFormat));
+        startDateEditText.setText(sDate.toString(dateTimeFormat));
+        endDateEditText.setText(eDate.toString(dateTimeFormat));
         updateTotalDay();
     }
 
     private void updateTotalDay() {
-        totalDay.setText((Days.daysBetween(s_Date,e_Date).getDays()+1)+"일");
+        totalDay.setText((Days.daysBetween(sDate, eDate).getDays()+1)+"일");
     }
 
     private void updatePetCount(){
@@ -176,19 +176,19 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     Calendar cal = Calendar.getInstance();
                     cal.set(year, month, dayOfMonth);
-                    s_Date = LocalDate.fromCalendarFields(cal);
+                    sDate = LocalDate.fromCalendarFields(cal);
 
-                    if(s_Date.isBefore(LocalDate.now())){
+                    if(sDate.isBefore(LocalDate.now())){
                         Toast.makeText(getApplicationContext(),"시작일이 현재 일보다 작을 수 없습니다.",Toast.LENGTH_SHORT).show();
-                        s_Date = LocalDate.now();
+                        sDate = LocalDate.now();
                     }
-                    if(e_Date.isBefore(s_Date)){
-                        e_Date = s_Date.plusDays(1);
+                    if(eDate.isBefore(sDate)){
+                        eDate = sDate.plusDays(1);
                     }
                     //날짜 수정
                     updateDate();
                 }
-            }, s_Date.getYear(), s_Date.getMonthOfYear() - 1, s_Date.getDayOfMonth()).show();
+            }, sDate.getYear(), sDate.getMonthOfYear() - 1, sDate.getDayOfMonth()).show();
             //다이얼 로그 끝
         } else if (v.getId() == R.id.input_eDate) {
             //다이얼 로그 시작
@@ -197,16 +197,16 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     Calendar cal = Calendar.getInstance();
                     cal.set(year, month, dayOfMonth);
-                    e_Date = LocalDate.fromCalendarFields(cal);
+                    eDate = LocalDate.fromCalendarFields(cal);
 
-                    if(e_Date.isBefore(s_Date)){
+                    if(eDate.isBefore(sDate)){
                         Toast.makeText(getApplicationContext(),"시작일보다 종료일이 작을 수 없습니다.",Toast.LENGTH_SHORT).show();
-                        e_Date = s_Date.plusDays(1);
+                        eDate = sDate.plusDays(1);
                     }
                     //날짜 수정
                     updateDate();
                 }
-            }, e_Date.getYear(), e_Date.getMonthOfYear() - 1, e_Date.getDayOfMonth()).show();
+            }, eDate.getYear(), eDate.getMonthOfYear() - 1, eDate.getDayOfMonth()).show();
             //다이얼 로그 끝
         }else if (v.getId() == R.id.buttonAddBoard){
             if(petNoSet.size() == 0){
@@ -227,95 +227,6 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-
-    private class AddPetSitter1 extends AsyncTask<String, Void, JSONObject> {
-
-        String strSDate,strEDate,strBody, strTitle;
-
-        JSONArray jsonArray;
-
-        @Override
-        protected void onPreExecute() {
-            strSDate = s_DateEditText.getText().toString();
-            strEDate = e_DateEditText.getText().toString();
-            strTitle = editTextTitle.getText().toString();
-            strBody = editTextBody.getText().toString();
-
-            jsonArray = new JSONArray();
-
-            for(int no : petNoSet){
-                jsonArray.put(no);
-            }
-        }
-
-        @Override
-        public JSONObject doInBackground(String... params) {
-            JSONObject jsonObject = null;
-            String parameter = "Date="+strSDate+"&Term="+strEDate+
-                    "&Title="+ strTitle +"&Feedback="+strBody+"&petList="+jsonArray.toString();
-            try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                String url = "http://58.237.8.179/Servlet/addPetsitter";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-
-                //커넥션에 각종 정보 설정
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.setRequestProperty("Cookie", User.getIstance().getCookie());
-
-
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-                writer.write(parameter);
-                writer.flush();
-                writer.close();
-
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
-
-                InputStream inputStream = null;
-
-                //응답이 성공적으로 완료되었을 때
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.getInputStream();
-
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String str;
-                    StringBuilder strBuffer = new StringBuilder();
-                    while ((str = bufferedReader.readLine()) != null) {
-                        strBuffer.append(str);
-                    }
-                    jsonObject = new JSONObject(strBuffer.toString());
-                    inputStream.close();
-                    conn.disconnect();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
-            }
-
-            return jsonObject;
-        }
-
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-
-            if (jsonObject == null) {
-                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-
-        }
-
-    }
-
-
-
     private class AddPetSitter extends AsyncTask<String, Void, Response> {
 
         private OkHttpClient client = new OkHttpClient();
@@ -326,8 +237,8 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
 
         @Override
         protected void onPreExecute() {
-            strSDate = s_DateEditText.getText().toString();
-            strEDate = e_DateEditText.getText().toString();
+            strSDate = startDateEditText.getText().toString();
+            strEDate = endDateEditText.getText().toString();
             strTitle = editTextTitle.getText().toString();
             strBody = editTextBody.getText().toString();
 

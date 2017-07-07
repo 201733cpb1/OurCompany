@@ -15,7 +15,6 @@ import android.support.v4.app.NotificationCompat;
 import com.google.firebase.messaging.RemoteMessage;
 
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.main.MainActivity;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService{
     private static final String TAG = "FirebaseMsgService";

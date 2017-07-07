@@ -65,8 +65,7 @@
                 android:gravity="center|right"
                 android:textStyle="bold"
                 android:trackTint="#649bf4"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/buttonLogOut"
@@ -79,8 +78,7 @@
                 android:padding="20dp"
                 android:gravity="center|left"
                 android:textStyle="bold"
-                android:trackTint="#649bf4"
-                />
+                android:trackTint="#649bf4" />
 
         </LinearLayout>
     </FrameLayout>

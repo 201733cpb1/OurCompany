@@ -308,11 +308,11 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //타이틀에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
+    //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){
-            onBackPressed();
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -476,7 +476,7 @@ private class Join extends AsyncTask<String, Void, Response> {
     public Response doInBackground(String... params) {
         RequestBody body= new FormBody.Builder()
                 .add("id",strId)
-                .add("passwd",strPassword)
+                .add("pass",strPassword)
                 .add("subName",strSubName)
                 .add("name",strName)
                 .add("city",strAddress)
@@ -491,7 +491,7 @@ private class Join extends AsyncTask<String, Void, Response> {
         try {
             Response response = client.newCall(request).execute();
             return response;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -520,6 +520,7 @@ private class Join extends AsyncTask<String, Void, Response> {
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
+        finish();
     }
 }
 
