@@ -20,6 +20,7 @@ import android.widget.ListView;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.petsitter.PetSitterAddFragment;
+import ourcompany.mylovepet.petsitter.PetSitterFindActivity;
 
 /**
  * Created by REOS on 2017-07-07.
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case 5:
                 //도움주기 화면
+                fragmentManager.beginTransaction().replace(R.id.container, new PetSitterFindActivity()).commit();
                 break;
             case 7:
                 //TIP 화면

@@ -45,7 +45,7 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
 
     private static final String LOG_TAG = "SearchDemoActivity";
 
-public Context mContext;
+    public Context mContext;
 
     private MapView mMapView;
     // private EditText mEditTextQuery;
@@ -58,7 +58,6 @@ public Context mContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
 
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -165,14 +164,7 @@ public Context mContext;
             }
         });
 
-
-
-
-
     }
-
-
-
 
     public void showSettingsAlert(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
@@ -195,7 +187,6 @@ public Context mContext;
 
         alertDialog.show();
     }
-
 
     @Override
     public void onCurrentLocationUpdate(MapView mapView, MapPoint mapPoint, float v) {
@@ -369,7 +360,7 @@ public Context mContext;
         sb.append("address=").append(item.address).append("\n");
         sb.append("newAddress=").append(item.newAddress).append("\n");
         sb.append("phone=").append(item.phone).append("\n");
-Log.d("전달유무" ,item.zipcode);
+        Log.d("전달유무" ,item.zipcode);
         sb.append("imageUrl=").append(item.imageUrl).append("\n");
         sb.append("zipcode=").append(item.zipcode).append("\n");
         sb.append("category=").append(item.category).append("\n");
