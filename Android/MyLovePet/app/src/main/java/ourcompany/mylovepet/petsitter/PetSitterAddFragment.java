@@ -4,25 +4,17 @@ package ourcompany.mylovepet.petsitter;
 import android.app.DatePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,14 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Calendar;
 import java.util.HashSet;
 
@@ -51,15 +36,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.customView.ListViewAdapter;
+
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
 
-public class PetSitterAddActivity extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
+public class PetSitterAddFragment extends Fragment implements View.OnClickListener{
 
-    Toolbar toolbar;
-    DrawerLayout dlDrawer;
-    ActionBarDrawerToggle dtToggle;
 
     EditText editTextPetCount, editTextBody, editTextTitle;
     EditText startDateEditText, endDateEditText, totalDay;
@@ -70,59 +52,24 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
 
     HashSet<Integer> petNoSet;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_petsitter_add);
-        toolbarInit();
-        init();
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_petsitter_add,container,false);
+        init(view);
+        return view;
     }
 
-    private void toolbarInit(){
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
-        dlDrawer = (DrawerLayout)findViewById(R.id.drawer_layout);
-
-        setSupportActionBar(toolbar);
-
-        dtToggle = new ActionBarDrawerToggle(this,dlDrawer,toolbar,R.string.app_name,R.string.app_name);
-        dlDrawer.addDrawerListener(dtToggle);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setHomeButtonEnabled(true);
-
-        dtToggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.naviView);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        ListView listview ;
-        ListViewAdapter adapter;
-
-        // Adapter 생성
-        adapter = new ListViewAdapter() ;
-
-        // 리스트뷰 참조 및 Adapter달기
-        listview = (ListView) findViewById(R.id.listview);
-        listview.setAdapter(adapter);
-
-
-        // 첫 번째 아이템 추가.
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sss),"홈") ;
-        // 두 번째 아이템 추가.
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sss),"통계") ;
-        // 세 번째 아이템 추가.
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sss),"펫등록") ;
-    }
-
-    private void init() {
+    private void init(View view) {
         //펫 카운트 뷰 찾기
-        editTextPetCount = (EditText)findViewById(R.id.animal_count);
-        editTextBody = (EditText)findViewById(R.id.editTextBody);
-        editTextTitle = (EditText)findViewById(R.id.editTextTitle);
+        editTextPetCount = (EditText)view.findViewById(R.id.animal_count);
+        editTextBody = (EditText)view.findViewById(R.id.editTextBody);
+        editTextTitle = (EditText)view.findViewById(R.id.editTextTitle);
 
         //날짜 관련 뷰 찾기
-        startDateEditText = (EditText) findViewById(R.id.input_sDate);
-        endDateEditText = (EditText) findViewById(R.id.input_eDate);
-        totalDay = (EditText)findViewById(R.id.total_day);
+        startDateEditText = (EditText) view.findViewById(R.id.input_sDate);
+        endDateEditText = (EditText) view.findViewById(R.id.input_eDate);
+        totalDay = (EditText)view.findViewById(R.id.total_day);
 
         //타임 포맷 지정
         dateTimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
@@ -138,13 +85,14 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
         startDateEditText.setOnClickListener(this);
         endDateEditText.setOnClickListener(this);
         //findViewById(R.id.findPost_button).setOnClickListener(this);
-        findViewById(R.id.buttonAddBoard).setOnClickListener(this);
+        view.findViewById(R.id.buttonAddBoard).setOnClickListener(this);
 
-        viewPager = (ViewPager)findViewById(R.id.viewPagerPetList);
+        viewPager = (ViewPager)view.findViewById(R.id.viewPagerPetList);
 
         Pet[] pets = User.getIstance().getPets();
 
-        viewPager.setAdapter(new PetViewPager(getLayoutInflater(), pets));
+        viewPager.setAdapter(new PetViewPager(getActivity().getLayoutInflater(), pets));
+        //좌우 페이지를 저장해두는 최대 갯수를 설정
         viewPager.setOffscreenPageLimit(pets.length);
 
         petNoSet = new HashSet<>();
@@ -171,7 +119,7 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
 
         if (v.getId() == R.id.input_sDate) {
             //다이얼 로그 시작
-            new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override //달력 설정시 동작 정의
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     Calendar cal = Calendar.getInstance();
@@ -179,7 +127,7 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
                     sDate = LocalDate.fromCalendarFields(cal);
 
                     if(sDate.isBefore(LocalDate.now())){
-                        Toast.makeText(getApplicationContext(),"시작일이 현재 일보다 작을 수 없습니다.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"시작일이 현재 일보다 작을 수 없습니다.",Toast.LENGTH_SHORT).show();
                         sDate = LocalDate.now();
                     }
                     if(eDate.isBefore(sDate)){
@@ -192,7 +140,7 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
             //다이얼 로그 끝
         } else if (v.getId() == R.id.input_eDate) {
             //다이얼 로그 시작
-            new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override //달력 설정시 동작 정의
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     Calendar cal = Calendar.getInstance();
@@ -200,7 +148,7 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
                     eDate = LocalDate.fromCalendarFields(cal);
 
                     if(eDate.isBefore(sDate)){
-                        Toast.makeText(getApplicationContext(),"시작일보다 종료일이 작을 수 없습니다.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"시작일보다 종료일이 작을 수 없습니다.",Toast.LENGTH_SHORT).show();
                         eDate = sDate.plusDays(1);
                     }
                     //날짜 수정
@@ -210,20 +158,12 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
             //다이얼 로그 끝
         }else if (v.getId() == R.id.buttonAddBoard){
             if(petNoSet.size() == 0){
-                Toast.makeText(getApplicationContext(),"펫을 추가 해주세요",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"펫을 추가 해주세요",Toast.LENGTH_SHORT).show();
             }else {
                 new AddPetSitter().execute();
             }
         }
 
-    }
-
-
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        dlDrawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
 
@@ -277,7 +217,7 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
         @Override
         protected void onPostExecute(Response response) {
             if(response == null || response.code() != 200) {
-                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -288,13 +228,13 @@ public class PetSitterAddActivity extends AppCompatActivity implements View.OnCl
                 isSuccessed = jsonObject.getBoolean("isSuccessed");
 
                 if(isSuccessed){
-                    Toast.makeText(getApplicationContext(),"글 등록 완료",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"글 등록 완료",Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(getApplicationContext(),"등록 실패",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"등록 실패",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException | IOException e) {
                 e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
             }
 
 

@@ -51,7 +51,7 @@
         <activity android:name=".market.Market_Category"/>
         <activity android:name=".market.Market_Intro"/>
 
-        <activity android:name=".petsitter.PetSitterAddActivity"/>
+        <activity android:name=".petsitter.PetSitterAddFragment"/>
         <activity android:name=".petsitter.PetSitterFindActivity"/>
 
         <activity android:name=".main.MainActivity"/>

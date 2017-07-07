@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     String[] p = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,};
 
+    public HomeFragment(){}
 
     @Nullable
     @Override
@@ -129,7 +130,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         //펫 정보를 서버에서 가져온다.
         updateData();
     }
-
 
     @Override
     public void onClick(View v) {
@@ -258,7 +258,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         }
                     }
                     user.setPets(pets);
-                    viewPager.setAdapter(new PetInfoAdapter(getActivity().getSupportFragmentManager()));
+                    viewPager.setAdapter(new PetInfoAdapter(getChildFragmentManager()));
                     viewPager.setOffscreenPageLimit(pets.length);
 
                     //펫이 2마리 이상이면 오른쪽 커서를 보이게 한다

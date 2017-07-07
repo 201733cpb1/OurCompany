@@ -33,7 +33,7 @@ public class MyBoardActivity extends AppCompatActivity {
 
         int requestCode = intent.getIntExtra("board",-1);
 
-        if(requestCode == MyPageActivity.MY_BOARD){
+        if(requestCode == MyPageFragment.MY_BOARD){
             actionBar.setTitle("내가 쓴 글");
         }else{
             actionBar.setTitle("등록한 펫시터 글");

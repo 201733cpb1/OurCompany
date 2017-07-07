@@ -303,7 +303,7 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
                 isSuccessed = jsonObject.getBoolean("isSuccessed");
                 if(isSuccessed) {
                     Toast.makeText(getApplicationContext(), "펫 추가 완료", Toast.LENGTH_SHORT).show();
-                    setResult(MainActivity.SUCCESS_PET_ADD);
+                    setResult(HomeFragment.SUCCESS_PET_ADD);
                     finish();
                 }
                 else

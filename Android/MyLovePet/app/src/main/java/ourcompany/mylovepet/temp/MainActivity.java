@@ -52,7 +52,7 @@ import ourcompany.mylovepet.main.UserSettingActivity;
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
 import ourcompany.mylovepet.market.Market_Intro;
-import ourcompany.mylovepet.petsitter.PetSitterAddActivity;
+import ourcompany.mylovepet.petsitter.PetSitterAddFragment;
 import ourcompany.mylovepet.petsitter.PetSitterFindActivity;
 
 /**
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case 4:
                         //펫시터 구하기 화면
-                        intent = new Intent(getApplicationContext(), PetSitterAddActivity.class);
+                        intent = new Intent(getApplicationContext(), PetSitterAddFragment.class);
                         startActivity(intent);
                         break;
                     case 5:

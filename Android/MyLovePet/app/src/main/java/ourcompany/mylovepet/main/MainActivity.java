@@ -19,9 +19,7 @@ import android.widget.ListView;
 
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
-import ourcompany.mylovepet.market.Market_Intro;
-import ourcompany.mylovepet.petsitter.PetSitterAddActivity;
-import ourcompany.mylovepet.petsitter.PetSitterFindActivity;
+import ourcompany.mylovepet.petsitter.PetSitterAddFragment;
 
 /**
  * Created by REOS on 2017-07-07.
@@ -44,6 +42,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //홈화면으로 시작
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+
+        findViewById(R.id.myInfo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction().replace(R.id.container,new MyPageFragment()).commit();
+                dlDrawer.closeDrawers();
+            }
+        });
 
     }
 
@@ -91,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.setting) {
@@ -109,35 +114,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Intent intent;
         switch (position) {
             case 1:
                 //홈화면
-                intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                fragmentManager.beginTransaction().replace(R.id.container,new HomeFragment()).commit();
                 break;
             case 2:
                 //통계 화면
                 break;
             case 4:
                 //펫시터 구하기 화면
-                intent = new Intent(getApplicationContext(), PetSitterAddActivity.class);
-                startActivity(intent);
+                fragmentManager.beginTransaction().replace(R.id.container,new PetSitterAddFragment()).commit();
                 break;
             case 5:
                 //도움주기 화면
-                intent = new Intent(getApplicationContext(), PetSitterFindActivity.class);
-                startActivity(intent);
                 break;
             case 7:
                 //TIP 화면
                 break;
             case 8:
                 //지름/중고장터 정보 화면 intro
-                intent = new Intent(getApplication(), Market_Intro.class);
-                startActivity(intent);
                 break;
             case 9:
                 break;
