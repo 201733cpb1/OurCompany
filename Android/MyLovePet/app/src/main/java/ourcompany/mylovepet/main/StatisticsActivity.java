@@ -91,7 +91,6 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
                 }else{
                     day = day + 1;
                 }
-
             }else if(month==2){
                 if(day == 28){
                     day = 1;
@@ -159,7 +158,6 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         yAxis.setSpaceTop(25);
         yAxis.setSpaceBottom(25);
 
-        lineChart.setAutoScaleMinMaxEnabled(true);
         lineChart.invalidate();
     }
     @Override
@@ -198,10 +196,11 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
                     if (e_Date.isBefore(s_Date) || LocalDate.now().isBefore((e_Date))) {
                         Toast.makeText(getApplicationContext(), "해당 범위에서 벗어납니다.", Toast.LENGTH_SHORT).show();
                         e_Date = s_Date.plusDays(1);
+                    }else{
+                        end_temp.setText(e_Date.toString(dateTimeFormat));
+                        updateDate();
                     }
                     //날짜 수정
-                    end_temp.setText(e_Date.toString(dateTimeFormat));
-                    updateDate();
                 }
             }, e_Date.getYear(), e_Date.getMonthOfYear() - 1, e_Date.getDayOfMonth()).show();
             //다이얼 로그 끝
