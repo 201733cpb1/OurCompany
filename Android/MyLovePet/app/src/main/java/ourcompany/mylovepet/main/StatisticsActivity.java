@@ -141,6 +141,7 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
             }
             public int getDecimalDigits() {
                 return 0; } });
+
         lineChart.setData(lineData);
 
         yAxis = lineChart.getAxisRight();
