@@ -128,8 +128,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case 5:
                 //도움주기 화면
-                intent = new Intent(getApplicationContext(), PetSitterFindActivity.class);
-                startActivity(intent);
+                fragmentManager.beginTransaction().replace(R.id.container, new PetSitterFindActivity()).commit();
+                /*intent = new Intent(getApplicationContext(), PetSitterFindActivity.class);
+                startActivity(intent);*/
                 break;
             case 7:
                 //TIP 화면
