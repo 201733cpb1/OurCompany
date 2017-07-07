@@ -17,7 +17,6 @@ public class PetSitterFindActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_petsitter_find);
-
         Spinner spinner1 = (Spinner)findViewById(R.id.petsitter_spinner1);
         ArrayAdapter adapter1 = ArrayAdapter.createFromResource(
                 this,R.array.local,android.R.layout.simple_spinner_dropdown_item
