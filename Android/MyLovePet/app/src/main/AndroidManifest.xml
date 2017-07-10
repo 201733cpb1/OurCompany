@@ -37,7 +37,7 @@
         </provider>
 
 
-        <activity android:name=".main.LoginActivity">
+        <activity android:name=".daummap.MapActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -51,8 +51,6 @@
         <activity android:name=".market.Market_Category"/>
         <activity android:name=".market.Market_Intro"/>
 
-        <activity android:name=".petsitter.PetSitterAddFragment"/>
-        <activity android:name=".petsitter.PetSitterFindFragment"/>
 
         <activity android:name=".main.MainActivity"/>
         <activity android:name=".main.JoinActivity" android:windowSoftInputMode="stateAlwaysHidden"/>
@@ -68,7 +66,7 @@
         <activity android:name=".main.MyBoardActivity"/>
 
         <activity android:name=".daummap.Intro" android:hardwareAccelerated="false" />
-        <activity android:name=".daummap.MapActivity" android:hardwareAccelerated="false" />
+        <!--<activity android:name=".daummap.MapActivity" android:hardwareAccelerated="false" />-->
 
         <!--푸쉬알람 추가-->
         <service
