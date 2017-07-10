@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,7 +21,7 @@ import android.widget.ListView;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.petsitter.PetSitterAddFragment;
-import ourcompany.mylovepet.petsitter.PetSitterFindActivity;
+import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 
 /**
  * Created by REOS on 2017-07-07.
@@ -115,21 +116,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
         switch (position) {
             case 1:
                 //홈화면
-                fragmentManager.beginTransaction().replace(R.id.container,new HomeFragment()).commit();
+                fragmentTransaction.replace(R.id.container,new HomeFragment());
                 break;
             case 2:
                 //통계 화면
                 break;
             case 4:
                 //펫시터 구하기 화면
-                fragmentManager.beginTransaction().replace(R.id.container,new PetSitterAddFragment()).commit();
+                fragmentTransaction.replace(R.id.container,new PetSitterAddFragment());
                 break;
             case 5:
                 //도움주기 화면
-                fragmentManager.beginTransaction().replace(R.id.container, new PetSitterFindActivity()).commit();
+                fragmentTransaction.replace(R.id.container, new PetSitterFindFragment());
                 break;
             case 7:
                 //TIP 화면
@@ -146,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //SNS 화면
                 break;
         }
+        fragmentTransaction.commit();
         dlDrawer.closeDrawers();
     }
 

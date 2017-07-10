@@ -203,6 +203,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
 
 
+
+
     //유저의 펫 정보를 가져오고 AnimalInfoFragment클래스를 생성하여 viewPager에 등록
     private class GetPets extends AsyncTask<String, Void, Response> {
 
