@@ -37,7 +37,7 @@
         </provider>
 
 
-        <activity android:name=".daummap.MapActivity">
+        <activity android:name=".main.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -61,12 +61,12 @@
         <activity android:name=".main.UserSetPassActivity"/>
         <activity android:name=".main.PetWalkActivity"/>
         <activity android:name=".main.PetListActivity"/>
-        <activity android:name=".main.VaccineActivity"/>
+<!--        <activity android:name=".main.VaccineActivity"/>-->
         <activity android:name=".main.StatisticsActivity"/>
         <activity android:name=".main.MyBoardActivity"/>
 
         <activity android:name=".daummap.Intro" android:hardwareAccelerated="false" />
-        <!--<activity android:name=".daummap.MapActivity" android:hardwareAccelerated="false" />-->
+        <activity android:name=".daummap.MapActivity" android:hardwareAccelerated="false" />
 
         <!--푸쉬알람 추가-->
         <service
