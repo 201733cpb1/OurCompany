@@ -65,8 +65,6 @@ public class PetListActivity extends AppCompatActivity {
 
     }
 
-
-
     //툴바 버튼 동작
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

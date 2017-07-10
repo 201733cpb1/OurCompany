@@ -45,7 +45,7 @@
         </activity>
 
 
-        <activity android:name=".main.PetAddActivity"/>
+        <activity android:name=".main.PetRegistActivity"/>
         <activity android:name=".market.Market_Main"/>
         <activity android:name=".market.Market_Write"/>
         <activity android:name=".market.Market_Category"/>

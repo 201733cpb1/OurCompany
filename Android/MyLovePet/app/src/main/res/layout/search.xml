@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
 
         <Button
@@ -16,20 +16,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textStyle="bold"
             android:background="@drawable/button_base_style"
+            android:text="동물병원 검색"
             android:textColor="@drawable/button_base_text_color"
-            android:text="동물병원 검색" />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/buttonSearch2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textStyle="bold"
             android:background="@drawable/button_base_style"
+            android:text="근처공원 검색"
             android:textColor="@drawable/button_base_text_color"
-            android:text="근처공원 검색" />
+            android:textStyle="bold" />
 
 
     </LinearLayout>
@@ -37,33 +37,28 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
-    <net.daum.mf.map.api.MapView
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
-</FrameLayout>
-
-
+        <net.daum.mf.map.api.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
 </LinearLayout>
 
 
-<!--
-검색창인데 사용안함아직
-<EditText
-android:id="@+id/editTextQuery"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_weight="1"
-android:text=""
-android:ems="10"
-android:enabled="false"
-    >
+    <!--
+    검색창인데 사용안함아직
+    <EditText
+    android:id="@+id/editTextQuery"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:text=""
+    android:ems="10"
+    android:enabled="false"
+        >
 
-<requestFocus />
-</EditText>-->
+    <requestFocus />
+    </EditText>-->

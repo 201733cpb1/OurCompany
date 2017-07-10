@@ -45,14 +45,14 @@ import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.daummap.Intro;
-import ourcompany.mylovepet.main.PetAddActivity;
+import ourcompany.mylovepet.main.PetRegistActivity;
 import ourcompany.mylovepet.main.PetInfoAdapter;
 import ourcompany.mylovepet.main.PetListActivity;
 import ourcompany.mylovepet.main.UserSettingActivity;
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
 import ourcompany.mylovepet.market.Market_Intro;
-import ourcompany.mylovepet.petsitter.PetSitterAddFragment;
+import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 
 /**
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case 4:
                         //펫시터 구하기 화면
-                        intent = new Intent(getApplicationContext(), PetSitterAddFragment.class);
+                        intent = new Intent(getApplicationContext(), SitterRegisterFragment.class);
                         startActivity(intent);
                         break;
                     case 5:
@@ -313,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 floatingButton();
                 break;
             case R.id.floatingButtonAdd:
-                intent = new Intent(getApplicationContext(), PetAddActivity.class);
+                intent = new Intent(getApplicationContext(), PetRegistActivity.class);
                 startActivityForResult(intent,100);
                 break;
             case R.id.floatingButtonDel:

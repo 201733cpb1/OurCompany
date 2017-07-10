@@ -28,14 +28,14 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.TaskListener;
 
 /**
  * Created by REOS on 2017-05-18.
  */
 
-public class PetAddActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener{
-
-
+public class PetRegistActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener{
 
     enum Position{
         POS_SERIAL_NO, POS_PET_NAME, POS_BIRTH, POS_GENDER,POS_TYPE;
@@ -64,12 +64,16 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
 
     SpinnerAdapter spinnerAdapterType, spinnerAdapterDog, spinnerAdapterCat;
 
+    TaskListener serialNoTask;
+    TaskListener petRegisterTask;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pet);
         inIt();
+        listenerInit();
     }
 
     private void inIt(){
@@ -135,6 +139,103 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
         nowPos = Position.POS_SERIAL_NO;
     }
 
+    private void listenerInit(){
+        serialNoTask = new TaskListener() {
+            @Override
+            public void preTask() {
+                buttonSerial.setEnabled(false);
+            }
+
+            @Override
+            public void postTask(Response response) {
+                try {
+                    boolean isAble = false;
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    jsonObject = jsonObject.getJSONObject("CheckResult");
+                    isAble = jsonObject.getBoolean("isMattched");
+                    if (isAble) {
+                        nextPage();
+                    } else
+                        Toast.makeText(getApplicationContext(), "사용 불가능한 시리얼 번호 입니다.", Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException | IOException e ) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+                }finally {
+                    buttonSerial.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void cancelTask() {
+
+            }
+        };
+
+        petRegisterTask = new TaskListener() {
+            @Override
+            public void preTask() {
+
+            }
+
+            @Override
+            public void postTask(Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    jsonObject = jsonObject.getJSONObject("CreateAnimalReulst");
+                    boolean isSuccessed;
+                    isSuccessed = jsonObject.getBoolean("isSuccessed");
+                    if(isSuccessed) {
+                        Toast.makeText(getApplicationContext(), "펫 추가 완료", Toast.LENGTH_SHORT).show();
+                        setResult(HomeFragment.SUCCESS_PET_ADD);
+                        finish();
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "펫 추가 실패", Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException | IOException e ) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void cancelTask() {
+
+            }
+        };
+
+    }
+
+
+    //서버 통신 메소드
+    private void serialNoExecute(){
+        RequestBody body= new FormBody.Builder().add("serialNo",strSerialNo).build();
+        Request request = new Request.Builder()
+                .url("http://58.237.8.179/Servlet/checkSerial")
+                .post(body)
+                .build();
+        new RequestTask(request,serialNoTask,getApplicationContext()).execute();
+    }
+
+    private void petRegisterExecute(){
+        RequestBody body= new FormBody.Builder()
+                .add("AnimalIndex",-1+"")
+                .add("SerialNo", strSerialNo)
+                .add("Name", strPetName)
+                .add("Gender", strGender)
+                .add("Birth", strBirth)
+                .build();
+
+        Request request = new Request.Builder()
+                .addHeader("Cookie",User.getIstance().getCookie())
+                .url("http://58.237.8.179/Servlet/createAnimal")
+                .post(body)
+                .build();
+        new RequestTask(request,petRegisterTask,getApplicationContext()).execute();
+    }
+    //서버 통신 메소드
+
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
@@ -155,7 +256,7 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.buttonSerialNo:
                 strSerialNo = editTextSerialNo.getText().toString();
                 if(isNotNull(strSerialNo,viewId)){
-                    new SerialNoCheck().execute();
+                    serialNoExecute();
                 }
                 break;
             case R.id.buttonPetName:
@@ -176,7 +277,7 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.buttonType:
                 if(isNotNull(strType,viewId))
-                    new AddPet().execute();
+                    petRegisterExecute();
                 break;
 
         }
@@ -206,9 +307,6 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
-
-
 
     //툴바 버튼 동작
     @Override
@@ -259,10 +357,10 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+
     private class AddPet extends AsyncTask<String, Void, Response> {
 
         private OkHttpClient client = new OkHttpClient();
-
 
         @Override
         public Response doInBackground(String... params) {
@@ -316,6 +414,7 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
 
 
         }
+
     }
 
     private class SerialNoCheck extends AsyncTask<String, Void, Response> {
@@ -326,7 +425,6 @@ public class PetAddActivity extends AppCompatActivity implements View.OnClickLis
         protected void onPreExecute() {
             buttonSerial.setEnabled(false);
         }
-
 
         @Override
         public Response doInBackground(String... params) {

@@ -29,12 +29,14 @@ import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.TaskListener;
 
 /**
  * Created by REOS on 2017-07-07.
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener{
+public class HomeFragment extends Fragment implements View.OnClickListener, TaskListener{
 
     //플로팅 버튼 변수
     boolean isFloat = false;
@@ -52,7 +54,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
 
     //AsyncTask 클래스
-    GetPets taskGetPets;
+    RequestTask getPetsTask;
 
     String[] p = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,};
@@ -70,8 +72,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void init(View view) {
-
-        taskGetPets = new GetPets();
 
         fButtonParent = (FloatingActionButton) view.findViewById(R.id.floatingButtonParent);
         fButtonAdd = (FloatingActionButton) view.findViewById(R.id.floatingButtonAdd);
@@ -128,7 +128,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         });
 
         //펫 정보를 서버에서 가져온다.
-        updateData();
+        getPetsExecute();
     }
 
     @Override
@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 floatingButton();
                 break;
             case R.id.floatingButtonAdd:
-                intent = new Intent(getContext(), PetAddActivity.class);
+                intent = new Intent(getContext(), PetRegistActivity.class);
                 startActivityForResult(intent,100);
                 break;
             case R.id.floatingButtonDel:
@@ -158,19 +158,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         super.onActivityResult(requestCode,resultCode,data);
 
         if (resultCode == SUCCESS_PET_ADD){
-            updateData();
+            getPetsExecute();
             return;
         }
 
-    }
-
-
-    //플로팅 버튼이 눌렀을떄의 동작 끝
-    //유저의 펫 정보를 서버에서 가져온다
-    private void updateData() {
-        taskGetPets = null;
-        taskGetPets = new GetPets();
-        taskGetPets.execute();
     }
 
     //플로팅 버튼이 눌렀을떄의 동작
@@ -200,9 +191,76 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         fButtonSet.setVisibility(View.INVISIBLE);
 
     }
+    //플로팅 버튼이 눌렀을떄의 동작 끝
 
 
+    //펫 정보 요청
+    private void getPetsExecute(){
+        RequestBody body= new FormBody.Builder().build();
+        Request request = new Request.Builder()
+                .addHeader("Cookie", User.getIstance().getCookie())
+                .url("http://58.237.8.179/Servlet/animalInfo")
+                .post(body)
+                .build();
+        new RequestTask(request,this,getContext().getApplicationContext());
+    }
 
+
+    // TaskListener 메소드
+    @Override
+    public void preTask() { }
+
+    @Override
+    public void postTask(Response response) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            JSONArray jsonArray;
+            jsonArray = jsonObject.getJSONArray("AnimalList");
+
+            if (jsonArray != null) {
+                User user = User.getIstance();
+                int length = jsonArray.length();
+                Pet[] pets = new Pet[length];
+                for (int i = 0; i < length; i++) {
+                    try {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        Pet.Builder builder = new Pet.Builder(object.getInt("iAnimalNo"));
+                        builder.petKind(object.getInt("iAnimalIndex"))
+                                .serialNo(object.getInt("iSerialNo"))
+                                .name(object.getString("strName"))
+                                .gender(object.getString("strGender"))
+                                .birth(object.getString("strBirth"))
+                                .photo_URL(object.getString("strPhoto"));
+                        Pet pet = builder.build();
+                        pets[i] = pet;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                user.setPets(pets);
+                viewPager.setAdapter(new PetInfoAdapter(getChildFragmentManager()));
+                viewPager.setOffscreenPageLimit(pets.length);
+
+                //펫이 2마리 이상이면 오른쪽 커서를 보이게 한다
+                if (pets.length > 1){
+                    rightCursor.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+        } catch (JSONException | IOException e ) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void cancelTask() {
+
+    }
+    // TaskListener 메소드 end
 
 
     //유저의 펫 정보를 가져오고 AnimalInfoFragment클래스를 생성하여 viewPager에 등록

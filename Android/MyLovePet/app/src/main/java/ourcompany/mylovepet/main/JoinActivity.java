@@ -36,6 +36,7 @@ import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.PostSearchDialog;
 import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
 
 /**
@@ -73,7 +74,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    PostSearchDialog.OnPostSetListener onPostSetListener;
+    private PostSearchDialog.OnPostSetListener onPostSetListener;
 
     private Position nowPos;
 
@@ -274,6 +275,45 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    private void idCheckExecute(){
+        RequestBody body= new FormBody.Builder()
+                .add("type","idCheck")
+                .add("id",strSubName).build();
+        Request request = new Request.Builder()
+                .url("http://58.237.8.179/Servlet/overlapCheck")
+                .post(body)
+                .build();
+        new RequestTask(request,idCheckTaskListener,getApplicationContext()).execute();
+    }
+
+    private void subNameCheckExecute(){
+        RequestBody body= new FormBody.Builder()
+                .add("type","subNameCheck")
+                .add("subNameCheck",strSubName).build();
+        Request request = new Request.Builder()
+                .url("http://58.237.8.179/Servlet/overlapCheck")
+                .post(body)
+                .build();
+        new RequestTask(request,subNameCheckTaskListener,getApplicationContext()).execute();
+    }
+
+    private void joinExecute(){
+        RequestBody body= new FormBody.Builder()
+                .add("id",strId)
+                .add("pass",strPassword)
+                .add("subName",strSubName)
+                .add("name",strName)
+                .add("city",strAddress)
+                .add("streetAddr",strAddress2)
+                .add("zoneCode",strZoneCode)
+                .add("email",strEmail).build();
+        Request request = new Request.Builder()
+                .url("http://58.237.8.179/Servlet/join")
+                .post(body)
+                .build();
+        new RequestTask(request,joinTaskListener,getApplicationContext()).execute();
+    }
+
     //사용자가 값을 입력했는지 확인
     private boolean isNotNull(String str, int id) {
         if (str.equals("")) {
@@ -356,7 +396,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                     if (!idFilter.matcher(strId).matches())
                         Toast.makeText(this, "잘못된 입력", Toast.LENGTH_SHORT).show();
                     else {
-                        new IdCheck().execute(strId);
+                        idCheckExecute();
                     }
                     //아이디 형식이 맞는지 확인 끝
                 }
@@ -406,7 +446,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 strSubName = editTextSubName.getText().toString();
                 //내용이 있으면 다음페이지로
                 if (isNotNull(strSubName, viewId)) {
-                    new SubNameCheck().execute(strSubName);
+                    subNameCheckExecute();
                 }
                 break;
             case R.id.buttonPostSearch:
@@ -415,7 +455,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 strAddress = editTextAddress.getText().toString();
                 strAddress2 = editTextAddress2.getText().toString();
                 if (isNotNull(strAddress, viewId) && isNotNull(strAddress2,viewId)) {
-                    new Join().execute(strId, strPassword, strEmail, strName, strSubName, strAddress);
+                    joinExecute();
                 }
                 break;
         }

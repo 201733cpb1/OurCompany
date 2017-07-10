@@ -1,10 +1,8 @@
 package ourcompany.mylovepet.main;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,15 +24,8 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -43,14 +33,15 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.TaskListener;
 
 /**
  * Created by REOS on 2017-05-26.
  */
 
-public class PetInfoFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener{
+public class PetInfoFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener, TaskListener{
 
     TextView textViewTemperature, textViewWalk, textViewHeartrate;
 
@@ -67,6 +58,8 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
     Uri photoURI, albumURI = null;
     CircularImageView profile;
     Boolean album = false;
+
+    Request request;
 
 
     public PetInfoFragment(){
@@ -102,7 +95,14 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         view.findViewById(R.id.viewMeal).setOnClickListener(this);
         view.findViewById(R.id.viewVaccination).setOnClickListener(this);
         view.findViewById(R.id.viewTemperature).setOnClickListener(this);
-        onRefresh();
+        getConditionExecute();
+
+        int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
+        RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
+        request = new Request.Builder()
+                .url("http://58.237.8.179/Servlet/getCondition")
+                .post(body)
+                .build();
 
         return view;
     }
@@ -244,12 +244,60 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
 
-
-
     @Override
     public void onRefresh() {
-        new GetCondition().execute();
+        getConditionExecute();
     }
+
+    private void getConditionExecute(){
+        new RequestTask(request,this,getContext().getApplicationContext()).execute();
+    }
+
+
+    // tskListener 메소드
+    @Override
+    public void preTask() {
+        textViewTemperature.setText("갱신중...");
+        textViewWalk.setText("갱신중...");
+        textViewHeartrate.setText("갱신중...");
+    }
+
+    @Override
+    public void postTask(Response response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+
+            jsonObject = jsonObject.getJSONObject("Condition");
+            int temperate = jsonObject.getInt("avgtemp");
+            int step = jsonObject.getInt("step");
+            int heartrate = jsonObject.getInt("avgheart");
+
+            textViewTemperature.setText(temperate+"");
+            textViewWalk.setText(step+"");
+            textViewHeartrate.setText(heartrate+"");
+
+            // -1 이라면 정보가 없는것.
+            if(temperate == -1 && step == -1 && heartrate == -1){
+                Toast.makeText(getContext(), "정보가 존재 하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException | IOException e ) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+        }
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void cancelTask() {
+        textViewTemperature.setText("실패");
+        textViewWalk.setText("실패");
+        textViewHeartrate.setText("실패");
+    }
+    // tskListener 메소드 end
+
 
     private class GetCondition extends AsyncTask<String, Void, Response> {
 

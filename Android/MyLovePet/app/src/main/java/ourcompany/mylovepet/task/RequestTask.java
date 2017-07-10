@@ -59,6 +59,4 @@ public class RequestTask extends AsyncTask<Void,Void, Response> {
             taskListener.postTask(response);
         }
     }
-
-
 }

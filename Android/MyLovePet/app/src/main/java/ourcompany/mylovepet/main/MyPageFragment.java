@@ -22,10 +22,6 @@ import ourcompany.mylovepet.R;
 
 public class MyPageFragment extends Fragment implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
 
-    Toolbar toolbar;
-    DrawerLayout dlDrawer;
-    ActionBarDrawerToggle dtToggle;
-
 
     public static final int MY_BOARD = 1;
     public static final int MY_SITTER_BOARD = 2;

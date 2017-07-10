@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextPassword;
     private Button buttonLogin;
 
-    private RequestTask requestTask;
+    private RequestTask loginTask;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStop() {
         super.onStop();
-        requestTask.cancel(true);
+        loginTask.cancel(true);
     }
 
     @Override
@@ -104,7 +104,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .url("http://58.237.8.179/Servlet/login")
                 .post(body)
                 .build();
-        this.requestTask = new RequestTask(request,this,getApplicationContext());
+        loginTask = new RequestTask(request,this,getApplicationContext());
+        loginTask.execute();
     }
 
 
@@ -118,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonLogin.setEnabled(true);
         editTextId.setEnabled(true);
         editTextPassword.setEnabled(true);
-        requestTask = null;
+        loginTask = null;
     }
 
 
@@ -137,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    // TaskListener 인터페이스 메소드
+    // TaskListener  메소드
     @Override
     public void preTask() {
         lockView();
@@ -170,13 +171,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         unLockView();
-        requestTask = null;
+        loginTask = null;
     }
 
     public void cancelTask(){
         unLockView();
     }
-    // TaskListener 인터페이스 메소드 end
+    // TaskListener  메소드 end
 
 
 
@@ -193,12 +194,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         public Response doInBackground(String... params) {
             RequestBody body= new FormBody.Builder().add("id",strId).add("pass",strPassword).build();
-            Request requestTask = new Request.Builder()
+            Request loginTask = new Request.Builder()
                     .url("http://58.237.8.179/Servlet/login")
                     .post(body)
                     .build();
             try {
-                Response response = client.newCall(requestTask).execute();
+                Response response = client.newCall(loginTask).execute();
                 return response;
             } catch (IOException e) {
                 e.printStackTrace();

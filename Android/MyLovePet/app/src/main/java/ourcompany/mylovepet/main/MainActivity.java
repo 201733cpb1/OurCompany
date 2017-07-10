@@ -20,7 +20,7 @@ import android.widget.ListView;
 
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
-import ourcompany.mylovepet.petsitter.PetSitterAddFragment;
+import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 
 /**
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case 4:
                 //펫시터 구하기 화면
-                fragmentTransaction.replace(R.id.container,new PetSitterAddFragment());
+                fragmentTransaction.replace(R.id.container,new SitterRegisterFragment());
                 break;
             case 5:
                 //도움주기 화면

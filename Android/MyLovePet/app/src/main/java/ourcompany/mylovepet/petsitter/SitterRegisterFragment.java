@@ -39,8 +39,10 @@ import ourcompany.mylovepet.R;
 
 import ourcompany.mylovepet.main.userinfo.Pet;
 import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.TaskListener;
 
-public class PetSitterAddFragment extends Fragment implements View.OnClickListener{
+public class SitterRegisterFragment extends Fragment implements View.OnClickListener, TaskListener{
 
 
     EditText editTextPetCount, editTextBody, editTextTitle;
@@ -160,11 +162,75 @@ public class PetSitterAddFragment extends Fragment implements View.OnClickListen
             if(petNoSet.size() == 0){
                 Toast.makeText(getContext(),"펫을 추가 해주세요",Toast.LENGTH_SHORT).show();
             }else {
-                new AddPetSitter().execute();
+                registerExecute();
             }
         }
 
     }
+
+    private void registerExecute(){
+        String strSDate,strEDate,strBody, strTitle;
+        JSONArray jsonArray;
+
+        strSDate = startDateEditText.getText().toString();
+        strEDate = endDateEditText.getText().toString();
+        strTitle = editTextTitle.getText().toString();
+        strBody = editTextBody.getText().toString();
+
+        jsonArray = new JSONArray();
+
+        for(int no : petNoSet){
+            jsonArray.put(no);
+        }
+
+        RequestBody body= new FormBody.Builder()
+                .add("Date", strSDate)
+                .add("Term", strEDate)
+                .add("Title", strTitle)
+                .add("Feedback", strBody)
+                .add("petList", jsonArray.toString())
+                .build();
+
+        Request request = new Request.Builder()
+                .addHeader("Cookie",User.getIstance().getCookie())
+                .url("http://58.237.8.179/Servlet/addPetsitter")
+                .post(body)
+                .build();
+
+        new RequestTask(request,this,getContext().getApplicationContext());
+    }
+
+
+    // taskListener 메소드
+    @Override
+    public void preTask() {
+    }
+
+    @Override
+    public void postTask(Response response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response.body().string());
+            jsonObject = jsonObject.getJSONObject("AddPetSitter");
+            boolean isSuccessed = false;
+            isSuccessed = jsonObject.getBoolean("isSuccessed");
+
+            if(isSuccessed){
+                Toast.makeText(getContext(),"글 등록 완료",Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getContext(),"등록 실패",Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void cancelTask() {
+
+    }
+    // taskListener 메소드 end
+
 
 
     private class AddPetSitter extends AsyncTask<String, Void, Response> {
