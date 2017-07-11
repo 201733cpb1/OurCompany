@@ -1,8 +1,10 @@
 package ourcompany.mylovepet.main;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -11,12 +13,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ActionBarDrawerToggle dtToggle;
 
     FragmentManager fragmentManager;
+
+    Intent intent ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,8 +147,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //지름/중고장터 정보 화면 intro
                 break;
             case 9:
-                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-                startActivity(intent);
+/*                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                startActivity(intent);*/
+                chkGpsService();
                 break;
             case 10:
                 //탐색 화면
@@ -154,5 +161,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
         dlDrawer.closeDrawers();
     }
+    public boolean chkGpsService() {
 
+        //GPS가 켜져 있는지 확인함.
+        String gpsEnabled = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+        if (!(gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
+            //gps가 사용가능한 상태가 아니면
+            new AlertDialog.Builder(this).setTitle("GPS 설정").setMessage("GPS가 꺼져 있습니다. \nGPS를 활성화 하시겠습니까?").setPositiveButton("GPS 켜기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    //GPS 설정 화면을 띄움
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            }).setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            }).create().show();
+
+        }else if((gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
+            Toast.makeText(getApplicationContext(), "정보를 읽어오는 중입니다.", Toast.LENGTH_LONG).show();
+            intent = new Intent(this, MapActivity.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
+            startActivity(intent);
+        }
+        return false;
+    }
 }
