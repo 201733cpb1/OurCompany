@@ -88,6 +88,8 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         mMapView.setCurrentLocationEventListener(this);
         mMapView.setMapType(MapView.MapType.Standard);
 
+        mMapView.onResume();
+
         con.addView(mMapView);
         // mEditTextQuery = (EditText) findViewById(R.id.editTextQuery); // 검색창
         mButtonSearch = (Button) view.findViewById(R.id.buttonSearch); // 동물병원검색
@@ -173,6 +175,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
                 });
             }
         });
+
         return view;
     }
 

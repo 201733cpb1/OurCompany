@@ -20,7 +20,7 @@ import android.widget.ListView;
 
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
-import ourcompany.mylovepet.daummap.MapFragment;
+import ourcompany.mylovepet.daummap.MapActivity;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 
@@ -141,7 +141,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //지름/중고장터 정보 화면 intro
                 break;
             case 9:
-                fragmentTransaction.replace(R.id.container,new MapFragment());
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                startActivity(intent);
                 break;
             case 10:
                 //탐색 화면

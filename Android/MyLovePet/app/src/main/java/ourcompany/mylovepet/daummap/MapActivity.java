@@ -1,4 +1,3 @@
-/*
 package ourcompany.mylovepet.daummap;
 
 import android.Manifest;
@@ -13,9 +12,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -42,12 +44,12 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 
-public class MapActivity extends FragmentActivity implements MapView.MapViewEventListener, MapView.POIItemEventListener, MapView.CurrentLocationEventListener, MapView.OpenAPIKeyAuthenticationResultListener {
+public class MapActivity extends AppCompatActivity implements MapView.MapViewEventListener, MapView.POIItemEventListener, MapView.CurrentLocationEventListener, MapView.OpenAPIKeyAuthenticationResultListener {
 
     private static final String LOG_TAG = "SearchDemoActivity";
 
     public Context mContext;
-
+    private ActionBar actionBar;
     private MapView mMapView;
     // private EditText mEditTextQuery;
     private Button mButtonSearch, mButtonSearch2;
@@ -81,7 +83,10 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         mMapView.setCurrentLocationEventListener(this);
         mMapView.setMapType(MapView.MapType.Standard);
 
-
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        actionBar =  getSupportActionBar();
+        actionBar.setTitle("탐색");
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // mEditTextQuery = (EditText) findViewById(R.id.editTextQuery); // 검색창
         mButtonSearch = (Button) findViewById(R.id.buttonSearch); // 동물병원검색
@@ -127,14 +132,12 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         mButtonSearch2.setOnClickListener(new View.OnClickListener() { // 공원검색
             @Override
             public void onClick(View v) {
-                */
-/*String query = mEditTextQuery.getText().toString();
+                /*String query = mEditTextQuery.getText().toString();
 
                 if (query == null || query.length() == 0) {
                     showToast("검색어를 입력하세요.");
                     return;
-                }*//*
-
+                }*/
                 result = 0;
                 hideSoftKeyboard(); // 키보드 숨김
 
@@ -168,7 +171,14 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         });
 
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     public void showSettingsAlert(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 
@@ -450,4 +460,3 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
 
 }
 
-*/
