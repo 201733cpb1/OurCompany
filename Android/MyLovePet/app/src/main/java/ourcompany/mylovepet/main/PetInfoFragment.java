@@ -95,7 +95,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         view.findViewById(R.id.viewMeal).setOnClickListener(this);
         view.findViewById(R.id.viewVaccination).setOnClickListener(this);
         view.findViewById(R.id.viewTemperature).setOnClickListener(this);
-        getConditionExecute();
 
         int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
         RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
@@ -103,6 +102,8 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 .url("http://58.237.8.179/Servlet/getCondition")
                 .post(body)
                 .build();
+
+        getConditionExecute();
 
         return view;
     }

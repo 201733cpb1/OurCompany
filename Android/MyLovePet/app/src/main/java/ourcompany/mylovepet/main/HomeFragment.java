@@ -202,7 +202,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
                 .url("http://58.237.8.179/Servlet/animalInfo")
                 .post(body)
                 .build();
-        new RequestTask(request,this,getContext().getApplicationContext());
+        new RequestTask(request,this,getContext().getApplicationContext()).execute();
     }
 
 

@@ -54,9 +54,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        loginTask.cancel(true);
+    protected void onDestroy() {
+        super.onDestroy();
+        if(loginTask != null) {
+            loginTask.cancel(true);
+        }
     }
 
     @Override
@@ -72,6 +74,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String strId = sharedPreferences.getString("id",null);
         String strPassword = sharedPreferences.getString("password",null);
 
+        editTextId.setText(strId);
+        editTextId.setText(strPassword);
+
         if(strId == null || strPassword == null){
             return;
         }else { // 자동 로그인 실행
@@ -85,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString("id",editTextId.getText().toString());
-        editor.putString("password",editTextPassword.getText().toString());
+        editor.putString("password",editTextId.getText().toString());
         editor.commit();
     }
     //자동 로그인 end
@@ -99,7 +104,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void loginExecute(final String strId, final String strPassword){
 
-        RequestBody body= new FormBody.Builder().add("id",strId).add("pass",strPassword).build();
+        RequestBody body= new FormBody.Builder()
+                .add("id",strId)
+                .add("pass",strPassword)
+                .build();
         Request request = new Request.Builder()
                 .url("http://58.237.8.179/Servlet/login")
                 .post(body)
@@ -119,7 +127,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonLogin.setEnabled(true);
         editTextId.setEnabled(true);
         editTextPassword.setEnabled(true);
-        loginTask = null;
     }
 
 
@@ -146,18 +153,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void postTask(Response response) {
+        loginTask = null;
+        unLockView();
         try {
             JSONObject jsonObject = new JSONObject(response.body().string());
             jsonObject = jsonObject.getJSONObject("loginResult");
             boolean isSuccessed = false;
             isSuccessed = jsonObject.getBoolean("isSuccessed");
             if (isSuccessed){
-                //아이디 비밀번호 저장
-                saveAccount();
                 //유저 정보 클래스 불러오기
                 User user = User.getIstance();
                 //세션 정보를 저장
                 String cookie = response.header("Set-Cookie");
+                //아이디 비밀번호 저장
+                saveAccount();
                 user.setCookie(cookie);
                 //메인 화면 실행
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
@@ -169,9 +178,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "잘못된 데이터", Toast.LENGTH_SHORT).show();
         }
-
-        unLockView();
-        loginTask = null;
     }
 
     public void cancelTask(){

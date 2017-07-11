@@ -199,8 +199,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (JSONException | IOException e ) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "잘못된 데이터", Toast.LENGTH_SHORT).show();
+                }finally {
+                    buttonId.setEnabled(true);
                 }
-                buttonId.setEnabled(true);
             }
 
             @Override
@@ -230,8 +231,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+                }finally {
+                    buttonSubName.setEnabled(true);
                 }
-                buttonSubName.setEnabled(true);
             }
 
             @Override
@@ -262,8 +264,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
+                }finally {
+                    finish();
                 }
-                finish();
             }
 
             @Override
