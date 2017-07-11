@@ -1,3 +1,4 @@
+/*
 
 package ourcompany.mylovepet.daummap;
 
@@ -63,3 +64,4 @@ public class Gps_Check extends AppCompatActivity {
     }
 }
 
+*/

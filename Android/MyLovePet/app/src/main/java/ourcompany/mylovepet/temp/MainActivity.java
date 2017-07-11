@@ -1,3 +1,4 @@
+/*
 package ourcompany.mylovepet.temp;
 
 import android.Manifest;
@@ -44,7 +45,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
-import ourcompany.mylovepet.daummap.Intro;
+
 import ourcompany.mylovepet.main.PetRegistActivity;
 import ourcompany.mylovepet.main.PetInfoAdapter;
 import ourcompany.mylovepet.main.PetListActivity;
@@ -55,9 +56,11 @@ import ourcompany.mylovepet.market.Market_Intro;
 import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 
+*/
 /**
  * Created by REOS on 2017-05-07.
- */
+ *//*
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -472,3 +475,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 }
+*/

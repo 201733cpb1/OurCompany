@@ -1,9 +1,5 @@
 package ourcompany.mylovepet.daummap;
 
-/**
- * Created by KDM on 2017-07-11.
- */
-
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -62,20 +58,27 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     LocationManager manager;
     Location location;
     static int result=0;
-
+    LayoutInflater a;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
+
         View view = inflater.inflate(R.layout.search,container,false);
+        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-        if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return view;
         }
+        a = inflater;
 
-        manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        manager = (LocationManager) getContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        mMapView = (MapView) view.findViewById(R.id.map_view);
+        ViewGroup con = (ViewGroup) view.findViewById(R.id.mapContainer);
+
+        mMapView = new MapView(getActivity());
+
+        /*mMapView = (MapView) view.findViewById(R.id.map_view);*/
         mMapView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mMapView.setDaumMapApiKey(MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY);
         mMapView.setOpenAPIKeyAuthenticationResultListener(this);
@@ -85,11 +88,13 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         mMapView.setCurrentLocationEventListener(this);
         mMapView.setMapType(MapView.MapType.Standard);
 
-
-
+        con.addView(mMapView);
         // mEditTextQuery = (EditText) findViewById(R.id.editTextQuery); // 검색창
         mButtonSearch = (Button) view.findViewById(R.id.buttonSearch); // 동물병원검색
         mButtonSearch2 = (Button) view.findViewById(R.id.buttonSearch2); // 공원검색
+
+        mMapView.setVisibility(View.INVISIBLE);
+        mMapView.setVisibility(View.VISIBLE);
 
 
         mButtonSearch.setOnClickListener(new View.OnClickListener() { // 동물병원검색
@@ -106,12 +111,14 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
                 latitude = geoCoordinate.latitude;
                 longitude = geoCoordinate.longitude;
 
+
+
                 int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
                 int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
                 String apikey = MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY;
 
                 Searcher searcher = new Searcher(); // net.daum.android.map.openapi.search.Searcher
-                searcher.searchKeyword(getActivity(), "동물병원", latitude, longitude, radius, page, apikey, new OnFinishSearchListener() {
+                searcher.searchKeyword(getContext().getApplicationContext(), "동물병원", latitude, longitude, radius, page, apikey, new OnFinishSearchListener() {
                     @Override
                     public void onSuccess(List<Item> itemList) {
                         mMapView.removeAllPOIItems(); // 기존 검색 결과 삭제
@@ -152,7 +159,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 
 
                 Searcher searcher = new Searcher(); // net.daum.android.map.openapi.search.Searcher
-                searcher.searchKeyword(getActivity(), "공원", latitude, longitude, radius, page, apikey, new OnFinishSearchListener() {
+                searcher.searchKeyword(getContext().getApplicationContext(), "공원", latitude, longitude, radius, page, apikey, new OnFinishSearchListener() {
                     @Override
                     public void onSuccess(List<Item> itemList) {
                         mMapView.removeAllPOIItems(); // 기존 검색 결과 삭제
@@ -166,8 +173,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
                 });
             }
         });
-
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 
     public void showSettingsAlert(){
@@ -226,7 +232,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         private final View mCalloutBalloon;
 
         public CustomCalloutBalloonAdapter() {
-            mCalloutBalloon = getActivity().getLayoutInflater().inflate(R.layout.search_balloon, null);
+            mCalloutBalloon = a.inflate(R.layout.search_balloon, null);
         }
 
         @Override
@@ -251,7 +257,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     }
 
     private void hideSoftKeyboard() {
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager)getContext().getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         //imm.hideSoftInputFromWindow(mEditTextQuery.getWindowToken(), 0);
     }
 
@@ -276,7 +282,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
 
 
 
-        searcher.searchKeyword(getActivity(), " ", latitude, longitude, radius, page, apikey, new OnFinishSearchListener() {
+        searcher.searchKeyword(getContext().getApplicationContext(), " ", latitude, longitude, radius, page, apikey, new OnFinishSearchListener() {
             @Override
             public void onSuccess(final List<Item> itemList) {
                 showResult(itemList);
@@ -296,7 +302,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                makeText(getActivity(), text, LENGTH_SHORT).show();
+                makeText(getContext(), text, LENGTH_SHORT).show();
             }
         });
     }
@@ -381,7 +387,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
     }
 
     protected void showMessage(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("안내");
         builder.setMessage("전화를 거시겠습니까?");
         builder.setPositiveButton("예",new DialogInterface.OnClickListener(){

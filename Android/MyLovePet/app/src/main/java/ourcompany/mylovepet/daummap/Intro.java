@@ -1,3 +1,4 @@
+/*
 package ourcompany.mylovepet.daummap;
 
 import android.content.Intent;
@@ -33,3 +34,4 @@ public class Intro extends AppCompatActivity {
     }
 
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package ourcompany.mylovepet.daummap;
 
 import android.Manifest;
@@ -126,12 +127,14 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         mButtonSearch2.setOnClickListener(new View.OnClickListener() { // 공원검색
             @Override
             public void onClick(View v) {
-                /*String query = mEditTextQuery.getText().toString();
+                */
+/*String query = mEditTextQuery.getText().toString();
 
                 if (query == null || query.length() == 0) {
                     showToast("검색어를 입력하세요.");
                     return;
-                }*/
+                }*//*
+
                 result = 0;
                 hideSoftKeyboard(); // 키보드 숨김
 
@@ -283,7 +286,6 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
                 showToast("API_KEY의 제한 트래픽이 초과되었습니다.");
             }
         });
-
 
 
     }
@@ -448,3 +450,4 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
 
 }
 
+*/
