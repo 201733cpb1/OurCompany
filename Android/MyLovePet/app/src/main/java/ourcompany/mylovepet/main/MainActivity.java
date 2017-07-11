@@ -20,8 +20,9 @@ import android.widget.ListView;
 
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
-import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
+import ourcompany.mylovepet.daummap.MapFragment;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
+import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 
 /**
  * Created by REOS on 2017-07-07.
@@ -140,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //지름/중고장터 정보 화면 intro
                 break;
             case 9:
+                fragmentTransaction.replace(R.id.container,new MapFragment());
                 break;
             case 10:
                 //탐색 화면
