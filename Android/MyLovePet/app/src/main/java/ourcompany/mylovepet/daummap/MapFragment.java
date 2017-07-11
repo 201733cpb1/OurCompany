@@ -69,7 +69,7 @@ public class MapFragment extends Fragment implements MapView.MapViewEventListene
         View view = inflater.inflate(R.layout.search,container,false);
 
         if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return view;
+            /*return view;*/
         }
 
         manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
