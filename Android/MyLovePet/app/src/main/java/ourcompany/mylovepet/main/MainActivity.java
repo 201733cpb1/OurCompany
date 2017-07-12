@@ -95,13 +95,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         adapter.addItem("펫 시터");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "구하기"); //4
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "도움주기"); //5
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.petsitter), "도움주기"); //5
 
         adapter.addItem("편의 기능");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "TIP"); //7
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "중고장터"); //8
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "탐색"); //9
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "SNS"); //10
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tip), "TIP"); //7
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.used), "중고장터"); //8
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //9
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //10
 
         listview.setOnItemClickListener(this);
 
