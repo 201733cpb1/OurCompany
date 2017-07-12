@@ -62,9 +62,7 @@
         <activity android:name=".main.StatisticsActivity"/>
         <activity android:name=".main.MyBoardActivity"/>
 
-<!--
         <activity android:name=".daummap.Intro" android:hardwareAccelerated="false" />
--->
         <activity android:name=".daummap.MapActivity" android:hardwareAccelerated="false" />
         <activity android:name=".daummap.GpsMapActivity"/>
 

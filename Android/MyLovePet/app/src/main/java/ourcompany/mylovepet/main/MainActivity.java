@@ -24,8 +24,7 @@ import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
-import ourcompany.mylovepet.daummap.GpsMapActivity;
-import ourcompany.mylovepet.daummap.MapActivity;
+import ourcompany.mylovepet.daummap.Intro;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 
@@ -148,15 +147,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //지름/중고장터 정보 화면 intro
                 break;
             case 9:
-                chkGpsService();
+                chkGpsService();  //탐색 화면
                 break;
             case 10:
-                Intent intent = new Intent(getApplicationContext(), GpsMapActivity.class);
-                startActivity(intent);
-                //탐색 화면
+                //SNS 화면
                 break;
             case 11:
-                //SNS 화면
                 break;
         }
         fragmentTransaction.commit();
@@ -185,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }else if((gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
             Toast.makeText(getApplicationContext(), "정보를 읽어오는 중입니다.", Toast.LENGTH_LONG).show();
-            intent = new Intent(this, MapActivity.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
+            intent = new Intent(this, Intro.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
             startActivity(intent);
         }
         return false;
