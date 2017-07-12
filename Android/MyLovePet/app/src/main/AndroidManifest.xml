@@ -36,15 +36,12 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
-
         <activity android:name=".main.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity android:name=".main.PetRegistActivity"/>
         <activity android:name=".market.Market_Main"/>
         <activity android:name=".market.Market_Write"/>
@@ -68,8 +65,8 @@
 <!--
         <activity android:name=".daummap.Intro" android:hardwareAccelerated="false" />
 -->
-
         <activity android:name=".daummap.MapActivity" android:hardwareAccelerated="false" />
+        <activity android:name=".daummap.GpsMapActivity"/>
 
         <!--푸쉬알람 추가-->
         <service

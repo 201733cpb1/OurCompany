@@ -73,6 +73,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+
         mMapView = (MapView) findViewById(R.id.map_view);
         mMapView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mMapView.setDaumMapApiKey(MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY);
@@ -108,9 +109,9 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                 longitude = geoCoordinate.longitude;
 
 
-
                 int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
                 int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
+
                 String apikey = MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY;
 
                 Searcher searcher = new Searcher(); // net.daum.android.map.openapi.search.Searcher
@@ -146,7 +147,6 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                 double longitude, latitude;
                 latitude = geoCoordinate.latitude;
                 longitude = geoCoordinate.longitude;
-
 
                 int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
                 int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
@@ -335,7 +335,6 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         }
 
         mMapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds));
-
         MapPOIItem[] poiItems = mMapView.getPOIItems();
         if (poiItems.length > 0) {
             mMapView.selectPOIItem(poiItems[0], false);

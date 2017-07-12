@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
+import ourcompany.mylovepet.daummap.GpsMapActivity;
 import ourcompany.mylovepet.daummap.MapActivity;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
@@ -147,11 +148,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //지름/중고장터 정보 화면 intro
                 break;
             case 9:
-/*                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-                startActivity(intent);*/
                 chkGpsService();
                 break;
             case 10:
+                Intent intent = new Intent(getApplicationContext(), GpsMapActivity.class);
+                startActivity(intent);
                 //탐색 화면
                 break;
             case 11:
