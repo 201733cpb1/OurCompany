@@ -12,9 +12,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -41,12 +44,12 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 
-public class MapActivity extends FragmentActivity implements MapView.MapViewEventListener, MapView.POIItemEventListener, MapView.CurrentLocationEventListener, MapView.OpenAPIKeyAuthenticationResultListener {
+public class MapActivity extends AppCompatActivity implements MapView.MapViewEventListener, MapView.POIItemEventListener, MapView.CurrentLocationEventListener, MapView.OpenAPIKeyAuthenticationResultListener {
 
     private static final String LOG_TAG = "SearchDemoActivity";
 
     public Context mContext;
-
+    private ActionBar actionBar;
     private MapView mMapView;
     // private EditText mEditTextQuery;
     private Button mButtonSearch, mButtonSearch2;
@@ -70,6 +73,7 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+
         mMapView = (MapView) findViewById(R.id.map_view);
         mMapView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mMapView.setDaumMapApiKey(MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY);
@@ -80,7 +84,10 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         mMapView.setCurrentLocationEventListener(this);
         mMapView.setMapType(MapView.MapType.Standard);
 
-
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        actionBar =  getSupportActionBar();
+        actionBar.setTitle("탐색");
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // mEditTextQuery = (EditText) findViewById(R.id.editTextQuery); // 검색창
         mButtonSearch = (Button) findViewById(R.id.buttonSearch); // 동물병원검색
@@ -102,9 +109,9 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
                 longitude = geoCoordinate.longitude;
 
 
-
                 int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
                 int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
+
                 String apikey = MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY;
 
                 Searcher searcher = new Searcher(); // net.daum.android.map.openapi.search.Searcher
@@ -141,7 +148,6 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
                 latitude = geoCoordinate.latitude;
                 longitude = geoCoordinate.longitude;
 
-
                 int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
                 int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
                 String apikey = MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY;
@@ -165,7 +171,14 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         });
 
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     public void showSettingsAlert(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 
@@ -285,7 +298,6 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         });
 
 
-
     }
 
     private void showToast(final String text) {
@@ -323,7 +335,6 @@ public class MapActivity extends FragmentActivity implements MapView.MapViewEven
         }
 
         mMapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds));
-
         MapPOIItem[] poiItems = mMapView.getPOIItems();
         if (poiItems.length > 0) {
             mMapView.selectPOIItem(poiItems[0], false);
