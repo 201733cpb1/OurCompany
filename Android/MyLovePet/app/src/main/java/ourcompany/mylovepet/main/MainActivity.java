@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -13,14 +14,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.daummap.MapFragment;
+import ourcompany.mylovepet.main.user.User;
+import ourcompany.mylovepet.market.MarketFragment;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ActionBarDrawerToggle dtToggle;
 
     FragmentManager fragmentManager;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +104,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         listview.setOnItemClickListener(this);
 
+        ((TextView)findViewById(R.id.nickName)).setText(User.getIstance().getSunName() + " 님");
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
@@ -113,6 +127,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
     }
 
     @Override
@@ -139,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case 8:
                 //지름/중고장터 정보 화면 intro
+                fragmentTransaction.replace(R.id.container, new MarketFragment());
                 break;
             case 9:
                 fragmentTransaction.replace(R.id.container,new MapFragment());

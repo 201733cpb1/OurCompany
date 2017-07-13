@@ -49,9 +49,8 @@ import ourcompany.mylovepet.main.PetRegistActivity;
 import ourcompany.mylovepet.main.PetInfoAdapter;
 import ourcompany.mylovepet.main.PetListActivity;
 import ourcompany.mylovepet.main.UserSettingActivity;
-import ourcompany.mylovepet.main.userinfo.Pet;
-import ourcompany.mylovepet.main.userinfo.User;
-import ourcompany.mylovepet.market.Market_Intro;
+import ourcompany.mylovepet.main.user.Pet;
+import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 
@@ -184,8 +183,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case 8:
                         //지름/중고장터 정보 화면 intro
-                        intent = new Intent(getApplication(), Market_Intro.class);
-                        startActivity(intent);
                         break;
                     case 9:
                         requestGPSPermission();

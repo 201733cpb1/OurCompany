@@ -3,10 +3,15 @@ package ourcompany.mylovepet.main;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import ourcompany.mylovepet.R;
 
@@ -36,6 +41,26 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
             }
         });
         findViewById(R.id.buttonLogOut).setOnClickListener(this);
+
+
+        Switch pushSwitch = (Switch) findViewById(R.id.pushSwitch);
+
+        pushSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+
+                }else {
+
+                }
+            }
+        });
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        ActionBar actionBar =  getSupportActionBar();
+        actionBar.setTitle("설정");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -65,6 +90,18 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
                 break;
         }
     }
+
+
+    //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
 }

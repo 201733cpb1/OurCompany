@@ -33,7 +33,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
 
@@ -67,11 +67,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
 
     public void setPetIndex(int petIndex){
         this.petIndex = petIndex;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Nullable
@@ -296,6 +291,11 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         textViewTemperature.setText("실패");
         textViewWalk.setText("실패");
         textViewHeartrate.setText("실패");
+    }
+
+    @Override
+    public void fairTask() {
+
     }
     // tskListener 메소드 end
 

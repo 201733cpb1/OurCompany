@@ -11,4 +11,5 @@ public interface TaskListener {
     public void preTask();
     public void postTask(Response response);
     public void cancelTask();
+    public void fairTask();
 }

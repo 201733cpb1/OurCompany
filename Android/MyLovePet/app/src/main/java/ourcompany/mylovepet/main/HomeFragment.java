@@ -27,8 +27,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.main.userinfo.Pet;
-import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.main.user.Pet;
+import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
 
@@ -52,7 +52,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
     //펫 추가 액티비티 응답코드
     static final int SUCCESS_PET_ADD = 100;
 
-
     //AsyncTask 클래스
     RequestTask getPetsTask;
 
@@ -64,11 +63,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_test,container,false);
+        View view = inflater.inflate(R.layout.fragment_home,container,false);
 
         init(view);
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPetsExecute();
+    }
+
+    @Override
+    public void onPause() {
+        if(getPetsTask != null){
+            getPetsTask.cancel(true);
+        }
+        super.onPause();
     }
 
     private void init(View view) {
@@ -126,9 +139,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
 
             }
         });
-
-        //펫 정보를 서버에서 가져온다.
-        getPetsExecute();
     }
 
     @Override
@@ -202,7 +212,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
                 .url("http://58.237.8.179/Servlet/animalInfo")
                 .post(body)
                 .build();
-        new RequestTask(request,this,getContext().getApplicationContext()).execute();
+        getPetsTask = new RequestTask(request,this,getContext().getApplicationContext());
+        getPetsTask.execute();
     }
 
 
@@ -212,7 +223,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
 
     @Override
     public void postTask(Response response) {
-
         try {
             JSONObject jsonObject = new JSONObject(response.body().string());
             JSONArray jsonArray;
@@ -246,18 +256,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
                 if (pets.length > 1){
                     rightCursor.setVisibility(View.VISIBLE);
                 }
-
             }
-
         } catch (JSONException | IOException e ) {
             e.printStackTrace();
             Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+        }finally {
+            getPetsTask = null;
         }
 
     }
 
     @Override
     public void cancelTask() {
+
+    }
+
+    @Override
+    public void fairTask() {
 
     }
     // TaskListener 메소드 end
