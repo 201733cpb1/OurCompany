@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     FragmentManager fragmentManager;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

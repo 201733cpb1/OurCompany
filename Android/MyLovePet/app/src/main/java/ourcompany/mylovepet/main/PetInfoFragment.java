@@ -72,7 +72,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_animalinfo,container,false);
+        View view = inflater.inflate(R.layout.fragment_petinfo,container,false);
 
         swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -118,6 +118,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 break;
             case R.id.viewMeal:
                 intent = new Intent(getContext(), MealCalendarActivity.class);
+                intent.putExtra("petNo",User.getIstance().getPet(petIndex).getPetNo());
                 startActivity(intent);
                 break;
             case R.id.viewVaccination:
@@ -157,8 +158,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode){
             case REQUEST_TAKE_PHOTO: // 앨범 이미지 가져오기
                 album = true;
@@ -206,6 +205,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 this.sendBroadcast(mediaScanIntent); // 동기화
                 break;*/
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void dispatchTakePictureIntent() {

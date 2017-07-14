@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -322,7 +324,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 .add("city",strAddress)
                 .add("streetAddr",strAddress2)
                 .add("zoneCode",strZoneCode)
-                .add("email",strEmail).build();
+                .add("email",strEmail)
+                .add("Token",  FirebaseInstanceId.getInstance().getToken())
+                .build();
         Request request = new Request.Builder()
                 .url("http://58.237.8.179/Servlet/join")
                 .post(body)
