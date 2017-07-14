@@ -50,6 +50,7 @@ public class GpsMapActivity extends AppCompatActivity implements MapView.MapView
     // private EditText mEditTextQuery;
     private Button buttonfind;
     private HashMap<Integer, Item> mTagItemMap = new HashMap<Integer, Item>();
+    double longitude, latitude;
 
     LocationManager manager;
     Location location;
@@ -67,21 +68,17 @@ public class GpsMapActivity extends AppCompatActivity implements MapView.MapView
         setContentView(R.layout.activity_gps_map);
 
         manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
         buttonfind = (Button) findViewById(R.id.buttonfind);
 
         mMapView = (MapView) findViewById(R.id.gps_map_view);
         mMapView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mMapView.zoomIn(true);
         mMapView.setDaumMapApiKey(MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY);
-/*        mMapView.setOpenAPIKeyAuthenticationResultListener(this);*/
         mMapView.setMapViewEventListener(this);
-/*        mMapView.setPOIItemEventListener((MapView.POIItemEventListener) this);*/
-/*        mMapView.setCurrentLocationEventListener(this);*/
         mMapView.setMapType(MapView.MapType.Standard);
         mMapView.setCalloutBalloonAdapter(new CustomCalloutBalloonAdapter());
-
-        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(35.896422, 128.623446);
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         actionBar =  getSupportActionBar();
@@ -163,15 +160,16 @@ public class GpsMapActivity extends AppCompatActivity implements MapView.MapView
     }
 
     private void addCircles() {
-        double longitude, latitude;
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         MapCircle circle1 = new MapCircle(
+
                 MapPoint.mapPointWithGeoCoord(latitude,longitude), // center
                 500, // radius
                 Color.argb(128, 255, 0, 0), // strokeColor
                 Color.argb(128, 0, 255, 0) // fillColor
         );
+
         circle1.setTag(1234);
         mMapView.addCircle(circle1);
 

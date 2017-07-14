@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -67,7 +68,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
         View view = inflater.inflate(R.layout.fragment_test,container,false);
 
         init(view);
-
+        permissionSetting(p);
         return view;
     }
 
@@ -204,7 +205,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
                 .build();
         new RequestTask(request,this,getContext().getApplicationContext()).execute();
     }
-
+// 권한 되어있는지 요청 하여 없을 시 셋팅(최초 셋팅)
+    public void permissionSetting(String[] permissionValues) {
+               ActivityCompat.requestPermissions(getActivity(),permissionValues,1);
+    }
 
     // TaskListener 메소드
     @Override
