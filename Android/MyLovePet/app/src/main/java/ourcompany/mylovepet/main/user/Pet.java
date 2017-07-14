@@ -1,4 +1,4 @@
-package ourcompany.mylovepet.main.userinfo;
+package ourcompany.mylovepet.main.user;
 
 /**
  * Created by REOS on 2017-05-16.

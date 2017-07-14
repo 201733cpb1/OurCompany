@@ -1,6 +1,5 @@
 package ourcompany.mylovepet.main;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,7 +34,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.PostSearchDialog;
-import ourcompany.mylovepet.main.userinfo.User;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
 
@@ -208,6 +206,11 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             public void cancelTask() {
                 buttonId.setEnabled(true);
             }
+
+            @Override
+            public void fairTask() {
+                buttonId.setEnabled(true);
+            }
         };
 
         subNameCheckTaskListener = new TaskListener() {
@@ -238,6 +241,11 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void cancelTask() {
+                buttonSubName.setEnabled(true);
+            }
+
+            @Override
+            public void fairTask() {
                 buttonSubName.setEnabled(true);
             }
         };
@@ -273,6 +281,11 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             public void cancelTask() {
 
             }
+
+            @Override
+            public void fairTask() {
+
+            }
         };
 
     }
@@ -281,7 +294,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
     private void idCheckExecute(){
         RequestBody body= new FormBody.Builder()
                 .add("type","idCheck")
-                .add("id",strSubName).build();
+                .add("id",strId).build();
         Request request = new Request.Builder()
                 .url("http://58.237.8.179/Servlet/overlapCheck")
                 .post(body)

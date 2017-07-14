@@ -1,3 +1,4 @@
+/*
 package ourcompany.mylovepet.market;
 
 import android.content.Intent;
@@ -30,3 +31,4 @@ public class Market_Intro extends AppCompatActivity {
 }
 
 
+*/

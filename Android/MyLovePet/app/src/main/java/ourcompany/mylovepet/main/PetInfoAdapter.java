@@ -4,9 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import ourcompany.mylovepet.main.PetInfoFragment;
-import ourcompany.mylovepet.main.userinfo.Pet;
-import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.main.user.User;
 
 /**
  * Created by REOS on 2017-05-28.

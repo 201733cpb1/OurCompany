@@ -2,6 +2,7 @@ package ourcompany.mylovepet.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -46,17 +47,26 @@ public class RequestTask extends AsyncTask<Void,Void, Response> {
     }
 
     @Override
-    protected void onCancelled() {
-        taskListener.cancelTask();
-    }
-
-    @Override
     protected void onPostExecute(Response response) {
         if(response == null || response.code() != 200) {
+            if (response != null){
+                try {
+                    Log.d(response.body().string(),"dd");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             Toast.makeText(context, "서버 통신 실패", Toast.LENGTH_SHORT).show();
-            return;
+            taskListener.fairTask();
         }else {
             taskListener.postTask(response);
         }
     }
+
+    @Override
+    protected void onCancelled() {
+        taskListener.cancelTask();
+    }
+
+
 }

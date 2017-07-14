@@ -1,4 +1,3 @@
-/*
 package ourcompany.mylovepet.temp;
 
 import android.Manifest;
@@ -45,22 +44,19 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
-
+import ourcompany.mylovepet.daummap.Intro;
 import ourcompany.mylovepet.main.PetRegistActivity;
 import ourcompany.mylovepet.main.PetInfoAdapter;
 import ourcompany.mylovepet.main.PetListActivity;
 import ourcompany.mylovepet.main.UserSettingActivity;
-import ourcompany.mylovepet.main.userinfo.Pet;
-import ourcompany.mylovepet.main.userinfo.User;
-import ourcompany.mylovepet.market.Market_Intro;
+import ourcompany.mylovepet.main.user.Pet;
+import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 
-*/
 /**
  * Created by REOS on 2017-05-07.
- *//*
-
+ */
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -187,8 +183,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case 8:
                         //지름/중고장터 정보 화면 intro
-                        intent = new Intent(getApplication(), Market_Intro.class);
-                        startActivity(intent);
                         break;
                     case 9:
                         requestGPSPermission();
@@ -475,4 +469,3 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 }
-*/

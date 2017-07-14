@@ -27,7 +27,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
 
@@ -170,6 +170,11 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
             public void cancelTask() {
 
             }
+
+            @Override
+            public void fairTask() {
+
+            }
         };
 
         petRegisterTask = new TaskListener() {
@@ -201,6 +206,11 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void cancelTask() {
+
+            }
+
+            @Override
+            public void fairTask() {
 
             }
         };

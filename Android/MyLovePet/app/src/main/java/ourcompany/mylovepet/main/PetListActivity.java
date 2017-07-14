@@ -14,7 +14,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.main.user.User;
 
 
 /**

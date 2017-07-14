@@ -16,16 +16,19 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.daummap.GpsMapActivity;
 import ourcompany.mylovepet.daummap.Intro;
+import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     FragmentManager fragmentManager;
 
-    Intent intent ;
+    Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,6 +108,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         listview.setOnItemClickListener(this);
 
+        ((TextView)findViewById(R.id.nickName)).setText(User.getIstance().getSunName() + " 님");
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
@@ -120,6 +131,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
     }
 
     @Override
@@ -147,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 8:
                 fragmentTransaction.replace(R.id.container, new WebViewTest());
                 //지름/중고장터 정보 화면 intro
+
                 break;
             case 9:
                 chkGpsService();  //탐색 화면
@@ -162,8 +180,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
         dlDrawer.closeDrawers();
     }
-    public boolean chkGpsService() {
 
+    public boolean chkGpsService() {
+        Intent intent ;
         //GPS가 켜져 있는지 확인함.
         String gpsEnabled = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
@@ -191,3 +210,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 }
+

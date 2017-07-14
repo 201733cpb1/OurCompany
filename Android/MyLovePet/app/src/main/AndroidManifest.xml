@@ -42,11 +42,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.PetRegistActivity"/>
-        <activity android:name=".market.Market_Main"/>
-        <activity android:name=".market.Market_Write"/>
-        <activity android:name=".market.Market_Category"/>
-        <activity android:name=".market.Market_Intro"/>
+
 
 
         <activity android:name=".main.MainActivity"/>
@@ -60,7 +56,8 @@
         <activity android:name=".main.PetListActivity"/>
         <activity android:name=".main.VaccineActivity"/>
         <activity android:name=".main.StatisticsActivity"/>
-        <activity android:name=".main.MyBoardActivity"/>
+        <activity android:name=".main.PetRegistActivity"/>
+
 
         <activity android:name=".daummap.Intro" android:hardwareAccelerated="false" />
         <activity android:name=".daummap.MapActivity" android:hardwareAccelerated="false" />

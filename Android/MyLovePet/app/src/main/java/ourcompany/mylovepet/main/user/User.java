@@ -1,4 +1,4 @@
-package ourcompany.mylovepet.main.userinfo;
+package ourcompany.mylovepet.main.user;
 
 
 
@@ -19,6 +19,25 @@ public class User {
 
     private String cookie;
     private Pet[] pets;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSunName() {
+        return sunName;
+    }
+
+    public void setSunName(String sunName) {
+        this.sunName = sunName;
+    }
+
+    private String sunName;
 
     private User(){}
 

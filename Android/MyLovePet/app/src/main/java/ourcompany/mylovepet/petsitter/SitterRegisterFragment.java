@@ -37,8 +37,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
 
-import ourcompany.mylovepet.main.userinfo.Pet;
-import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.main.user.Pet;
+import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
 
@@ -54,10 +54,12 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
 
     HashSet<Integer> petNoSet;
 
+    View leftCursor, rightCursor;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_petsitter_add,container,false);
+        View view = inflater.inflate(R.layout.activity_petsitter_register,container,false);
         init(view);
         return view;
     }
@@ -72,6 +74,10 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
         startDateEditText = (EditText) view.findViewById(R.id.input_sDate);
         endDateEditText = (EditText) view.findViewById(R.id.input_eDate);
         totalDay = (EditText)view.findViewById(R.id.total_day);
+
+        leftCursor = view.findViewById(R.id.leftCursor);
+        rightCursor = view.findViewById(R.id.rightCursor);
+
 
         //타임 포맷 지정
         dateTimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
@@ -96,6 +102,39 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
         viewPager.setAdapter(new PetViewPager(getActivity().getLayoutInflater(), pets));
         //좌우 페이지를 저장해두는 최대 갯수를 설정
         viewPager.setOffscreenPageLimit(pets.length);
+
+        //오른쪽 커서를 보이게 한다.
+        if(pets.length > 0){
+            rightCursor.setVisibility(View.VISIBLE);
+        }
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                int pageSize = viewPager.getAdapter().getCount();
+
+                if(position == 0 ){
+                    leftCursor.setVisibility(View.INVISIBLE);
+                    rightCursor.setVisibility(View.VISIBLE);
+                }else if(position == (pageSize-1)){
+                    leftCursor.setVisibility(View.VISIBLE);
+                    rightCursor.setVisibility(View.INVISIBLE);
+                }else {
+                    leftCursor.setVisibility(View.VISIBLE);
+                    rightCursor.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         petNoSet = new HashSet<>();
 
@@ -197,7 +236,7 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
                 .post(body)
                 .build();
 
-        new RequestTask(request,this,getContext().getApplicationContext());
+        new RequestTask(request,this,getContext().getApplicationContext()).execute();
     }
 
 
@@ -227,6 +266,11 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
 
     @Override
     public void cancelTask() {
+
+    }
+
+    @Override
+    public void fairTask() {
 
     }
     // taskListener 메소드 end

@@ -20,7 +20,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
 
@@ -66,7 +66,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
         loadAccount();
     }
-
 
     //자동 로그인
     private void loadAccount(){
@@ -165,9 +164,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 User user = User.getIstance();
                 //세션 정보를 저장
                 String cookie = response.header("Set-Cookie");
+                user.setCookie(cookie);
+                //유저 정보 저장
+                user.setName(jsonObject.getString("name"));
+                user.setSunName(jsonObject.getString("subName"));
                 //아이디 비밀번호 저장
                 saveAccount();
-                user.setCookie(cookie);
                 //메인 화면 실행
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 finish();
@@ -182,6 +184,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void cancelTask(){
         unLockView();
+    }
+
+    @Override
+    public void fairTask() {
+
     }
     // TaskListener  메소드 end
 
