@@ -90,6 +90,8 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         view.findViewById(R.id.viewMeal).setOnClickListener(this);
         view.findViewById(R.id.viewVaccination).setOnClickListener(this);
         view.findViewById(R.id.viewTemperature).setOnClickListener(this);
+        view.findViewById(R.id.viewActiveMass).setOnClickListener(this);
+        view.findViewById(R.id.viewHeartrate).setOnClickListener(this);
 
         int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
         RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
@@ -127,6 +129,17 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 break;
             case R.id.viewTemperature:
                 intent = new Intent(getContext(),StatisticsActivity.class);
+                intent.putExtra("asd","온도");
+                startActivity(intent);
+                break;
+            case R.id.viewActiveMass:
+                intent = new Intent(getContext(),StatisticsActivity.class);
+                intent.putExtra("asd","걸음수");
+                startActivity(intent);
+                break;
+            case R.id.viewHeartrate:
+                intent = new Intent(getContext(),StatisticsActivity.class);
+                intent.putExtra("asd","심박수");
                 startActivity(intent);
                 break;
             case R.id.profile_picture:

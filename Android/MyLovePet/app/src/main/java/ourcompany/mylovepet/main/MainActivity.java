@@ -22,13 +22,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
-import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.market.MarketFragment;
-import android.widget.Toast;
+import ourcompany.mylovepet.daummap.GpsMapActivity;
 import ourcompany.mylovepet.daummap.Intro;
+import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ActionBarDrawerToggle dtToggle;
 
     FragmentManager fragmentManager;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,8 +92,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listview.setAdapter(adapter);
 
         adapter.addItem("펫 정보");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "홈"); //1
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "통계"); //2
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.home), "홈"); //1
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.statistic), "통계"); //2
 
         adapter.addItem("펫 시터");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "구하기"); //4
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent;
         FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
         switch (position) {
             case 1:
@@ -160,13 +162,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //TIP 화면
                 break;
             case 8:
-                //지름/중고장터 정보 화면
-                fragmentTransaction.replace(R.id.container, new MarketFragment());
+                fragmentTransaction.replace(R.id.container, new WebViewTest());
+                //지름/중고장터 정보 화면 intro
+
                 break;
             case 9:
                 chkGpsService();  //탐색 화면
                 break;
             case 10:
+                intent = new Intent(this, GpsMapActivity.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
+                startActivity(intent);
                 //SNS 화면
                 break;
             case 11:

@@ -51,6 +51,7 @@
                     android:src="@drawable/temperature" />
 
                 <ImageView
+                    android:id="@+id/viewActiveMass"
                     android:layout_width="0dp"
                     android:layout_height="115dp"
                     android:layout_gravity="center_horizontal"
@@ -58,6 +59,7 @@
                     android:src="@drawable/activemass" />
 
                 <ImageView
+                    android:id="@+id/viewHeartrate"
                     android:layout_width="0dp"
                     android:layout_height="115dp"
                     android:layout_gravity="left"
