@@ -39,7 +39,6 @@ public class VaccineActivity extends AppCompatActivity {
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
-
     public void dayCalculation(int count,Date date){ // d-day 계산
         String[] token = df.format(date).split("-");
         int year = Integer.parseInt(token[0]);
@@ -56,7 +55,7 @@ public class VaccineActivity extends AppCompatActivity {
         Date nowDate = new Date();
 
         while(true){
-            if(dateArrayList.get(0).getDay() == nowDate.getDay()){
+            if(dateArrayList.get(0).getDate() == nowDate.getDate()){
                 dDay = "day";
                 textViewdday.setText("접종날 D-"+dDay);
                 break;
