@@ -92,6 +92,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         view.findViewById(R.id.viewTemperature).setOnClickListener(this);
         view.findViewById(R.id.viewActiveMass).setOnClickListener(this);
         view.findViewById(R.id.viewHeartrate).setOnClickListener(this);
+        view.findViewById(R.id.button_self_diagnosis).setOnClickListener(this);
 
         int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
         RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
@@ -164,6 +165,10 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 // 다이얼로그 보여주기
                 alertDialog.show();
+                break;
+            case R.id.button_self_diagnosis:
+                intent = new Intent(getContext(),Self_DiagnosisActivity.class);
+                startActivity(intent);
                 break;
         }
 

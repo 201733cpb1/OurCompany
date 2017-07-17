@@ -196,7 +196,8 @@
                     android:gravity="center"
                     android:text="자가 진단"
                     android:textSize="30dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:id="@+id/button_self_diagnosis"/>
 
                 <View
                     android:layout_width="0dp"
