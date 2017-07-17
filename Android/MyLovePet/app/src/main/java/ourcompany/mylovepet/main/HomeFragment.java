@@ -70,6 +70,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
 
         init(view);
         permissionSetting(p);
+
         return view;
     }
 
@@ -80,11 +81,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
     }
 
     @Override
-    public void onPause() {
+    public void onStop() {
         if(getPetsTask != null){
             getPetsTask.cancel(true);
         }
-        super.onPause();
+        super.onStop();
     }
 
     private void init(View view) {
