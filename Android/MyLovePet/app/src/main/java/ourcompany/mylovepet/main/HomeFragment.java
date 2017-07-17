@@ -58,9 +58,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
     //AsyncTask 클래스
     RequestTask getPetsTask;
 
-    String[] p = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,};
-
     public HomeFragment(){}
 
     @Nullable
@@ -69,7 +66,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
         init(view);
-        permissionSetting(p);
+        permissionSetting();
 
         return view;
     }
@@ -227,9 +224,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
         getPetsTask = new RequestTask(request,this,getContext().getApplicationContext());
         getPetsTask.execute();
     }
-// 권한 되어있는지 요청 하여 없을 시 셋팅(최초 셋팅)
-    public void permissionSetting(String[] permissionValues) {
-               ActivityCompat.requestPermissions(getActivity(),permissionValues,1);
+
+    // 권한 되어있는지 요청 하여 없을 시 셋팅(최초 셋팅)
+    public void permissionSetting() {
+        String[] permissionValues = new String[]{
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION};
+
+        ActivityCompat.requestPermissions(getActivity(),permissionValues,1);
     }
 
     // TaskListener 메소드

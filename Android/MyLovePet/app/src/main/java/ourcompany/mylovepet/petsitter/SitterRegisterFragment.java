@@ -104,7 +104,7 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
         viewPager.setOffscreenPageLimit(pets.length);
 
         //오른쪽 커서를 보이게 한다.
-        if(pets.length > 0){
+        if(pets.length > 1){
             rightCursor.setVisibility(View.VISIBLE);
         }
 
@@ -118,7 +118,7 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
             public void onPageSelected(int position) {
                 int pageSize = viewPager.getAdapter().getCount();
 
-                if(position == 0 ){
+                if( position == 0 ){
                     leftCursor.setVisibility(View.INVISIBLE);
                     rightCursor.setVisibility(View.VISIBLE);
                 }else if(position == (pageSize-1)){
