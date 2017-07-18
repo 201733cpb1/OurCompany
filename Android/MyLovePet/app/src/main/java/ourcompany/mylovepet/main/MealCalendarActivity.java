@@ -2,7 +2,10 @@ package ourcompany.mylovepet.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -54,20 +57,25 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meal_cal_main);
-
-        notes = new HashMap<>();
-
-        li = (LinearLayout)findViewById(R.id.layout_main);
-        calendarView = ((CalendarView2)findViewById(R.id.calendar_view));
-        calendarView.updateCalendar(localDateSetToDateSet(notes.keySet()));
-        // assign event handler
 
         Intent intent = getIntent();
         petNo = intent.getIntExtra("petNo",-1);
         if(petNo == -1){
             finish();
         }
+
+        setContentView(R.layout.activity_meal_cal_main);
+
+        notes = new HashMap<>();
+        li = (LinearLayout)findViewById(R.id.layout_main);
+        calendarView = ((CalendarView2)findViewById(R.id.calendar_view));
+        calendarView.updateCalendar(localDateSetToDateSet(notes.keySet()));
+        // assign event handler
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        ActionBar actionBar =  getSupportActionBar();
+        actionBar.setTitle("펫 먹이노트");
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         editContainer = (ViewGroup) findViewById(R.id.editContainer);
         editTextNote = (EditText)findViewById(R.id.editTextNote);
@@ -163,6 +171,16 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
         });
 
 
+    }
+
+    //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

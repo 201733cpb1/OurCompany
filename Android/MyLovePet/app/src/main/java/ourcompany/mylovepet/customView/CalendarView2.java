@@ -275,7 +275,7 @@ public class CalendarView2 extends LinearLayout
 				// if this day is outside current month, grey it out
 				((TextView)view).setTextColor(getResources().getColor(R.color.greyed_out));
 			}
-			else if (day == selectedDate.getDate())
+			else if (month == selectedDate.getMonth() && day == selectedDate.getDate())
 			{
                 // if it is today, set it to blue/bold
 				((TextView)view).setTypeface(null, Typeface.BOLD);
