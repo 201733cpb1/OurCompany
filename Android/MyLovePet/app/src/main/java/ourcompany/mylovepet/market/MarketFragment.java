@@ -31,6 +31,9 @@ public class MarketFragment extends Fragment {
         tabs.addTab(tabs.newTab().setText("목욕/미용"));
         tabs.addTab(tabs.newTab().setText("건강"));
 
+        tabs.getTabAt(0).select();
+
+
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
