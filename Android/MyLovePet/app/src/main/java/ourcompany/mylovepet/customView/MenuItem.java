@@ -27,8 +27,8 @@ public class MenuItem {
         return icon;
     }
 
-    public void setTitle(String itemtitle) {
-        this.title = itemtitle;
+    public void setTitle(String itemTitle) {
+        this.title = itemTitle;
     }
 
     public String getTitle() {

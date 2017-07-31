@@ -1,3 +1,4 @@
+/*
 package ourcompany.mylovepet.market;
 
 import android.content.Intent;
@@ -10,9 +11,11 @@ import android.view.View;
 
 import ourcompany.mylovepet.R;
 
+*/
 /**
  * Created by 쫑티 on 2017-05-06.
- */
+ *//*
+
 
 public class Market_Category extends AppCompatActivity {
 
@@ -25,11 +28,7 @@ public class Market_Category extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-
-
-
         ActionBar actionBar = getSupportActionBar();
-
 
         actionBar.setDisplayShowCustomEnabled(true); //커스터마이징 하기 위해 필요
         actionBar.setDisplayShowTitleEnabled(false);
@@ -58,7 +57,7 @@ public class Market_Category extends AppCompatActivity {
     }
 
     public void overView(View v){
-        Intent intent = new Intent(this,Market_Main.class);
+        Intent intent = new Intent(this,MarketFragment.class);
         startActivity(intent);
     }
-}
+}*/

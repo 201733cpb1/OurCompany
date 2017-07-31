@@ -4,65 +4,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:background="#3b5796"
-    android:orientation="vertical"
-    android:weightSum="1">
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    android:gravity="center"
+    android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="69dp"
             android:text="My Love Pet"
             android:textAlignment="center"
-            android:textColor="#FFFFFFFF"
-            android:textSize="36sp"
+            android:textColor="#ffffff"
+            android:textSize="45sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/editTextId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="333dp"
+            android:layout_height="41dp"
+            android:layout_gravity="center"
             android:layout_marginTop="44dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:background="@drawable/edittext_background"
             android:ems="10"
             android:hint="아이디"
             android:inputType="textPersonName"
-            android:selectAllOnFocus="false"
-            android:textColor="#FFFFFFFF"
-            android:textColorHint="#FFFFFFFF" />
+            android:textColor="#000000"
+            android:textColorHint="#b4b2b2"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_width="333dp"
+            android:layout_height="41dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_background"
             android:ems="10"
             android:hint="비밀번호"
-            android:inputType="textPersonName"
-            android:selectAllOnFocus="false"
-            android:textColor="#FFFFFFFF"
-            android:textColorHint="#FFFFFFFF"/>
+            android:inputType="textPassword"
+            android:textColor="#000000"
+            android:textColorHint="#b4b2b2"
+            android:textStyle="bold" />
 
         <Button
+            style="@style/shapeButtonStyle"
             android:id="@+id/buttonLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_width="331dp"
+            android:layout_height="61dp"
             android:layout_gravity="center"
-            style="@style/joinButtonStyle"
+            android:layout_marginTop="23dp"
             android:text="로그인"
-            android:textAllCaps="false"
-            android:textColor="#ffffff"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -70,22 +62,97 @@
             android:id="@+id/buttonJoin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_above="@+id/button2"
             android:layout_gravity="center"
-            android:background="@null"
+            android:layout_marginTop="74dp"
+            android:background="#00ffffff"
             android:text="회원가입"
-            android:textColor="#ffffff" />
+            android:textColor="@drawable/button_base_text_color" />
 
         <Button
             android:id="@+id/buttonSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@null"
+            android:background="#00ffffff"
             android:text="아이디/비밀번호 찾기"
-            android:textColor="#ffffff" />
+            android:textColor="@drawable/button_base_text_color" />
 
-    </LinearLayout>
+    <!-- <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical">
 
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="My Love Pet"
+             android:textAlignment="center"
+             android:textColor="#FFFFFFFF"
+             android:textSize="36sp"
+             android:textStyle="bold" />
+
+         <EditText
+             android:id="@+id/editTextId"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="44dp"
+             android:layout_marginLeft="15dp"
+             android:layout_marginRight="15dp"
+             android:ems="10"
+             android:hint="아이디"
+             android:inputType="textPersonName"
+             android:selectAllOnFocus="false"
+             android:textColor="#FFFFFFFF"
+             android:textColorHint="#FFFFFFFF" />
+
+         <EditText
+             android:id="@+id/editTextPassword"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="15dp"
+             android:layout_marginRight="15dp"
+             android:ems="10"
+             android:hint="비밀번호"
+             android:inputType="textPersonName"
+             android:selectAllOnFocus="false"
+             android:textColor="#FFFFFFFF"
+             android:textColorHint="#FFFFFFFF"/>
+
+         <Button
+             android:id="@+id/buttonLogin"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="15dp"
+             android:layout_marginLeft="15dp"
+             android:layout_marginRight="15dp"
+             android:layout_gravity="center"
+             style="@style/joinButtonStyle"
+             android:text="로그인"
+             android:textAllCaps="false"
+             android:textColor="#ffffff"
+             android:textSize="20sp"
+             android:textStyle="bold" />
+
+         <Button
+             android:id="@+id/buttonJoin"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="10dp"
+             android:layout_gravity="center"
+             android:background="@null"
+             android:text="회원가입"
+             android:textColor="#ffffff" />
+
+         <Button
+             android:id="@+id/buttonSearch"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:background="@null"
+             android:text="아이디/비밀번호 찾기"
+             android:textColor="#ffffff" />
+
+     </LinearLayout>-->
 
 </LinearLayout>

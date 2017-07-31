@@ -1,55 +1,48 @@
 package ourcompany.mylovepet.main;
 
-import android.os.AsyncTask;
+
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.ListViewAdapter;
-import ourcompany.mylovepet.main.userinfo.Pet;
-import ourcompany.mylovepet.main.userinfo.User;
+import ourcompany.mylovepet.daummap.GpsMapActivity;
+import ourcompany.mylovepet.daummap.Intro;
+import ourcompany.mylovepet.main.user.User;
+import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
+import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 
 /**
- * Created by REOS on 2017-05-07.
+ * Created by REOS on 2017-07-07.
  */
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
 
     Toolbar toolbar;
     DrawerLayout dlDrawer;
     ActionBarDrawerToggle dtToggle;
 
-    TextView temp;
-    TextView walk;
-    TextView heartrate;
-    SwipeRefreshLayout swipeRefreshLayout;
+    FragmentManager fragmentManager;
 
 
     @Override
@@ -57,7 +50,19 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbarInit();
-        inIt();
+
+        //홈화면으로 시작
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+
+        findViewById(R.id.myInfo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction().replace(R.id.container,new MyPageFragment()).commit();
+                dlDrawer.closeDrawers();
+            }
+        });
+
     }
 
     private void toolbarInit() {
@@ -73,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         dtToggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navi_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.naviView);
         navigationView.setNavigationItemSelectedListener(this);
 
         ListView listview;
@@ -83,36 +88,43 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         adapter = new ListViewAdapter();
 
         // 리스트뷰 참조 및 Adapter달기
-        listview = (ListView) findViewById(R.id.listview);
+        listview = (ListView) findViewById(R.id.listView);
         listview.setAdapter(adapter);
 
+        adapter.addItem("펫 정보");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.home), "홈"); //1
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.statistic), "통계"); //2
 
-        // 첫 번째 아이템 추가.
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sss), "홈");
-        // 두 번째 아이템 추가.
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sss), "통계");
-        // 세 번째 아이템 추가.
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.sss), "펫등록");
-    }
+        adapter.addItem("펫 시터");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "구하기"); //4
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.petsitter), "도움주기"); //5
 
-    private void inIt() {
-        temp = (TextView) findViewById(R.id.temp);
-        walk = (TextView) findViewById(R.id.walk);
-        heartrate = (TextView) findViewById(R.id.heartrate);
+        adapter.addItem("편의 기능");
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tip), "TIP"); //7
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.used), "중고장터"); //8
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //9
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //10
 
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        updateData();
-    }
+        listview.setOnItemClickListener(this);
 
-    private void updateData() {
-        new GetPets().execute();
+        ((TextView)findViewById(R.id.nickName)).setText(User.getIstance().getSunName() + " 님");
+
     }
 
     @Override
-    public void onRefresh() {
-        updateData();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.setting) {
+            Intent intent = new Intent(getApplicationContext(), UserSettingActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -120,181 +132,82 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         return false;
     }
 
-    private class GetCondition extends AsyncTask<String, Void, JSONObject> {
-        @Override
-        public JSONObject doInBackground(String... params) {
-            JSONObject responseJSON = null;
-            try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                String url = "http://58.237.8.179/Servlet/getCondition?editTextId=admin";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+    @Override
+    public void onBackPressed() {
 
-                //커넥션에 각종 정보 설정
-                conn.setRequestMethod("GET");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setRequestProperty("Content-Type", "text/html");
-
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
-
-                ByteArrayOutputStream baos = null;
-                InputStream is = null;
-                String responseStr = null;
-
-                //응답이 성공적으로 완료되었을 때
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    is = conn.getInputStream();
-                    baos = new ByteArrayOutputStream();
-                    byte[] byteBuffer = new byte[1024];
-                    byte[] byteData = null;
-                    int nLength = 0;
-                    while ((nLength = is.read(byteBuffer, 0, byteBuffer.length)) != -1) {
-                        baos.write(byteBuffer, 0, nLength);
-                    }
-                    byteData = baos.toByteArray();
-
-                    responseStr = new String(byteData);
-
-                    responseJSON = new JSONObject(responseStr);
-
-
-                } else {
-                    is = conn.getErrorStream();
-                    baos = new ByteArrayOutputStream();
-                    byte[] byteBuffer = new byte[1024];
-                    byte[] byteData = null;
-                    int nLength = 0;
-                    while ((nLength = is.read(byteBuffer, 0, byteBuffer.length)) != -1) {
-                        baos.write(byteBuffer, 0, nLength);
-                    }
-                    byteData = baos.toByteArray();
-                    responseStr = new String(byteData);
-                    Log.i("info", "DATA response error msg = " + responseStr);
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
-            }
-
-            return responseJSON;
-
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-
-
-            if (jsonObject != null) {
-                try {
-                    jsonObject = jsonObject.getJSONObject("Condition");
-                    temp.setText(jsonObject.getString("avgtemp"));
-                    walk.setText(jsonObject.getString("step"));
-                    heartrate.setText(jsonObject.getString("avgheart"));
-                    Toast.makeText(getApplicationContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(getApplicationContext(), "업데이트 실패", Toast.LENGTH_SHORT).show();
-            }
-
-            swipeRefreshLayout.setRefreshing(false);
-        }
+        super.onBackPressed();
     }
 
-    private class GetPets extends AsyncTask<String, Void, JSONObject> {
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent;
+        FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
+        switch (position) {
+            case 1:
+                //홈화면
+                fragmentTransaction.replace(R.id.container,new HomeFragment());
+                break;
+            case 2:
+                //통계 화면
+                break;
+            case 4:
+                //펫시터 구하기 화면
+                fragmentTransaction.replace(R.id.container,new SitterRegisterFragment());
+                break;
+            case 5:
+                //도움주기 화면
+                fragmentTransaction.replace(R.id.container, new PetSitterFindFragment());
+                break;
+            case 7:
+                //TIP 화면
+                break;
+            case 8:
+                fragmentTransaction.replace(R.id.container, new WebViewTest());
+                //지름/중고장터 정보 화면 intro
 
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            BufferedWriter writer = null;
-            InputStream inputStream = null;
-            JSONObject jsonObject = null;
-
-            try {
-                //HttpURLConnection을 이용해 url에 연결하기 위한 설정
-                //아이디 체크 url 적용
-                String url = "http://58.237.8.179/Servlet/animalInfo";
-                URL obj = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-                //커넥션에 각종 정보 설정
-
-                conn.setRequestMethod("POST");
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                conn.setRequestProperty("Cookie",User.getIstance().getCookie());
-
-                //응답 http코드를 가져옴
-                int responseCode = conn.getResponseCode();
-
-                inputStream = null;
-
-                //응답이 성공적으로 완료되었을 때
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = conn.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    String str;
-                    StringBuilder strBuffer = new StringBuilder();
-                    while ((str = bufferedReader.readLine()) != null) {
-                        strBuffer.append(str);
-                    }
-                    jsonObject = new JSONObject(strBuffer.toString());
-                    inputStream.close();
-                    conn.disconnect();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.i("errorInfo", "error occured!" + e.getMessage());
-            }
-            return jsonObject;
+                break;
+            case 9:
+                chkGpsService();  //탐색 화면
+                break;
+            case 10:
+                intent = new Intent(this, GpsMapActivity.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
+                startActivity(intent);
+                //SNS 화면
+                break;
+            case 11:
+                break;
         }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-
-            if (jsonObject == null) {
-                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
-            } else {
-                JSONArray jsonArray = null;
-
-                try {
-                    jsonArray = jsonObject.getJSONArray("AnimalList");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if (jsonArray != null) {
-                    User user = User.getIstance();
-                    int i2 = jsonArray.length();
-                    Pet[] pets = new Pet[i2];
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        try {
-                            Pet pet = new Pet();
-                            JSONObject object = jsonArray.getJSONObject(0);
-                            pet.setAnimalNo(object.getInt("iAnimalNo"));
-                            pet.setAnimalIndex(object.getInt("iAnimalIndex"));
-                            pet.setSerialNo(object.getInt("iSerialNo"));
-                            pet.setName(object.getString("strName"));
-                            pet.setGender(object.getString("strGender"));
-                            pet.setBirth(object.getString("strBirth"));
-                            pet.setPhoto_URL(object.getString("strPhoto"));
-                            pets[i] = pet;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    user.setPets(pets);
-                }
-
-            }
-        }
+        fragmentTransaction.commit();
+        dlDrawer.closeDrawers();
     }
 
+    public boolean chkGpsService() {
+        Intent intent ;
+        //GPS가 켜져 있는지 확인함.
+        String gpsEnabled = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+        if (!(gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
+            //gps가 사용가능한 상태가 아니면
+            new AlertDialog.Builder(this).setTitle("GPS 설정").setMessage("GPS가 꺼져 있습니다. \nGPS를 활성화 하시겠습니까?").setPositiveButton("GPS 켜기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    //GPS 설정 화면을 띄움
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            }).setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            }).create().show();
+
+        }else if((gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
+            Toast.makeText(getApplicationContext(), "정보를 읽어오는 중입니다.", Toast.LENGTH_LONG).show();
+            intent = new Intent(this, Intro.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
+            startActivity(intent);
+        }
+        return false;
+    }
 }
+

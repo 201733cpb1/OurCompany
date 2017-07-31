@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "281320363597",
+    "firebase_url": "https://mylovepet-c04c7.firebaseio.com",
+    "project_id": "mylovepet-c04c7",
+    "storage_bucket": "mylovepet-c04c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281320363597:android:04454e897df57073",
+        "android_client_info": {
+          "package_name": "ourcompany.mylovepet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "281320363597-k7gnvoirvr3s4uhohddb9otdl33dcok9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuts0-V1fybxgbGOYeWXsOOyKutuXUuOk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
