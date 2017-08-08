@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -13,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +28,8 @@ import java.io.File;
 import java.io.IOException;
 
 import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -37,11 +38,13 @@ import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by REOS on 2017-05-26.
  */
 
-public class PetInfoFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener, TaskListener{
+public class PetInfoFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener{
 
     TextView textViewTemperature, textViewWalk, textViewHeartrate;
 
@@ -50,16 +53,16 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
     int petIndex;
 
     //포토
-    public static final int REQUEST_IMAGE_CAPTURE = 0;
-    public static final int REQUEST_TAKE_PHOTO = 1;
-    public static final int REQUEST_IMAGE_CROP = 2;
+    public static final int REQUEST_CODE_IMAGE_CAPTURE = 0;
+    public static final int REQUEST_CODE_TAKE_PHOTO = 1;
+    public static final int REQUEST_CODE_IMAGE_CROP = 2;
 
-    String mCurrentPhotoPath;
-    Uri photoURI, albumURI = null;
+    Uri originalURI, outPutUri = null;
     CircularImageView profile;
-    Boolean album = false;
 
     Request request;
+
+    TaskListener getConditionTask, profileUploadTask;
 
 
     public PetInfoFragment(){
@@ -94,16 +97,94 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         view.findViewById(R.id.viewHeartrate).setOnClickListener(this);
         view.findViewById(R.id.button_self_diagnosis).setOnClickListener(this);
 
-        int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
-        RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
-        request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/getCondition")
-                .post(body)
-                .build();
+        taskInit();
 
         getConditionExecute();
 
         return view;
+    }
+
+
+    private void taskInit(){
+        getConditionTask = new TaskListener() {
+            @Override
+            public void preTask() {
+                textViewTemperature.setText("갱신중...");
+                textViewWalk.setText("갱신중...");
+                textViewHeartrate.setText("갱신중...");
+            }
+
+            @Override
+            public void postTask(Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+
+                    jsonObject = jsonObject.getJSONObject("Condition");
+                    int temperate = jsonObject.getInt("avgtemp");
+                    int step = jsonObject.getInt("step");
+                    int heartrate = jsonObject.getInt("avgheart");
+
+                    textViewTemperature.setText(temperate+"");
+                    textViewWalk.setText(step+"");
+                    textViewHeartrate.setText(heartrate+"");
+
+                    // -1 이라면 정보가 없는것.
+                    if(temperate == -1 && step == -1 && heartrate == -1){
+                        Toast.makeText(getContext(), "정보가 존재 하지 않습니다.", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException | IOException e ) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void cancelTask() {
+                textViewTemperature.setText("실패");
+                textViewWalk.setText("실패");
+                textViewHeartrate.setText("실패");
+            }
+
+            @Override
+            public void fairTask() {
+
+            }
+        };
+
+        profileUploadTask = new TaskListener() {
+            @Override
+            public void preTask() {
+            }
+            @Override
+            public void postTask(Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    jsonObject = jsonObject.getJSONObject("report");
+                    boolean isSuccess = jsonObject.getBoolean("result");
+                    if(isSuccess){
+                        Toast.makeText(getContext(), "프로필 업로드 완료",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(), "다시 시도 해주세요",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException | IOException e ) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void cancelTask() {
+            }
+
+            @Override
+            public void fairTask() {
+            }
+        };
     }
 
     @Override
@@ -126,21 +207,25 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 break;
             case R.id.viewVaccination:
                 intent = new Intent(getContext(),VaccineActivity.class);
+                intent.putExtra("petNo",User.getIstance().getPet(petIndex).getPetNo());
                 startActivity(intent);
                 break;
             case R.id.viewTemperature:
                 intent = new Intent(getContext(),StatisticsActivity.class);
-                intent.putExtra("asd","온도");
+                intent.putExtra("serialNo",User.getIstance().getPet(petIndex).getSerialNo());
+                intent.putExtra("pageType",StatisticsActivity.TEMP_PAGE);
                 startActivity(intent);
                 break;
             case R.id.viewActiveMass:
                 intent = new Intent(getContext(),StatisticsActivity.class);
-                intent.putExtra("asd","걸음수");
+                intent.putExtra("serialNo",User.getIstance().getPet(petIndex).getSerialNo());
+                intent.putExtra("pageType",StatisticsActivity.WALK_PAGE);
                 startActivity(intent);
                 break;
             case R.id.viewHeartrate:
                 intent = new Intent(getContext(),StatisticsActivity.class);
-                intent.putExtra("asd","심박수");
+                intent.putExtra("serialNo",User.getIstance().getPet(petIndex).getSerialNo());
+                intent.putExtra("pageType",StatisticsActivity.HEART_PAGE);
                 startActivity(intent);
                 break;
             case R.id.profile_picture:
@@ -152,9 +237,9 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                     public void onClick(DialogInterface dialog, int id) {
                         // 프로그램을 종료한다
                         if(items[id]=="사진촬영"){
-                            dispatchTakePictureIntent();
+                            captureImage();
                         }else if(items[id]=="갤러리"){
-                            doTakeAlbumAction();
+                            getAlbumImage();
                         }else{
                             dialog.dismiss();
                         }
@@ -176,58 +261,44 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Bitmap image_bitmap = null;
         switch (requestCode){
-            case REQUEST_TAKE_PHOTO: // 앨범 이미지 가져오기
-                album = true;
-                File albumFile = null;
-                try {
-                    albumFile = createImageFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            case REQUEST_CODE_TAKE_PHOTO: // 앨범 이미지 가져오기
+                if(resultCode == RESULT_OK){
+                    File albumFile = null;
+                    try {
+                        albumFile = createImageFile();
+                    }catch (IOException e){}
+                    if(albumFile != null){
+                        outPutUri = Uri.fromFile(albumFile);
+                    }
+                    originalURI = data.getData();
+                    cropImage(originalURI, outPutUri);
                 }
-                if (albumFile != null) {
-                    albumURI = Uri.fromFile(albumFile); // 앨범 이미지 Crop한 결과는 새로운 위치 저장
-                }
-
-                photoURI = data.getData(); // 앨범 이미지의 경로
-                /* profile에 띄우기*/
-                Bitmap image_bitmap = null;
-                try {
-                    image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoURI);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                profile.setImageBitmap(image_bitmap);
                 break;
-            case REQUEST_IMAGE_CAPTURE:
-                Bitmap image_bitmap2 = null;
-
-                try {
-                    image_bitmap2 = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoURI);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            case REQUEST_CODE_IMAGE_CAPTURE:
+                if(resultCode == RESULT_OK){
+                    cropImage(originalURI, outPutUri);
                 }
-                profile.setImageBitmap(image_bitmap2);
                 break;
-            /*case REQUEST_IMAGE_CROP:
-                Bitmap photo = BitmapFactory.decodeFile(photoURI.getPath());
-                profile.setImageBitmap(photo);
-
-                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE); // 동기화
-                if (album == false) {
-                    mediaScanIntent.setData(photoURI); // 동기화
-                } else if (album == true) {
-                    album = false;
-                    mediaScanIntent.setData(albumURI); // 동기화
+            case REQUEST_CODE_IMAGE_CROP:
+                if(resultCode == RESULT_OK){
+                    proFileUploadExecute();
                 }
-                this.sendBroadcast(mediaScanIntent); // 동기화
-                break;*/
+                break;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+    private void getAlbumImage() { // 앨범 호출
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
+    }
+
+    private void captureImage() {
+        /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null)
         {
             File photoFile = null;
@@ -237,147 +308,98 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 Toast.makeText(getContext(), "createImageFile Failed", Toast.LENGTH_LONG).show();
             }
             if (photoFile != null) {
-                //photoURI = Uri.fromFile(photoFile); // 임시 파일의 위치,경로 가져옴
-                photoURI = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI); // 임시 파일 위치에 저장
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                //originalURI = Uri.fromFile(photoFile); // 임시 파일의 위치,경로 가져옴
+                originalURI = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, originalURI); // 임시 파일 위치에 저장
+                startActivityForResult(takePictureIntent, REQUEST_CODE_IMAGE_CAPTURE);
             }
+        }*/
+        String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state)){
+            Intent takeImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if(takeImageIntent.resolveActivity(getActivity().getPackageManager()) != null){
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                }catch (IOException e){e.printStackTrace();}
+
+                if(photoFile != null){
+                    originalURI =
+                            FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName(), photoFile);
+                    Log.d("1234",originalURI.getPath());
+                    outPutUri = originalURI;
+                    takeImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, originalURI);
+                    startActivityForResult(takeImageIntent, REQUEST_CODE_IMAGE_CAPTURE);
+                }
+            }
+        }else {
+            Toast.makeText(getContext(),"저장소 오류",Toast.LENGTH_SHORT).show();
         }
     }
 
     private File createImageFile() throws IOException{
-        String imageFileName = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
-        File storageDir = new File(Environment.getExternalStorageDirectory(),imageFileName);
-        mCurrentPhotoPath = storageDir.getAbsolutePath();
-        return storageDir;
+        String imageFileName = "profileTemp.jpg";
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mylovepet/temp/");
+
+        if(!dir.exists()){
+            boolean dd = dir.mkdirs();
+            Log.d("qwe22",dd+"");
+        }
+        File imgFile = new File(dir,imageFileName);
+
+        Log.d("qwerqwer",Environment.getExternalStorageDirectory().getAbsolutePath());
+        Log.d("qwerqwer",dir.getAbsolutePath());
+
+        Log.d("d222",imgFile.getAbsolutePath());
+
+        return imgFile;
     }
 
-    private void doTakeAlbumAction() { // 앨범 호출
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+    private void cropImage(Uri inputUri, Uri outPutUri){
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+        cropIntent.setDataAndType(inputUri,"image/*");
+        cropIntent.putExtra("scale",true);
+        cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+        cropIntent.putExtra("output", outPutUri);
+        startActivityForResult(cropIntent, REQUEST_CODE_IMAGE_CROP);
     }
 
+    private void proFileUploadExecute(){
+        File file = new File(outPutUri.getPath());
+        if(file.exists()){
+            RequestBody body = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("file",file.getName(),RequestBody.create(MediaType.parse("image/jpg"), file))
+                    .build();
+
+            request = new Request.Builder()
+                    .url("http://58.237.8.179/upload")
+                    .post(body)
+                    .build();
+            new RequestTask(request, profileUploadTask, getContext().getApplicationContext()).execute();
+        }
+    }
+
+    //화면을 당겨서 새로고침
     @Override
     public void onRefresh() {
         getConditionExecute();
     }
 
     private void getConditionExecute(){
-        new RequestTask(request,this,getContext().getApplicationContext()).execute();
+        int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
+        RequestBody body= new FormBody.Builder()
+                .add("serialNo",serialNo+"")
+                .build();
+        request = new Request.Builder()
+                .url("http://58.237.8.179/Servlet/getCondition")
+                .post(body)
+                .build();
+        new RequestTask(request, getConditionTask, getContext().getApplicationContext()).execute();
     }
 
 
-    // tskListener 메소드
-    @Override
-    public void preTask() {
-        textViewTemperature.setText("갱신중...");
-        textViewWalk.setText("갱신중...");
-        textViewHeartrate.setText("갱신중...");
-    }
-
-    @Override
-    public void postTask(Response response) {
-        try {
-            JSONObject jsonObject = new JSONObject(response.body().string());
-
-            jsonObject = jsonObject.getJSONObject("Condition");
-            int temperate = jsonObject.getInt("avgtemp");
-            int step = jsonObject.getInt("step");
-            int heartrate = jsonObject.getInt("avgheart");
-
-            textViewTemperature.setText(temperate+"");
-            textViewWalk.setText(step+"");
-            textViewHeartrate.setText(heartrate+"");
-
-            // -1 이라면 정보가 없는것.
-            if(temperate == -1 && step == -1 && heartrate == -1){
-                Toast.makeText(getContext(), "정보가 존재 하지 않습니다.", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(getContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (JSONException | IOException e ) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
-        }
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void cancelTask() {
-        textViewTemperature.setText("실패");
-        textViewWalk.setText("실패");
-        textViewHeartrate.setText("실패");
-    }
-
-    @Override
-    public void fairTask() {
-
-    }
-    // tskListener 메소드 end
-
-
-    private class GetCondition extends AsyncTask<String, Void, Response> {
-
-        private OkHttpClient client = new OkHttpClient();
-
-        @Override
-        protected void onPreExecute() {
-            textViewTemperature.setText("갱신중...");
-            textViewWalk.setText("갱신중...");
-            textViewHeartrate.setText("갱신중...");
-        }
-
-        @Override
-        public Response doInBackground(String... params) {
-            int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
-            RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
-            Request request = new Request.Builder()
-                    .url("http://58.237.8.179/Servlet/getCondition")
-                    .post(body)
-                    .build();
-            try {
-                Response response = client.newCall(request).execute();
-                return response;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Response response) {
-            if(response == null || response.code() != 200) {
-                Toast.makeText(getContext(), "업데이트 실패 다시 시도해주세요", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                JSONObject jsonObject = new JSONObject(response.body().string());
-
-                jsonObject = jsonObject.getJSONObject("Condition");
-                int temperate = jsonObject.getInt("avgtemp");
-                int step = jsonObject.getInt("step");
-                int heartrate = jsonObject.getInt("avgheart");
-
-                textViewTemperature.setText(temperate+"");
-                textViewWalk.setText(step+"");
-                textViewHeartrate.setText(heartrate+"");
-
-                // -1 이라면 정보가 없는것.
-                if(temperate == -1 && step == -1 && heartrate == -1){
-                    Toast.makeText(getContext(), "정보가 존재 하지 않습니다.", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
-                }
-
-            } catch (JSONException | IOException e ) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
-            }
-            swipeRefreshLayout.setRefreshing(false);
-        }
-    }
 
 }

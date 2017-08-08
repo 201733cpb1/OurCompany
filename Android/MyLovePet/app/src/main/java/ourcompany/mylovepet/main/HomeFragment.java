@@ -35,11 +35,13 @@ import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by REOS on 2017-07-07.
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener, TaskListener{
+public class HomeFragment extends Fragment implements View.OnClickListener, TaskListener, OnBackKeyPressListener{
 
     //플로팅 버튼 변수
     boolean isFloat = false;
@@ -52,8 +54,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
     //좌우 커서 이미지 아이콘 view
     View leftCursor, rightCursor;
 
-    //펫 추가 액티비티 응답코드
-    static final int SUCCESS_PET_ADD = 100;
 
     //AsyncTask 클래스
     RequestTask getPetsTask;
@@ -73,8 +73,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
 
     @Override
     public void onStart() {
-        super.onStart();
         getPetsExecute();
+        ((MainActivity)getActivity()).setOnBackKeyPressListener(this);
+        super.onStart();
     }
 
     @Override
@@ -82,6 +83,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
         if(getPetsTask != null){
             getPetsTask.cancel(true);
         }
+        ((MainActivity)getActivity()).setOnBackKeyPressListener(null);
         super.onStop();
     }
 
@@ -174,13 +176,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
-
-        if (resultCode == SUCCESS_PET_ADD){
+        if (resultCode == RESULT_OK){
             getPetsExecute();
             return;
         }
-
+        super.onActivityResult(requestCode,resultCode,data);
     }
 
     //플로팅 버튼이 눌렀을떄의 동작
@@ -298,5 +298,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
 
     }
     // TaskListener 메소드 end
+
+
+    // 액티비티가 받는 뒤로가기 이벤트를 받기위한 인터페이스
+    @Override
+    public boolean onBack() {
+        if(isFloat){
+            closeFloatingButton();
+            return true;
+        }else {
+            return false;
+        }
+    }
 
 }

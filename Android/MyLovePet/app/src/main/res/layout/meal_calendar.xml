@@ -124,8 +124,8 @@
             <!-- days view -->
             <GridView
                 android:id="@+id/grid"
-                android:layout_width="wrap_content"
-                android:layout_height="400dp"
+                android:layout_width="match_parent"
+                android:layout_height="520dp"
                 android:numColumns="7" />
 
             <LinearLayout
@@ -158,5 +158,6 @@
 
 
         </LinearLayout>
+
     </ScrollView>
 </LinearLayout>

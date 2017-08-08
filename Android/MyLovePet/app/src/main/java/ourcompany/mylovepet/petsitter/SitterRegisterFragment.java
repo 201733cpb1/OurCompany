@@ -37,6 +37,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
 
+import ourcompany.mylovepet.main.HomeFragment;
 import ourcompany.mylovepet.main.user.Pet;
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
@@ -239,6 +240,10 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
         new RequestTask(request,this,getContext().getApplicationContext()).execute();
     }
 
+    private void finish(){
+        getFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
+    }
+
 
     // taskListener 메소드
     @Override
@@ -254,14 +259,15 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
             isSuccessed = jsonObject.getBoolean("isSuccessed");
 
             if(isSuccessed){
-                Toast.makeText(getContext(),"글 등록 완료",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"글 등록 완료",Toast.LENGTH_LONG).show();
             }else {
-                Toast.makeText(getContext(),"등록 실패",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"등록 실패",Toast.LENGTH_LONG).show();
             }
         } catch (JSONException | IOException e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
         }
+        finish();
     }
 
     @Override
@@ -275,81 +281,6 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
     }
     // taskListener 메소드 end
 
-
-
-    private class AddPetSitter extends AsyncTask<String, Void, Response> {
-
-        private OkHttpClient client = new OkHttpClient();
-
-        String strSDate,strEDate,strBody, strTitle;
-
-        JSONArray jsonArray;
-
-        @Override
-        protected void onPreExecute() {
-            strSDate = startDateEditText.getText().toString();
-            strEDate = endDateEditText.getText().toString();
-            strTitle = editTextTitle.getText().toString();
-            strBody = editTextBody.getText().toString();
-
-            jsonArray = new JSONArray();
-
-            for(int no : petNoSet){
-                jsonArray.put(no);
-            }
-        }
-
-        @Override
-        public Response doInBackground(String... params) {
-            RequestBody body= new FormBody.Builder()
-                    .add("Date", strSDate)
-                    .add("Term", strEDate)
-                    .add("Title", strTitle)
-                    .add("Feedback", strBody)
-                    .add("petList", jsonArray.toString())
-                    .build();
-
-            Request request = new Request.Builder()
-                    .addHeader("Cookie",User.getIstance().getCookie())
-                    .url("http://58.237.8.179/Servlet/addPetsitter")
-                    .post(body)
-                    .build();
-
-            try {
-                Response response = client.newCall(request).execute();
-                return response;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Response response) {
-            if(response == null || response.code() != 200) {
-                Toast.makeText(getContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                jsonObject = jsonObject.getJSONObject("AddPetSitter");
-                boolean isSuccessed = false;
-                isSuccessed = jsonObject.getBoolean("isSuccessed");
-
-                if(isSuccessed){
-                    Toast.makeText(getContext(),"글 등록 완료",Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getContext(),"등록 실패",Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException | IOException e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
-            }
-
-
-        }
-    }
 
     private class PetViewPager extends PagerAdapter{
 

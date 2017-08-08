@@ -192,7 +192,7 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
                     isSuccessed = jsonObject.getBoolean("isSuccessed");
                     if(isSuccessed) {
                         Toast.makeText(getApplicationContext(), "펫 추가 완료", Toast.LENGTH_SHORT).show();
-                        setResult(HomeFragment.SUCCESS_PET_ADD);
+                        setResult(RESULT_OK);
                         finish();
                     }
                     else
@@ -365,118 +365,6 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
             return true;
         }
 
-    }
-
-
-    private class AddPet extends AsyncTask<String, Void, Response> {
-
-        private OkHttpClient client = new OkHttpClient();
-
-        @Override
-        public Response doInBackground(String... params) {
-            RequestBody body= new FormBody.Builder()
-                    .add("AnimalIndex",-1+"")
-                    .add("SerialNo", strSerialNo)
-                    .add("Name", strPetName)
-                    .add("Gender", strGender)
-                    .add("Birth", strBirth)
-                    .build();
-
-            Request request = new Request.Builder()
-                    .addHeader("Cookie",User.getIstance().getCookie())
-                    .url("http://58.237.8.179/Servlet/createAnimal")
-                    .post(body)
-                    .build();
-
-            try {
-                Response response = client.newCall(request).execute();
-                return response;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Response response) {
-            if(response == null || response.code() != 200) {
-                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                jsonObject = jsonObject.getJSONObject("CreateAnimalReulst");
-                boolean isSuccessed;
-                isSuccessed = jsonObject.getBoolean("isSuccessed");
-                if(isSuccessed) {
-                    Toast.makeText(getApplicationContext(), "펫 추가 완료", Toast.LENGTH_SHORT).show();
-                    setResult(HomeFragment.SUCCESS_PET_ADD);
-                    finish();
-                }
-                else
-                    Toast.makeText(getApplicationContext(), "펫 추가 실패", Toast.LENGTH_SHORT).show();
-
-            } catch (JSONException | IOException e ) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
-            }
-
-
-        }
-
-    }
-
-    private class SerialNoCheck extends AsyncTask<String, Void, Response> {
-
-        private OkHttpClient client = new OkHttpClient();
-
-        @Override
-        protected void onPreExecute() {
-            buttonSerial.setEnabled(false);
-        }
-
-        @Override
-        public Response doInBackground(String... params) {
-            RequestBody body= new FormBody.Builder().add("serialNo",strSerialNo).build();
-            Request request = new Request.Builder()
-                    .url("http://58.237.8.179/Servlet/checkSerial")
-                    .post(body)
-                    .build();
-            try {
-                Response response = client.newCall(request).execute();
-                return response;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Response response) {
-            buttonSerial.setEnabled(true);
-            if(response == null || response.code() != 200) {
-                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                boolean isAble = false;
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                jsonObject = jsonObject.getJSONObject("CheckResult");
-                isAble = jsonObject.getBoolean("isMattched");
-                if (isAble) {
-                    nextPage();
-                } else
-                    Toast.makeText(getApplicationContext(), "사용 불가능한 시리얼 번호 입니다.", Toast.LENGTH_SHORT).show();
-
-            } catch (JSONException | IOException e ) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
-            }
-
-
-        }
     }
 
 }

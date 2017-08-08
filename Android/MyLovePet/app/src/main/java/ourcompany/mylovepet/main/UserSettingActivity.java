@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +62,6 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
 
 
         pushSwitch = (Switch) findViewById(R.id.pushSwitch);
-        pushSwitch.setChecked(true);
 
         pushSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -90,16 +90,13 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
             public void postTask(Response response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response.body().string());
-                    boolean pushState = jsonObject.getJSONObject("report").getBoolean("result");
-                    if(pushState){
-                        pushSwitch.setChecked(true);
-                    }else {
-                        pushSwitch.setChecked(false);
-                    }
+                    boolean pushState = false;
+                    pushState = jsonObject.getJSONObject("report").getBoolean("result");
+                    pushSwitch.setChecked(pushState);
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }finally {
-                    pushSwitch.setEnabled(true);
+                    unLockSwitch();
                 }
             }
             @Override
@@ -124,9 +121,9 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     boolean pushState = jsonObject.getJSONObject("report").getBoolean("result");
                     if(pushState){
-                        pushSwitch.setChecked(true);
+                        Toast.makeText(getApplicationContext(),"변경 완료",Toast.LENGTH_SHORT).show();
                     }else {
-                        pushSwitch.setChecked(false);
+                        Toast.makeText(getApplicationContext(),"변경 실패",Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();

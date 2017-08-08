@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,14 +46,11 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
     DateTimeFormatter dateTimeFormatDate;
 
     Button buttonUpdate;
-
-
     EditText editTextNote;
 
     int petNo;
 
     HashMap<LocalDate,String> notes;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +58,6 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
 
         Intent intent = getIntent();
         petNo = intent.getIntExtra("petNo",-1);
-        if(petNo == -1){
-            finish();
-        }
 
         setContentView(R.layout.activity_meal_cal_main);
 
@@ -85,17 +80,13 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
 
         listenerInit();
 
-        updateExecute(dateTimeFormatDate.print(selectDate),null);
+        noteUpdate(dateTimeFormatDate.print(selectDate),null);
     }
-
-
 
     @Override
     protected void onStop() {
         super.onStop();
     }
-
-
 
     private void listenerInit(){
 
@@ -104,30 +95,10 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
         buttonUpdate.setOnClickListener(new View.OnClickListener() { // 원하는 날짜에 마커 표시
             @Override
             public void onClick(View v) {
-                /*Date a = new Date();
-                int compare = a.compareTo(d);
-
-                if(compare > 0){
-                    events.add(d);
-                    Toast.makeText(MealCalendarActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
-                    calendarView.updateCalendar(events);
-                }else if(compare < 0){
-                    Toast.makeText(MealCalendarActivity.this, "미래를 보는가?", Toast.LENGTH_SHORT).show();
-                }else{
-                    events.add(d);
-                    Toast.makeText(MealCalendarActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
-                    calendarView.updateCalendar(events);
-                }*/
-
                 //노트 업로드
-                //String date = dateTimeFormatDate.print(selectDate);
+                String date = dateTimeFormatDate.print(selectDate);
                 String text = editTextNote.getText().toString();
-                notes.put(selectDate,text);
-
-                HashSet<Date> dateSets = localDateSetToDateSet(notes.keySet());
-
-                calendarView.updateCalendar(dateSets);
-                //updateExecute(date,text);
+                noteUpdate(date,text);
             }
         });
 
@@ -184,8 +155,7 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
     }
 
 
-
-    private static HashSet<Date> localDateSetToDateSet(Set<LocalDate> localDateSets){
+    private HashSet<Date> localDateSetToDateSet(Set<LocalDate> localDateSets){
         HashSet<Date> dateSets = new HashSet<>();
 
         for(LocalDate date: localDateSets){
@@ -194,12 +164,19 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
         return dateSets;
     }
 
+    private void lockButton(){
+        buttonUpdate.setEnabled(false);
+    }
 
-    private void updateExecute(String date, String text){
+    private void unLockButton(){
+        buttonUpdate.setEnabled(true);
+    }
 
+
+    private void noteUpdate(String date, String text){
         FormBody.Builder builder= new FormBody.Builder()
                 .add("animalNo", petNo+"")
-                .add("month",date);
+                .add("date",date);
         if(text != null){
             builder.add("text",text);
         }
@@ -213,14 +190,6 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
         new RequestTask(request,this,getApplicationContext()).execute();
     }
 
-    private void lockButton(){
-        buttonUpdate.setEnabled(false);
-    }
-
-    private void unLockButton(){
-        buttonUpdate.setEnabled(true);
-    }
-
     //통신 메소드
     @Override
     public void preTask() {
@@ -231,22 +200,33 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
     public void postTask(Response response) {
         try {
             JSONObject jsonObject = new JSONObject(response.body().string());
-            LocalDate date = LocalDate.parse("dd");
-            String note = new String();
-            notes = new HashMap<>();
-            notes.put(date,note);
-
+            jsonObject = jsonObject.getJSONObject("report");
+            boolean result = jsonObject.getBoolean("result");
+            if(result){
+                notes = new HashMap<>();
+                JSONArray jsonArray = jsonObject.getJSONArray("value");
+                for(int i = 0 ; i < jsonArray.length(); i++){
+                    jsonObject = jsonArray.getJSONObject(i);
+                    LocalDate localDate = LocalDate.parse(jsonObject.getString("Date"));
+                    String note = jsonObject.getString("Text");
+                    notes.put(localDate, note);
+                }
+                Toast.makeText(this,"업로드 성공",Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this,"업로드 실패",Toast.LENGTH_SHORT).show();
+            }
         } catch (JSONException | IOException e ) {
             e.printStackTrace();
             Toast.makeText(this, "서버 통신 오류", Toast.LENGTH_SHORT).show();
         }finally {
             unLockButton();
+            calendarView.updateCalendar(localDateSetToDateSet(notes.keySet()));
         }
     }
 
     @Override
     public void cancelTask() {
-
+        unLockButton();
     }
 
     @Override

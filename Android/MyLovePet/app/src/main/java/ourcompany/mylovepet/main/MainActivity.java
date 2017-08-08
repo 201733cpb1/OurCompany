@@ -3,6 +3,7 @@ package ourcompany.mylovepet.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     FragmentManager fragmentManager;
 
+    OnBackKeyPressListener onBackKeyPressListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,23 +90,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Adapter 생성
         adapter = new ListViewAdapter();
 
-        // 리스트뷰 참조 및 Adapter달기
+        // 리스트뷰 참조 및 Adapter
         listview = (ListView) findViewById(R.id.listView);
         listview.setAdapter(adapter);
 
         adapter.addItem("펫 정보");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.home), "홈"); //1
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.statistic), "통계"); //2
 
         adapter.addItem("펫 시터");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "구하기"); //4
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.petsitter), "도움주기"); //5
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "구하기"); //3
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.petsitter), "도움주기"); //4
 
         adapter.addItem("편의 기능");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tip), "TIP"); //7
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.used), "중고장터"); //8
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //9
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //10
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tip), "TIP"); //6
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.used), "중고장터"); //7
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //8
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //9
 
         listview.setOnItemClickListener(this);
 
@@ -134,8 +136,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-
+        if(onBackKeyPressListener != null){
+            if(onBackKeyPressListener.onBack()){
+                return;
+            }
+        }
         super.onBackPressed();
+    }
+
+
+    public void setOnBackKeyPressListener(OnBackKeyPressListener onBackKeyPressListener){
+        this.onBackKeyPressListener = onBackKeyPressListener;
     }
 
     @Override
@@ -147,34 +158,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //홈화면
                 fragmentTransaction.replace(R.id.container,new HomeFragment());
                 break;
-            case 2:
-                //통계 화면
-                break;
-            case 4:
+            case 3:
                 //펫시터 구하기 화면
                 fragmentTransaction.replace(R.id.container,new SitterRegisterFragment());
                 break;
-            case 5:
+            case 4:
                 //도움주기 화면
                 fragmentTransaction.replace(R.id.container, new PetSitterFindFragment());
                 break;
-            case 7:
+            case 6:
                 //TIP 화면
                 break;
-            case 8:
+            case 7:
                 fragmentTransaction.replace(R.id.container, new WebViewTest());
                 //지름/중고장터 정보 화면 intro
-
                 break;
-            case 9:
+            case 8:
                 chkGpsService();  //탐색 화면
                 break;
-            case 10:
+            case 9:
                 intent = new Intent(this, GpsMapActivity.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
                 startActivity(intent);
                 //SNS 화면
-                break;
-            case 11:
                 break;
         }
         fragmentTransaction.commit();
