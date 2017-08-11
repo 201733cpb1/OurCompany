@@ -24,7 +24,7 @@
 	
 	<servlet>
 		<servlet-name>condition-servlet</servlet-name>
-		<servlet-class>Servlet.ConditionServlet</servlet-class>
+		<servlet-class>Servlet.State.ConditionServlet</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
@@ -34,7 +34,7 @@
 	
 	<servlet>
 		<servlet-name>check-userid-servlet</servlet-name>
-		<servlet-class>Servlet.CheckOverlapJoin</servlet-class>
+		<servlet-class>Servlet.User.CheckOverlapJoin</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
@@ -44,7 +44,7 @@
 	
 	<servlet>
 		<servlet-name>user-join-servlet</servlet-name>
-		<servlet-class>Servlet.JoinServlet</servlet-class>
+		<servlet-class>Servlet.User.JoinServlet</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
@@ -54,7 +54,7 @@
 	
 	<servlet>
 		<servlet-name>login-servlet</servlet-name>
-		<servlet-class>Servlet.LoginServlet</servlet-class>
+		<servlet-class>Servlet.User.LoginServlet</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
@@ -64,11 +64,182 @@
 	
 	<servlet>
 		<servlet-name>animal-info-servlet</servlet-name>
-		<servlet-class>Servlet.AnimalInfoServlet</servlet-class>
+		<servlet-class>Servlet.Animal.AnimalInfoServlet</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>animal-info-servlet</servlet-name>
 		<url-pattern>/Servlet/animalInfo</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>serial-check-servlet</servlet-name>
+		<servlet-class>Servlet.Animal.SerialCheckServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>serial-check-servlet</servlet-name>
+		<url-pattern>/Servlet/checkSerial</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>create-animal-servlet</servlet-name>
+		<servlet-class>Servlet.Animal.CreateAnimalServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>create-animal-servlet</servlet-name>
+		<url-pattern>/Servlet/createAnimal</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>add-condition-servlet</servlet-name>
+		<servlet-class>Servlet.State.AddConditionServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>add-condition-servlet</servlet-name>
+		<url-pattern>/Servlet/addCondition</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>add-petsitter-servlet</servlet-name>
+		<servlet-class>Servlet.PetSitter.AddPetsitterServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>add-petsitter-servlet</servlet-name>
+		<url-pattern>/Servlet/addPetsitter</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>register-token-servlet</servlet-name>
+		<servlet-class>Servlet.Push.RegisterTokenServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>register-token-servlet</servlet-name>
+		<url-pattern>/Servlet/registerToken</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>push-notification-servlet</servlet-name>
+		<servlet-class>Servlet.Push.PushNotificationServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>push-notification-servlet</servlet-name>
+		<url-pattern>/Servlet/pushNotification</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>delete-animal-servlet</servlet-name>
+		<servlet-class>Servlet.Animal.DeleteAnimalServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>delete-animal-servlet</servlet-name>
+		<url-pattern>/Servlet/deleteAnimal</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>change-push-receive-servlet</servlet-name>
+		<servlet-class>Servlet.User.UserPushState</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>change-push-receive-servlet</servlet-name>
+		<url-pattern>/Servlet/userPushState</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>animal-meal-servlet</servlet-name>
+		<servlet-class>Servlet.Animal.AnimalMealServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>animal-meal-servlet</servlet-name>
+		<url-pattern>/Servlet/animalMeal</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>create-vaccine-servlet</servlet-name>
+		<servlet-class>Servlet.Animal.CreateAnimalVaccine</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>create-vaccine-servlet</servlet-name>
+		<url-pattern>/Servlet/createVaccine</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>animal-vaccine-info-servlet</servlet-name>
+		<servlet-class>Servlet.Animal.AnimalVaccineInfo</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>animal-vaccine-info-servlet</servlet-name>
+		<url-pattern>/Servlet/vaccineInfo</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>delete-vaccine-servlet</servlet-name>
+		<servlet-class>Servlet.Animal.DeleteAnimalVaccine</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>delete-vaccine-servlet</servlet-name>
+		<url-pattern>/Servlet/deleteVaccine</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>create-animal-walk-servlet</servlet-name>
+		<servlet-class>Servlet.Animal.CreateAnimalWalk</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>create-animal-walk-servlet</servlet-name>
+		<url-pattern>/Servlet/createWalk</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>condition-avg-servlet</servlet-name>
+		<servlet-class>Servlet.State.AvgConditionServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>condition-avg-servlet</servlet-name>
+		<url-pattern>/Servlet/avgCondition</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>file-upload-servlet</servlet-name>
+		<servlet-class>Servlet.File.FileUploadServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>file-upload-servlet</servlet-name>
+		<url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>animal-profile-upload-servlet</servlet-name>
+		<servlet-class>Servlet.Animal.AnimalProfileUploadServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>animal-profile-upload-servlet</servlet-name>
+		<url-pattern>/Servlet/animalProfileUpload</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>animal-profile-download-servlet</servlet-name>
+		<servlet-class>Servlet.Animal.AnimalProfileDownloadServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>animal-profile-download-servlet</servlet-name>
+		<url-pattern>/Servlet/animalProfileDownload</url-pattern>
+	</servlet-mapping>
+	
 </web-app>
