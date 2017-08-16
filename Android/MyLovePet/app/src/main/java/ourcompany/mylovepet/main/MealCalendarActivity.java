@@ -20,7 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,14 +29,13 @@ import java.util.Set;
 import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.CalendarView2;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
 
-public class MealCalendarActivity extends AppCompatActivity implements TaskListener {
+public class MealCalendarActivity extends AppCompatActivity {
     CalendarView2 calendarView;
     LinearLayout li;
 
@@ -51,6 +50,8 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
     int petNo;
 
     HashMap<LocalDate,String> notes;
+
+    TaskListener noteUpdateTaskListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +103,8 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
             }
         });
 
-        calendarView.setEventHandler(new CalendarView2.EventHandler() // 달력 날짜 리스너
-        {
+        // 달력 날짜 리스너
+        calendarView.setEventHandler(new CalendarView2.EventHandler(){
             @Override
             public void onDayLongPress(Date date)
             {
@@ -141,6 +142,49 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
             }
         });
 
+        noteUpdateTaskListener = new TaskListener() {
+            //통신 메소드
+            @Override
+            public void preTask() {
+                lockButton();
+            }
+
+            @Override
+            public void postTask(byte[] bytes) {
+                try {
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
+                    jsonObject = jsonObject.getJSONObject("report");
+                    boolean result = jsonObject.getBoolean("result");
+                    if(result){
+                        notes = new HashMap<>();
+                        JSONArray jsonArray = jsonObject.getJSONArray("value");
+                        for(int i = 0 ; i < jsonArray.length(); i++){
+                            jsonObject = jsonArray.getJSONObject(i);
+                            LocalDate localDate = LocalDate.parse(jsonObject.getString("Date"));
+                            String note = jsonObject.getString("Text");
+                            notes.put(localDate, note);
+                        }
+                        Toast.makeText(getApplicationContext(),"업로드 성공",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getApplicationContext(),"업로드 실패",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e ) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+                }finally {
+                    unLockButton();
+                    calendarView.updateCalendar(localDateSetToDateSet(notes.keySet()));
+                }
+            }
+
+            @Override
+            public void fairTask() {
+                unLockButton();
+                Toast.makeText(getApplicationContext(), "업로드 실패 다시 시도해주세요",Toast.LENGTH_SHORT).show();
+            }
+            //통신 메소드 end
+        };
 
     }
 
@@ -183,57 +227,12 @@ public class MealCalendarActivity extends AppCompatActivity implements TaskListe
         RequestBody body = builder.build();
 
         Request request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/animalMeal")
+                .url("http://58.226.2.45/Servlet/animalMeal")
                 .post(body)
                 .build();
 
-        new RequestTask(request,this,getApplicationContext()).execute();
+        new ServerTaskManager(request, noteUpdateTaskListener, getApplicationContext()).execute();
     }
 
-    //통신 메소드
-    @Override
-    public void preTask() {
-        lockButton();
-    }
-
-    @Override
-    public void postTask(Response response) {
-        try {
-            JSONObject jsonObject = new JSONObject(response.body().string());
-            jsonObject = jsonObject.getJSONObject("report");
-            boolean result = jsonObject.getBoolean("result");
-            if(result){
-                notes = new HashMap<>();
-                JSONArray jsonArray = jsonObject.getJSONArray("value");
-                for(int i = 0 ; i < jsonArray.length(); i++){
-                    jsonObject = jsonArray.getJSONObject(i);
-                    LocalDate localDate = LocalDate.parse(jsonObject.getString("Date"));
-                    String note = jsonObject.getString("Text");
-                    notes.put(localDate, note);
-                }
-                Toast.makeText(this,"업로드 성공",Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(this,"업로드 실패",Toast.LENGTH_SHORT).show();
-            }
-        } catch (JSONException | IOException e ) {
-            e.printStackTrace();
-            Toast.makeText(this, "서버 통신 오류", Toast.LENGTH_SHORT).show();
-        }finally {
-            unLockButton();
-            calendarView.updateCalendar(localDateSetToDateSet(notes.keySet()));
-        }
-    }
-
-    @Override
-    public void cancelTask() {
-        unLockButton();
-    }
-
-    @Override
-    public void fairTask() {
-        unLockButton();
-        Toast.makeText(this,"업로드 실패 다시 시도해주세요",Toast.LENGTH_SHORT).show();
-    }
-    //통신 메소드 end
 
 }

@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,22 +19,20 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.CalendarView;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
 
@@ -67,7 +66,26 @@ public class VaccineActivity extends AppCompatActivity{
     }
 
     public void dayCalculation(int count,Date date){ // d-day 계산
-        String[] token = df.format(date).split("-");
+        // 0 ~ 5까지 1차 ~ 6차
+
+        LocalDate nowDate = LocalDate.now();
+        LocalDate localDate = LocalDate.fromDateFields(date);
+        if(nowDate.isEqual(localDate)){
+            textViewdday.setText((count+1)+"차 접종날 D-day");
+            return;
+        }
+        for(int i  = count ; i < 6 ;i++){
+            if(localDate.isAfter(nowDate)){
+                textViewdday.setText((count+1)+"차 접종날 D-"+ (localDate.getDayOfMonth() - nowDate.getDayOfMonth()));
+                return;
+            }
+            localDate = localDate.plusDays(14);
+        }
+
+        textViewdday.setText("1~6차를 모두 접종하셨습니다.");
+
+
+        /*String[] token = df.format(date).split("-");
         int year = Integer.parseInt(token[0]);
         int month = Integer.parseInt(token[1]);
         int day = Integer.parseInt(token[2]);
@@ -117,7 +135,7 @@ public class VaccineActivity extends AppCompatActivity{
                 textViewdday.setText("접종날까지 D-"+dDay);
                 break;
             }
-        }
+        }*/
 
     }
 
@@ -162,7 +180,7 @@ public class VaccineActivity extends AppCompatActivity{
 
         textViewdday = (TextView) findViewById(R.id.dday);
 
-        taskInit();
+        listenerInit();
 
         // assign event handler
         cv.setEventHandler(new CalendarView.EventHandler() // 달력 날짜 눌렀을때
@@ -182,7 +200,7 @@ public class VaccineActivity extends AppCompatActivity{
                                 //Toast.makeText(VaccineActivity.this, df.format(date)+"은 "+items[index]+"예방접종 날입니다.", Toast.LENGTH_SHORT).show();
                                 dateCalculation(index,date);
                                 dayCalculation(index,date);
-                                addDate(LocalDate.fromDateFields(date),index);
+                                addDate(LocalDate.fromDateFields(date), index);
                             }
                         });
                 AlertDialog dialog = builder2.create();    // 알림창 객체 생성
@@ -214,7 +232,7 @@ public class VaccineActivity extends AppCompatActivity{
         getDate();
     }
 
-    private void taskInit(){
+    private void listenerInit(){
         addTask = new TaskListener() {
             @Override
             public void preTask() {
@@ -222,9 +240,10 @@ public class VaccineActivity extends AppCompatActivity{
             }
 
             @Override
-            public void postTask(Response response) {
+            public void postTask(byte[] bytes) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
                     jsonObject = jsonObject.getJSONObject("report");
                     boolean isSuccess = false;
                     isSuccess = jsonObject.getBoolean("result");
@@ -233,15 +252,10 @@ public class VaccineActivity extends AppCompatActivity{
                     }else {
                         Toast.makeText(getApplicationContext(), "업로드 실패", Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException | IOException e ) {
+                } catch (JSONException e ) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void cancelTask() {
-
             }
 
             @Override
@@ -257,24 +271,22 @@ public class VaccineActivity extends AppCompatActivity{
             }
 
             @Override
-            public void postTask(Response response) {
+            public void postTask(byte[] bytes) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
                     jsonObject = jsonObject.getJSONObject("report");
-                    jsonObject = jsonObject.getJSONObject("result");
-                    LocalDate date = LocalDate.parse(jsonObject.getString("date"));
-                    int index = jsonObject.getInt("count");
-                    dateCalculation(index,date.toDate());
-                    dayCalculation(index,date.toDate());
-                } catch (JSONException | IOException e ) {
+                    boolean isAble = jsonObject.getBoolean("result");
+                    if(isAble){
+                        LocalDate date = LocalDate.parse(jsonObject.getString("date"));
+                        int index = jsonObject.getInt("count");
+                        dateCalculation(index,date.toDate());
+                        dayCalculation(index,date.toDate());
+                    }
+                } catch (JSONException e ) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void cancelTask() {
-
             }
 
             @Override
@@ -329,11 +341,11 @@ public class VaccineActivity extends AppCompatActivity{
         RequestBody body = builder.build();
 
         Request request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/vaccineInfo")
+                .url("http://58.226.2.45/Servlet/vaccineInfo")
                 .post(body)
                 .build();
 
-        new RequestTask(request,getTask,getApplicationContext()).execute();
+        new ServerTaskManager(request,getTask,getApplicationContext()).execute();
     }
 
     private void addDate(LocalDate date, int count){
@@ -345,10 +357,21 @@ public class VaccineActivity extends AppCompatActivity{
         RequestBody body = builder.build();
 
         Request request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/createVaccine")
+                .url("http://58.226.2.45/Servlet/createVaccine")
                 .post(body)
                 .build();
 
-        new RequestTask(request,addTask,getApplicationContext()).execute();
+        new ServerTaskManager(request,addTask,getApplicationContext()).execute();
+    }
+
+
+    //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -39,11 +39,6 @@ public class MyBoardFragment extends Fragment {
     }
 
 
-
-    public PAGE getPage() {
-        return page;
-    }
-
     public void setPage(PAGE page) {
         this.page = page;
     }

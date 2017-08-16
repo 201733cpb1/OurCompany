@@ -5,23 +5,21 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.main.user.Pet;
 import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
 /**
@@ -32,7 +30,7 @@ public class PetDeleteDialog extends Dialog implements View.OnClickListener, Tas
 
     Pet pet;
 
-    RequestTask deleteTask;
+    ServerTaskManager deleteTask;
 
     public PetDeleteDialog(@NonNull Context context, Pet pet) {
         super(context);
@@ -70,10 +68,10 @@ public class PetDeleteDialog extends Dialog implements View.OnClickListener, Tas
                         .build();
                 Request request = new Request.Builder()
                         .addHeader("Cookie", User.getIstance().getCookie())
-                        .url("http://58.237.8.179/Servlet/deleteAnimal")
+                        .url("http://58.226.2.45/Servlet/deleteAnimal")
                         .post(body)
                         .build();
-                deleteTask = new RequestTask(request,this,getContext().getApplicationContext());
+                deleteTask = new ServerTaskManager(request,this,getContext().getApplicationContext());
                 deleteTask.execute();
                 break;
             case R.id.buttonCancel:
@@ -89,25 +87,21 @@ public class PetDeleteDialog extends Dialog implements View.OnClickListener, Tas
     }
 
     @Override
-    public void postTask(Response response) {
+    public void postTask(byte[] bytes) {
         try {
-            JSONObject jsonObject = new JSONObject(response.body().string());
+            String body = new String(bytes, Charset.forName("utf-8"));
+            JSONObject jsonObject = new JSONObject(body);
             boolean pushState = jsonObject.getJSONObject("report").getBoolean("result");
             if(pushState) {
                 Toast.makeText(getContext(), "삭제 성공", Toast.LENGTH_SHORT).show();
             }else {
                 Toast.makeText(getContext(), "삭제 실패", Toast.LENGTH_SHORT).show();
             }
-        } catch (JSONException | IOException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }finally {
             dismiss();
         }
-    }
-
-    @Override
-    public void cancelTask() {
-
     }
 
     @Override

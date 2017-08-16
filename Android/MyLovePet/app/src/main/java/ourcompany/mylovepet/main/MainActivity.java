@@ -144,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onBackPressed();
     }
 
-
     public void setOnBackKeyPressListener(OnBackKeyPressListener onBackKeyPressListener){
         this.onBackKeyPressListener = onBackKeyPressListener;
     }

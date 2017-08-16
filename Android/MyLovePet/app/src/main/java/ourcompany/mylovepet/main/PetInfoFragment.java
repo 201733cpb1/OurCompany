@@ -2,7 +2,6 @@ package ourcompany.mylovepet.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,22 +18,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.main.user.PetManager;
 import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
 import static android.app.Activity.RESULT_OK;
@@ -46,27 +48,28 @@ import static android.app.Activity.RESULT_OK;
 
 public class PetInfoFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener{
 
-    TextView textViewTemperature, textViewWalk, textViewHeartrate;
+    private TextView textViewTemperature, textViewWalk, textViewHeartrate;
 
-    SwipeRefreshLayout swipeRefreshLayout;
+    private  SwipeRefreshLayout swipeRefreshLayout;
 
-    int petIndex;
+    private int petIndex;
 
     //포토
     public static final int REQUEST_CODE_IMAGE_CAPTURE = 0;
     public static final int REQUEST_CODE_TAKE_PHOTO = 1;
     public static final int REQUEST_CODE_IMAGE_CROP = 2;
 
-    Uri originalURI, outPutUri = null;
-    CircularImageView profile;
+    private Uri originalUri, outPutUri = null;
+    private CircularImageView profile;
 
-    Request request;
+    private TaskListener getConditionTaskListener, profileUploadTaskListener;
 
-    TaskListener getConditionTask, profileUploadTask;
-
+    PetManager petManager;
 
     public PetInfoFragment(){
+        petManager = User.getIstance().getPetManager();
     }
+
 
     public void setPetIndex(int petIndex){
         this.petIndex = petIndex;
@@ -84,7 +87,13 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         textViewTemperature = (TextView)view.findViewById(R.id.textViewTemperature);
         textViewWalk = (TextView)view.findViewById(R.id.textViewWalk);
         textViewHeartrate = (TextView)view.findViewById(R.id.textViewHeartrate);
-        ((TextView)view.findViewById(R.id.textViewPetName)).setText(User.getIstance().getPet(petIndex).getName());
+        ((TextView)view.findViewById(R.id.textViewPetName)).setText(petManager.getPet(petIndex).getName());
+        ((TextView)view.findViewById(R.id.textViewMeal)).setText(petManager.getPet(petIndex).getLastMealDate());
+
+
+        int lastDayOfMonth = DateTime.now().dayOfMonth().withMaximumValue().getDayOfMonth();
+
+        ((TextView)view.findViewById(R.id.textViewWalkCount)).setText(petManager.getPet(petIndex).getWalkCount() +"/" + lastDayOfMonth);
 
         profile = (CircularImageView)view.findViewById(R.id.profile_picture);
         profile.setOnClickListener(this);
@@ -97,16 +106,16 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         view.findViewById(R.id.viewHeartrate).setOnClickListener(this);
         view.findViewById(R.id.button_self_diagnosis).setOnClickListener(this);
 
-        taskInit();
+        listenerInit();
 
         getConditionExecute();
+        proFileDownloadExecute();
 
         return view;
     }
 
-
-    private void taskInit(){
-        getConditionTask = new TaskListener() {
+    private void listenerInit(){
+        getConditionTaskListener = new TaskListener() {
             @Override
             public void preTask() {
                 textViewTemperature.setText("갱신중...");
@@ -115,9 +124,10 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
             }
 
             @Override
-            public void postTask(Response response) {
+            public void postTask(byte[] bytes) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
 
                     jsonObject = jsonObject.getJSONObject("Condition");
                     int temperate = jsonObject.getInt("avgtemp");
@@ -135,19 +145,13 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                         Toast.makeText(getContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
                     }
 
-                } catch (JSONException | IOException e ) {
+                } catch (JSONException e ) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
                 }
                 swipeRefreshLayout.setRefreshing(false);
             }
 
-            @Override
-            public void cancelTask() {
-                textViewTemperature.setText("실패");
-                textViewWalk.setText("실패");
-                textViewHeartrate.setText("실패");
-            }
 
             @Override
             public void fairTask() {
@@ -155,41 +159,34 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
             }
         };
 
-        profileUploadTask = new TaskListener() {
+        profileUploadTaskListener = new TaskListener() {
             @Override
             public void preTask() {
             }
+
             @Override
-            public void postTask(Response response) {
+            public void postTask(byte[] bytes) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
                     jsonObject = jsonObject.getJSONObject("report");
                     boolean isSuccess = jsonObject.getBoolean("result");
                     if(isSuccess){
                         Toast.makeText(getContext(), "프로필 업로드 완료",Toast.LENGTH_SHORT).show();
+                        ((HomeFragment)getParentFragment()).getPetsExecute();
                     }else {
                         Toast.makeText(getContext(), "다시 시도 해주세요",Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException | IOException e ) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
                 }
-                swipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void cancelTask() {
             }
 
             @Override
             public void fairTask() {
             }
         };
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -198,33 +195,34 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         switch (v.getId()) {
             case R.id.viewPetWalk:
                 intent = new Intent(getContext(), PetWalkActivity.class);
+                intent.putExtra("petNo",petManager.getPet(petIndex).getPetNo());
                 startActivity(intent);
                 break;
             case R.id.viewMeal:
                 intent = new Intent(getContext(), MealCalendarActivity.class);
-                intent.putExtra("petNo",User.getIstance().getPet(petIndex).getPetNo());
+                intent.putExtra("petNo",petManager.getPet(petIndex).getPetNo());
                 startActivity(intent);
                 break;
             case R.id.viewVaccination:
                 intent = new Intent(getContext(),VaccineActivity.class);
-                intent.putExtra("petNo",User.getIstance().getPet(petIndex).getPetNo());
+                intent.putExtra("petNo",petManager.getPet(petIndex).getPetNo());
                 startActivity(intent);
                 break;
             case R.id.viewTemperature:
                 intent = new Intent(getContext(),StatisticsActivity.class);
-                intent.putExtra("serialNo",User.getIstance().getPet(petIndex).getSerialNo());
+                intent.putExtra("serialNo",petManager.getPet(petIndex).getSerialNo());
                 intent.putExtra("pageType",StatisticsActivity.TEMP_PAGE);
                 startActivity(intent);
                 break;
             case R.id.viewActiveMass:
                 intent = new Intent(getContext(),StatisticsActivity.class);
-                intent.putExtra("serialNo",User.getIstance().getPet(petIndex).getSerialNo());
+                intent.putExtra("serialNo",petManager.getPet(petIndex).getSerialNo());
                 intent.putExtra("pageType",StatisticsActivity.WALK_PAGE);
                 startActivity(intent);
                 break;
             case R.id.viewHeartrate:
                 intent = new Intent(getContext(),StatisticsActivity.class);
-                intent.putExtra("serialNo",User.getIstance().getPet(petIndex).getSerialNo());
+                intent.putExtra("serialNo",petManager.getPet(petIndex).getSerialNo());
                 intent.putExtra("pageType",StatisticsActivity.HEART_PAGE);
                 startActivity(intent);
                 break;
@@ -243,7 +241,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                         }else{
                             dialog.dismiss();
                         }
-                        Toast.makeText(getContext(), items[id] + " 선택했습니다.", Toast.LENGTH_SHORT).show();
                     }
                 });
                 // 다이얼로그 생성
@@ -261,24 +258,16 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Bitmap image_bitmap = null;
         switch (requestCode){
             case REQUEST_CODE_TAKE_PHOTO: // 앨범 이미지 가져오기
                 if(resultCode == RESULT_OK){
-                    File albumFile = null;
-                    try {
-                        albumFile = createImageFile();
-                    }catch (IOException e){}
-                    if(albumFile != null){
-                        outPutUri = Uri.fromFile(albumFile);
-                    }
-                    originalURI = data.getData();
-                    cropImage(originalURI, outPutUri);
+                    originalUri = data.getData();
+                    cropImage(originalUri);
                 }
                 break;
             case REQUEST_CODE_IMAGE_CAPTURE:
                 if(resultCode == RESULT_OK){
-                    cropImage(originalURI, outPutUri);
+                    cropImage(originalUri);
                 }
                 break;
             case REQUEST_CODE_IMAGE_CROP:
@@ -290,7 +279,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
     private void getAlbumImage() { // 앨범 호출
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
@@ -298,22 +286,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
     }
 
     private void captureImage() {
-        /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null)
-        {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile(); // 사진찍은 후 저장할 임시 파일//
-            } catch (IOException ex) {
-                Toast.makeText(getContext(), "createImageFile Failed", Toast.LENGTH_LONG).show();
-            }
-            if (photoFile != null) {
-                //originalURI = Uri.fromFile(photoFile); // 임시 파일의 위치,경로 가져옴
-                originalURI = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, originalURI); // 임시 파일 위치에 저장
-                startActivityForResult(takePictureIntent, REQUEST_CODE_IMAGE_CAPTURE);
-            }
-        }*/
         String state = Environment.getExternalStorageState();
         if(Environment.MEDIA_MOUNTED.equals(state)){
             Intent takeImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -321,14 +293,13 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 File photoFile = null;
                 try {
                     photoFile = createImageFile();
-                }catch (IOException e){e.printStackTrace();}
-
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(photoFile != null){
-                    originalURI =
+                    originalUri =
                             FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName(), photoFile);
-                    Log.d("1234",originalURI.getPath());
-                    outPutUri = originalURI;
-                    takeImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, originalURI);
+                    takeImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, originalUri);
                     startActivityForResult(takeImageIntent, REQUEST_CODE_IMAGE_CAPTURE);
                 }
             }
@@ -343,43 +314,30 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
 
         if(!dir.exists()){
             boolean dd = dir.mkdirs();
-            Log.d("qwe22",dd+"");
         }
         File imgFile = new File(dir,imageFileName);
-
-        Log.d("qwerqwer",Environment.getExternalStorageDirectory().getAbsolutePath());
-        Log.d("qwerqwer",dir.getAbsolutePath());
-
-        Log.d("d222",imgFile.getAbsolutePath());
 
         return imgFile;
     }
 
-    private void cropImage(Uri inputUri, Uri outPutUri){
-        Intent cropIntent = new Intent("com.android.camera.action.CROP");
-        cropIntent.setDataAndType(inputUri,"image/*");
-        cropIntent.putExtra("scale",true);
-        cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-        cropIntent.putExtra("output", outPutUri);
-        startActivityForResult(cropIntent, REQUEST_CODE_IMAGE_CROP);
-    }
-
-    private void proFileUploadExecute(){
-        File file = new File(outPutUri.getPath());
-        if(file.exists()){
-            RequestBody body = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("file",file.getName(),RequestBody.create(MediaType.parse("image/jpg"), file))
-                    .build();
-
-            request = new Request.Builder()
-                    .url("http://58.237.8.179/upload")
-                    .post(body)
-                    .build();
-            new RequestTask(request, profileUploadTask, getContext().getApplicationContext()).execute();
+    private void cropImage(Uri inputUri){
+        try {
+            File file = createImageFile();
+            outPutUri = Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        if(outPutUri != null){
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            cropIntent.setDataAndType(inputUri,"image/*");
+            cropIntent.putExtra("scale",true);
+            cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            cropIntent.putExtra("output", outPutUri);
+            startActivityForResult(cropIntent, REQUEST_CODE_IMAGE_CROP);
+        }
+
     }
 
     //화면을 당겨서 새로고침
@@ -388,18 +346,41 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         getConditionExecute();
     }
 
+    private void proFileUploadExecute(){
+        File file = new File(outPutUri.getPath());
+        if(file.exists()){
+            RequestBody multipartBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("animalNo", petManager.getPet(petIndex).getPetNo()+"")
+                    .addFormDataPart("file",file.getName(),RequestBody.create(MediaType.parse("image/jpg"), file))
+                    .build();
+            Request request = new Request.Builder()
+                    .url("http://58.226.2.45/Servlet/animalProfileUpload")
+                    .post(multipartBody)
+                    .build();
+            new ServerTaskManager(request, profileUploadTaskListener, getContext().getApplicationContext()).execute();
+        }
+    }
+
+    private void proFileDownloadExecute(){
+        String strFileNo = User.getIstance().getPetManager().getPet(petIndex).getPhotoFileNo();
+        Picasso.with(getContext())
+                .load("http://58.226.2.45/Servlet/animalProfileDownload?fileNo="+strFileNo)
+                .error(R.drawable.defaultprofileimage)
+                .into(profile);
+
+    }
+
     private void getConditionExecute(){
-        int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
+        int serialNo = petManager.getPet(petIndex).getSerialNo();
         RequestBody body= new FormBody.Builder()
                 .add("serialNo",serialNo+"")
                 .build();
-        request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/getCondition")
+        Request request = new Request.Builder()
+                .url("http://58.226.2.45/Servlet/getCondition")
                 .post(body)
                 .build();
-        new RequestTask(request, getConditionTask, getContext().getApplicationContext()).execute();
+        new ServerTaskManager(request, getConditionTaskListener, getContext().getApplicationContext()).execute();
     }
-
-
 
 }

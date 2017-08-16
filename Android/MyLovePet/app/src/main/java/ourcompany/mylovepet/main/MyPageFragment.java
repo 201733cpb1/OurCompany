@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.main.user.PetManager;
 import ourcompany.mylovepet.main.user.User;
 
 /**
@@ -28,6 +29,12 @@ public class MyPageFragment extends Fragment implements View.OnClickListener,
 
     MyBoardFragment myBoardFragment;
 
+    PetManager petManager;
+
+    public MyPageFragment(){
+        petManager = User.getIstance().getPetManager();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,10 +47,8 @@ public class MyPageFragment extends Fragment implements View.OnClickListener,
         TextView textViewNickName = (TextView)view.findViewById(R.id.nickName);
         TextView textViewPetCount = (TextView)view.findViewById(R.id.petCount);
 
-
         textViewNickName.setText("닉네임 : "+user.getSunName()+" 님");
-        textViewPetCount.setText("나의 펫 수 : " + user.getPets().length);
-
+        textViewPetCount.setText("나의 펫 수 : " + petManager.getSize()+"");
 
         return view;
     }

@@ -43,7 +43,7 @@ public class PostSearchDialog extends Dialog{
         webView.addJavascriptInterface(new JavaScriptMethods(),"android");
         webView.setWebChromeClient(new WebChromeClient());
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webView.loadUrl("http://58.237.8.179/postSearch.jsp");
+        webView.loadUrl("http://58.226.2.45/postSearch.jsp");
     }
 
 

@@ -34,17 +34,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
 import static ourcompany.mylovepet.R.id.chart;
@@ -139,6 +137,8 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         lineChart.getData().addDataSet(createSet());
         lineChart.getAxisRight().setEnabled(false);
         lineChart.setDoubleTapToZoomEnabled(false);
+        lineChart.getXAxis().setDrawGridLines(false);
+        lineChart.getData().setHighlightEnabled(false);
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextColor(Color.BLACK);
@@ -149,7 +149,7 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
 
     private LineDataSet createSet() {
 
-        LineDataSet set = new LineDataSet(null, "Dynamic Data");
+        LineDataSet set = new LineDataSet(null, "");
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setColor(ColorTemplate.getHoloBlue());
         set.setCircleColor(Color.BLACK);
@@ -163,7 +163,6 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         set.setDrawValues(false);
         return set;
     }
-
 
 
     private void changeTitle(){
@@ -185,9 +184,11 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         ILineDataSet set = lineData.getDataSetByIndex(0);
         set.clear();
 
+        set.setLabel(strTitles[pageType]);
+
         xLabels = new ArrayList<>();
 
-        float maxY = 0;
+        float maxY = Float.MIN_VALUE;
         float minY = Float.MAX_VALUE;
         for(AvgStatistic avgStatistic : statistics){
             float y;
@@ -211,7 +212,7 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         lineChart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                if(xLabels.size() <= value)
+                if(xLabels.size() <= value || value < 0)
                     return "";
                 return xLabels.get((int)value)+"일";
             }
@@ -226,14 +227,9 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
 
         lineChart.getAxisLeft().setAxisMaximum(maxY + (maxY * 0.07f));
         lineChart.getAxisLeft().setAxisMinimum(minY - (minY * 0.07f));
-        lineChart.getXAxis().setAxisMaximum(set.getEntryCount()-1);
+        lineChart.getXAxis().setAxisMaximum((float)set.getEntryCount()-0.8f);
 
         lineChart.fitScreen();
-
-        Toast.makeText(this,set.getEntryCount()+" 일",Toast.LENGTH_SHORT).show();
-        Toast.makeText(this,lineData.getEntryCount()+" 이",Toast.LENGTH_SHORT).show();
-        Toast.makeText(this,lineChart.getMaxVisibleCount()+" 삼",Toast.LENGTH_SHORT).show();
-
 
      /* lineDataSet = new LineDataSet(entries, strTitles[pageType]);
         lineDataSet.setLineWidth(2);
@@ -286,16 +282,6 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -309,11 +295,12 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
                     cal.set(year, month, dayOfMonth);
                     sDate = LocalDate.fromCalendarFields(cal);
 
-                    if (sDate.isAfter(LocalDate.now())) {
-                        Toast.makeText(getApplicationContext(), "현재 일보다 클 수 없습니다.", Toast.LENGTH_SHORT).show();
-                        sDate = eDate.minusDays(1);
-                    }else if (sDate.isAfter(eDate)) {
+                    if (sDate.isAfter(eDate)) {
                         Toast.makeText(getApplicationContext(), "끝 날짜보다 클 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        sDate = eDate.minusDays(1);
+                    }
+                    else if (sDate.isAfter(LocalDate.now())) {
+                        Toast.makeText(getApplicationContext(), "현재 일보다 클 수 없습니다.", Toast.LENGTH_SHORT).show();
                         sDate = eDate.minusDays(1);
                     }
                     getStatistics(dateTimeFormat.print(sDate), dateTimeFormat.print(eDate), 0);
@@ -356,11 +343,11 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
                 .add("date",dateType+"").build();
 
         Request request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/avgCondition")
+                .url("http://58.226.2.45/Servlet/avgCondition")
                 .post(body)
                 .build();
 
-        new RequestTask(request,this,getApplicationContext()).execute();
+        new ServerTaskManager(request,this,getApplicationContext()).execute();
     }
 
     @Override
@@ -368,12 +355,16 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void postTask(Response response) {
+    public void postTask(byte[] bytes) {
         try {
-            JSONObject jsonObject = new JSONObject(response.body().string());
+            String body = new String(bytes, Charset.forName("utf-8"));
+            JSONObject jsonObject = new JSONObject(body);
             jsonObject = jsonObject.getJSONObject("report");
             JSONArray jsonArray = jsonObject.getJSONArray("result");
             statistics.clear();
+            if(jsonArray.length() == 0){
+                Toast.makeText(this,"정보 없음",Toast.LENGTH_SHORT).show();
+            }
             for(int i = 0; i < jsonArray.length(); i++){
                 jsonObject = jsonArray.getJSONObject(i);
                 String date = jsonObject.getString("date");
@@ -390,15 +381,10 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
                 statistics.add(statistic);
             }
             updateChart();
-        } catch (JSONException | IOException e ) {
+        } catch (JSONException e ) {
             e.printStackTrace();
             Toast.makeText(this, "서버 통신 오류", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void cancelTask() {
-
     }
 
     @Override
@@ -406,6 +392,15 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
 
     }
 
+    //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private class AvgStatistic{
 

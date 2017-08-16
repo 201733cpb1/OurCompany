@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -22,17 +21,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.main.user.Pet;
+import ourcompany.mylovepet.main.user.PetManager;
 import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
 import static android.app.Activity.RESULT_OK;
@@ -41,7 +39,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by REOS on 2017-07-07.
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener, TaskListener, OnBackKeyPressListener{
+public class HomeFragment extends Fragment implements View.OnClickListener, OnBackKeyPressListener{
 
     //플로팅 버튼 변수
     boolean isFloat = false;
@@ -56,9 +54,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
 
 
     //AsyncTask 클래스
-    RequestTask getPetsTask;
+    ServerTaskManager getPetsTask;
 
-    public HomeFragment(){}
+    TaskListener getPetsTaskListener;
+
+    PetManager petManager;
+
+
+    public HomeFragment(){
+        petManager = User.getIstance().getPetManager();
+    }
 
     @Nullable
     @Override
@@ -66,25 +71,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
         init(view);
+        listenerInit();
         permissionSetting();
 
         return view;
-    }
-
-    @Override
-    public void onStart() {
-        getPetsExecute();
-        ((MainActivity)getActivity()).setOnBackKeyPressListener(this);
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        if(getPetsTask != null){
-            getPetsTask.cancel(true);
-        }
-        ((MainActivity)getActivity()).setOnBackKeyPressListener(null);
-        super.onStop();
     }
 
     private void init(View view) {
@@ -144,19 +134,98 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
         });
     }
 
+    private void listenerInit(){
+        getPetsTaskListener = new TaskListener() {
+            // TaskListener 메소드
+            @Override
+            public void preTask() { }
+
+            @Override
+            public void postTask(byte[] bytes) {
+                try {
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
+                    JSONArray jsonArray = jsonObject.getJSONArray("AnimalList");
+                    if (jsonArray != null) {
+                        petManager = User.getIstance().getPetManager();
+                        petManager.clear();
+                        int length = jsonArray.length();
+                        Pet[] pets = new Pet[length];
+                        for (int i = 0; i < length; i++) {
+                            try {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                Pet pet = new Pet.Builder(object.getInt("iAnimalNo"))
+                                        .petKind(object.getInt("iAnimalIndex"))
+                                        .serialNo(object.getInt("iSerialNo"))
+                                        .name(object.getString("strName"))
+                                        .gender(object.getString("strGender"))
+                                        .birth(object.getString("strBirth"))
+                                        .photoFileNo(object.getString("strPhoto"))
+                                        .lastMealDate(object.getString("lastMeal"))
+                                        .walkCount(object.getInt("walkCount"))
+                                        .build();
+                                pets[i] = pet;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        petManager.setPets(pets);
+                        viewPager.setAdapter(new PetInfoAdapter(getChildFragmentManager()));
+                        viewPager.setOffscreenPageLimit(pets.length);
+                        //펫이 2마리 이상이면 오른쪽 커서를 보이게 한다
+                        if (pets.length > 1){
+                            rightCursor.setVisibility(View.VISIBLE);
+                        }else {
+                            rightCursor.setVisibility(View.INVISIBLE);
+                            leftCursor.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+                }finally {
+                    getPetsTask = null;
+                }
+            }
+
+            @Override
+            public void fairTask() {
+                getPetsTask = null;
+            }
+            // TaskListener 메소드 end
+
+        };
+    }
+
+    @Override
+    public void onStart() {
+        getPetsExecute();
+        ((MainActivity)getActivity()).setOnBackKeyPressListener(this);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        if(getPetsTask != null){
+            getPetsTask.cancel(true);
+        }
+        ((MainActivity)getActivity()).setOnBackKeyPressListener(null);
+        super.onStop();
+    }
+
     @Override
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
             case R.id.floatingButtonParent:
-                floatingButton();
+                onClickFloatingButton();
                 break;
             case R.id.floatingButtonAdd:
                 intent = new Intent(getContext(), PetRegistActivity.class);
                 startActivityForResult(intent,100);
                 break;
             case R.id.floatingButtonDel:
-                Pet pet = User.getIstance().getPets()[viewPager.getCurrentItem()];
+                Pet pet = petManager.getPet(viewPager.getCurrentItem());
                 Dialog dialog = new PetDeleteDialog(getContext(),pet);
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
@@ -184,7 +253,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
     }
 
     //플로팅 버튼이 눌렀을떄의 동작
-    private void floatingButton() {
+    private void onClickFloatingButton() {
         if (isFloat) {
             closeFloatingButton();
         } else {
@@ -212,16 +281,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
     }
     //플로팅 버튼이 눌렀을떄의 동작 끝
 
-
     //펫 정보 요청
-    private void getPetsExecute(){
+    protected void getPetsExecute(){
         RequestBody body= new FormBody.Builder().build();
         Request request = new Request.Builder()
                 .addHeader("Cookie", User.getIstance().getCookie())
-                .url("http://58.237.8.179/Servlet/animalInfo")
+                .url("http://58.226.2.45/Servlet/animalInfo")
                 .post(body)
                 .build();
-        getPetsTask = new RequestTask(request,this,getContext().getApplicationContext());
+        getPetsTask = new ServerTaskManager(request, getPetsTaskListener, getContext().getApplicationContext());
         getPetsTask.execute();
     }
 
@@ -235,70 +303,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
 
         ActivityCompat.requestPermissions(getActivity(),permissionValues,1);
     }
-
-    // TaskListener 메소드
-    @Override
-    public void preTask() { }
-
-    @Override
-    public void postTask(Response response) {
-        try {
-            JSONObject jsonObject = new JSONObject(response.body().string());
-            JSONArray jsonArray;
-            jsonArray = jsonObject.getJSONArray("AnimalList");
-
-            if (jsonArray != null) {
-                User user = User.getIstance();
-                int length = jsonArray.length();
-                Pet[] pets = new Pet[length];
-                for (int i = 0; i < length; i++) {
-                    try {
-                        JSONObject object = jsonArray.getJSONObject(i);
-                        Pet.Builder builder = new Pet.Builder(object.getInt("iAnimalNo"));
-                        builder.petKind(object.getInt("iAnimalIndex"))
-                                .serialNo(object.getInt("iSerialNo"))
-                                .name(object.getString("strName"))
-                                .gender(object.getString("strGender"))
-                                .birth(object.getString("strBirth"))
-                                .photo_URL(object.getString("strPhoto"));
-                        Pet pet = builder.build();
-                        pets[i] = pet;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                user.setPets(pets);
-                viewPager.setAdapter(new PetInfoAdapter(getChildFragmentManager()));
-                viewPager.setOffscreenPageLimit(pets.length);
-
-                //펫이 2마리 이상이면 오른쪽 커서를 보이게 한다
-                if (pets.length > 1){
-                    rightCursor.setVisibility(View.VISIBLE);
-                }else {
-                    rightCursor.setVisibility(View.INVISIBLE);
-                    leftCursor.setVisibility(View.INVISIBLE);
-                }
-            }
-        } catch (JSONException | IOException e ) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
-        }finally {
-            getPetsTask = null;
-        }
-
-    }
-
-    @Override
-    public void cancelTask() {
-
-    }
-
-    @Override
-    public void fairTask() {
-
-    }
-    // TaskListener 메소드 end
-
 
     // 액티비티가 받는 뒤로가기 이벤트를 받기위한 인터페이스
     @Override

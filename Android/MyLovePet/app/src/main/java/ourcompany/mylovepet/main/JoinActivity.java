@@ -17,16 +17,15 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.regex.Pattern;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.customView.PostSearchDialog;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
 /**
@@ -89,7 +88,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
         init();
-        taskInit();
+        listenerInit();
     }
 
     //액티비티 초기화
@@ -161,11 +160,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         };
 
         findViewById(R.id.buttonPostSearch).setOnClickListener(this);
-
-
     }
 
-    private void taskInit(){
+    private void listenerInit(){
 
         //ID체크 리스너 초기화
         idCheckTaskListener = new TaskListener() {
@@ -175,10 +172,11 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void postTask(Response response) {
+            public void postTask(byte[] bytes) {
                 boolean isAble = false;
                 try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
                     jsonObject = jsonObject.getJSONObject("idCheck");
                     isAble = jsonObject.getBoolean("isAble");
                     if (isAble){
@@ -186,17 +184,12 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                     }else {
                         Toast.makeText(getApplicationContext(), "이미 사용중인 아이디입니다.", Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException | IOException e ) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "잘못된 데이터", Toast.LENGTH_SHORT).show();
                 }finally {
                     buttonId.setEnabled(true);
                 }
-            }
-
-            @Override
-            public void cancelTask() {
-                buttonId.setEnabled(true);
             }
 
             @Override
@@ -212,30 +205,25 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void postTask(Response response) {
-                boolean isAble = false;
+            public void postTask(byte[] bytes) {
 
                 try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    boolean isAble = false;
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
                     jsonObject = jsonObject.getJSONObject("subNameCheck");
                     isAble = jsonObject.getBoolean("isAble");
                     if (isAble) {
                         nextPage();
                     } else
                         Toast.makeText(getApplicationContext(), "이미 사용중인 닉네임 입니다.", Toast.LENGTH_SHORT).show();
-                } catch (JSONException | IOException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
                 }finally {
                     buttonSubName.setEnabled(true);
                 }
             }
-
-            @Override
-            public void cancelTask() {
-                buttonSubName.setEnabled(true);
-            }
-
             @Override
             public void fairTask() {
                 buttonSubName.setEnabled(true);
@@ -248,21 +236,21 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void postTask(Response response) {
-                boolean isSuccessed = false;
+            public void postTask(byte[] bytes) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
-                    jsonObject.getJSONObject("JoinReport");
+                    boolean isSuccessed = false;
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
+                    jsonObject = jsonObject.getJSONObject("JoinReport");
                     isSuccessed = jsonObject.getBoolean("isSuccessed");
-
                     if(isSuccessed) {
                         Toast.makeText(getApplicationContext(), "회원가입 완료", Toast.LENGTH_SHORT).show();
                         finish();
                     }
-                    else
+                    else {
                         Toast.makeText(getApplicationContext(), "회원가입 실패", Toast.LENGTH_SHORT).show();
-
-                } catch (JSONException | IOException e) {
+                    }
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }finally {
                     finish();
@@ -270,13 +258,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void cancelTask() {
-
-            }
-
-            @Override
             public void fairTask() {
-
             }
         };
 
@@ -287,10 +269,10 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 .add("type","idCheck")
                 .add("id",strId).build();
         Request request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/overlapCheck")
+                .url("http://58.226.2.45/Servlet/overlapCheck")
                 .post(body)
                 .build();
-        new RequestTask(request,idCheckTaskListener,getApplicationContext()).execute();
+        new ServerTaskManager(request,idCheckTaskListener,getApplicationContext()).execute();
     }
 
     private void subNameCheckExecute(){
@@ -298,10 +280,10 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 .add("type","subNameCheck")
                 .add("subNameCheck",strSubName).build();
         Request request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/overlapCheck")
+                .url("http://58.226.2.45/Servlet/overlapCheck")
                 .post(body)
                 .build();
-        new RequestTask(request,subNameCheckTaskListener,getApplicationContext()).execute();
+        new ServerTaskManager(request,subNameCheckTaskListener,getApplicationContext()).execute();
     }
 
     private void joinExecute(){
@@ -317,10 +299,10 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 .add("Token",  FirebaseInstanceId.getInstance().getToken())
                 .build();
         Request request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/join")
+                .url("http://58.226.2.45/Servlet/join")
                 .post(body)
                 .build();
-        new RequestTask(request,joinTaskListener,getApplicationContext()).execute();
+        new ServerTaskManager(request,joinTaskListener,getApplicationContext()).execute();
     }
 
     //사용자가 값을 입력했는지 확인
@@ -361,6 +343,13 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         viewList[nowPos.getInt()].setVisibility(View.INVISIBLE);
         viewList[nowPos.getInt()+1].setVisibility(View.VISIBLE);
         nowPos = Position.getPosition(nowPos.getInt()+1);
+        changeTitle();
+    }
+
+    private void backPage(){
+        viewList[nowPos.getInt()].setVisibility(View.INVISIBLE);
+        viewList[nowPos.getInt()-1].setVisibility(View.VISIBLE);
+        nowPos = Position.getPosition(nowPos.getInt()-1);
         changeTitle();
     }
 
@@ -486,13 +475,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         if(nowPos == Position.POS_ID)
             finish();
         else{
-            viewList[nowPos.getInt()].setVisibility(View.INVISIBLE);
-            viewList[nowPos.getInt()-1].setVisibility(View.VISIBLE);
-            nowPos = Position.getPosition(nowPos.getInt()-1);
-            changeTitle();
+            backPage();
         }
     }
-
 }
 
 

@@ -17,15 +17,14 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
 public class UserSettingActivity extends AppCompatActivity implements OnClickListener {
@@ -75,11 +74,11 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
         actionBar.setTitle("설정");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        taskInit();
+        listenerInit();
         getPushState();
     }
 
-    private void taskInit(){
+    private void listenerInit(){
 
         PushStateTask = new TaskListener() {
             @Override
@@ -87,22 +86,20 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
                 lockSwitch();
             }
             @Override
-            public void postTask(Response response) {
+            public void postTask(byte[] bytes) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
                     boolean pushState = false;
                     pushState = jsonObject.getJSONObject("report").getBoolean("result");
                     pushSwitch.setChecked(pushState);
-                } catch (JSONException | IOException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }finally {
                     unLockSwitch();
                 }
             }
-            @Override
-            public void cancelTask() {
-                unLockSwitch();
-            }
+
             @Override
             public void fairTask() {
                 unLockSwitch();
@@ -116,26 +113,23 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
             }
 
             @Override
-            public void postTask(Response response){
+            public void postTask(byte[] bytes){
                 try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
                     boolean pushState = jsonObject.getJSONObject("report").getBoolean("result");
                     if(pushState){
                         Toast.makeText(getApplicationContext(),"변경 완료",Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(getApplicationContext(),"변경 실패",Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException | IOException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }finally {
                     unLockSwitch();
                 }
             }
 
-            @Override
-            public void cancelTask() {
-                unLockSwitch();
-            }
 
             @Override
             public void fairTask() {
@@ -198,10 +192,10 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
         RequestBody body= new FormBody.Builder().build();
         Request request = new Request.Builder()
                 .addHeader("Cookie", User.getIstance().getCookie())
-                .url("http://58.237.8.179/Servlet/userPushState")
+                .url("http://58.226.2.45/Servlet/userPushState")
                 .post(body)
                 .build();
-        new RequestTask(request, PushStateTask,getApplicationContext()).execute();
+        new ServerTaskManager(request, PushStateTask,getApplicationContext()).execute();
     }
 
     private void setPushState(boolean pushState){
@@ -210,10 +204,10 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
                 .build();
         Request request = new Request.Builder()
                 .addHeader("Cookie", User.getIstance().getCookie())
-                .url("http://58.237.8.179/Servlet/userPushState")
+                .url("http://58.226.2.45/Servlet/userPushState")
                 .post(body)
                 .build();
-        new RequestTask(request,setPushTask,getApplicationContext()).execute();
+        new ServerTaskManager(request,setPushTask,getApplicationContext()).execute();
     }
 
 }

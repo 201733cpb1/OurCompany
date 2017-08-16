@@ -11,7 +11,9 @@ public class Pet {
     private String name;
     private String gender;
     private String birth;
-    private String photo_URL;
+    private String photoFileNo;
+    private String lastMealDate;
+    private int walkCount;
 
     private Pet(Builder builder){
         this.petNo = builder.petNo;
@@ -20,7 +22,9 @@ public class Pet {
         this.name = builder.name;
         this.gender = builder.gender;
         this.birth = builder.birth;
-        this.photo_URL = builder.photo_URL;
+        this.photoFileNo = builder.photoFileNo;
+        this.lastMealDate = builder.lastMealDate;
+        this.walkCount = builder.walkCount;
     }
 
     public int getPetNo() {
@@ -47,8 +51,16 @@ public class Pet {
         return birth;
     }
 
-    public String getPhoto_URL() {
-        return photo_URL;
+    public String getPhotoFileNo() {
+        return photoFileNo;
+    }
+
+    public String getLastMealDate(){
+        return lastMealDate;
+    }
+
+    public int getWalkCount(){
+        return walkCount;
     }
 
     public static class Builder{
@@ -58,7 +70,9 @@ public class Pet {
         private String name;
         private String gender;
         private String birth;
-        private String photo_URL;
+        private String photoFileNo;
+        private String lastMealDate;
+        private int walkCount;
 
         public Builder(int petNo){
             this.petNo = petNo;
@@ -89,8 +103,18 @@ public class Pet {
             return this;
         }
 
-        public Builder photo_URL(String photo_URL){
-            this.photo_URL = photo_URL;
+        public Builder photoFileNo(String photoFileNo){
+            this.photoFileNo = photoFileNo;
+            return this;
+        }
+
+        public Builder lastMealDate(String lastMealDate){
+            this.lastMealDate = lastMealDate;
+            return this;
+        }
+
+        public Builder walkCount(int walkCount){
+            this.walkCount = walkCount;
             return this;
         }
 

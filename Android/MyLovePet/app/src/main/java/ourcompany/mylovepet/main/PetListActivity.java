@@ -14,6 +14,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.main.user.PetManager;
 import ourcompany.mylovepet.main.user.User;
 
 
@@ -24,7 +25,8 @@ import ourcompany.mylovepet.main.user.User;
 public class PetListActivity extends AppCompatActivity {
 
     ExpandableListView expandableListView;
-    User user;
+
+    PetManager petManager;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,7 @@ public class PetListActivity extends AppCompatActivity {
 
         expandableListView = (ExpandableListView)findViewById(R.id.listView);
 
-        user = User.getIstance();
+        petManager = User.getIstance().getPetManager();
 
         PetListAdapter adapter = new PetListAdapter(getLayoutInflater());
 
@@ -56,7 +58,7 @@ public class PetListActivity extends AppCompatActivity {
 
                 /*  if group item clicked */
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    new PetUpdateDialog(PetListActivity.this, user.getPet(groupPosition)).show();
+                    new PetInfoUpdateDialog(PetListActivity.this, petManager.getPet(groupPosition)).show();
                 }
 
                 return true;
@@ -86,7 +88,7 @@ public class PetListActivity extends AppCompatActivity {
 
         @Override
         public int getGroupCount() {
-            return user.getPets().length;
+            return petManager.getSize();
         }
 
         @Override
@@ -96,12 +98,12 @@ public class PetListActivity extends AppCompatActivity {
 
         @Override
         public Object getGroup(int groupPosition) {
-            return user.getPet(groupPosition);
+            return petManager.getPet(groupPosition);
         }
 
         @Override
         public Object getChild(int groupPosition, int childPosition) {
-            return user.getPet(groupPosition);
+            return petManager.getPet(groupPosition);
         }
 
         @Override
@@ -127,7 +129,7 @@ public class PetListActivity extends AppCompatActivity {
             }
 
             TextView textViewPetName = (TextView)convertView.findViewById(R.id.textViewPetName);
-            textViewPetName.setText(user.getPet(groupPosition).getName());
+            textViewPetName.setText(petManager.getPet(groupPosition).getName());
 
             return convertView;
         }
@@ -144,10 +146,10 @@ public class PetListActivity extends AppCompatActivity {
             TextView textViewBirth = (TextView)convertView.findViewById(R.id.textViewBirth);
             TextView textViewSerialNo = (TextView)convertView.findViewById(R.id.textViewSerialNo);
 
-            textViewGender.setText(user.getPet(groupPosition).getGender());
-            textViewKind.setText(user.getPet(groupPosition).getPetKind()+"");
-            textViewBirth.setText(user.getPet(groupPosition).getBirth());
-            textViewSerialNo.setText(user.getPet(groupPosition).getSerialNo()+"");
+            textViewGender.setText(petManager.getPet(groupPosition).getGender());
+            textViewKind.setText(petManager.getPet(groupPosition).getPetKind()+"");
+            textViewBirth.setText(petManager.getPet(groupPosition).getBirth());
+            textViewSerialNo.setText(petManager.getPet(groupPosition).getSerialNo()+"");
 
             return convertView;
         }
