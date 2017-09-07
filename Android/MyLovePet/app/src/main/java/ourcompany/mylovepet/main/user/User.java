@@ -22,7 +22,6 @@ public class User {
         petManager = new PetManager();
     }
 
-    private String cookie;
     private Pet[] pets;
     private String name;
     private String sunName;
@@ -44,14 +43,6 @@ public class User {
 
     public void setSunName(String sunName) {
         this.sunName = sunName;
-    }
-
-    public String getCookie() {
-        return cookie;
-    }
-
-    public void setCookie(String cookie) {
-        this.cookie = cookie;
     }
 
     public PetManager getPetManager(){

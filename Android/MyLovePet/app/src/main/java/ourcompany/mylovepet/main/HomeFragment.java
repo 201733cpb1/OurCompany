@@ -155,7 +155,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
                             try {
                                 JSONObject object = jsonArray.getJSONObject(i);
                                 Pet pet = new Pet.Builder(object.getInt("iAnimalNo"))
-                                        .petKind(object.getInt("iAnimalIndex"))
+                                        .petKind(object.getString("iAnimalKind"))
                                         .serialNo(object.getInt("iSerialNo"))
                                         .name(object.getString("strName"))
                                         .gender(object.getString("strGender"))
@@ -285,7 +285,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
     protected void getPetsExecute(){
         RequestBody body= new FormBody.Builder().build();
         Request request = new Request.Builder()
-                .addHeader("Cookie", User.getIstance().getCookie())
                 .url("http://58.226.2.45/Servlet/animalInfo")
                 .post(body)
                 .build();

@@ -236,7 +236,6 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
                 .build();
 
         Request request = new Request.Builder()
-                .addHeader("Cookie",User.getIstance().getCookie())
                 .url("http://58.226.2.45/Servlet/addPetsitter")
                 .post(body)
                 .build();

@@ -27,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.WebViewFragment;
+import ourcompany.mylovepet.board.TipBoardFragment;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.daummap.GpsMapActivity;
 import ourcompany.mylovepet.daummap.Intro;
@@ -152,24 +154,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent;
         FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
+        WebViewFragment webViewFragment;
         switch (position) {
-            case 1:
-                //홈화면
+            case 1: //홈화면
                 fragmentTransaction.replace(R.id.container,new HomeFragment());
                 break;
-            case 3:
-                //펫시터 구하기 화면
+            case 3: //펫시터 구하기 화면
                 fragmentTransaction.replace(R.id.container,new SitterRegisterFragment());
                 break;
-            case 4:
-                //도움주기 화면
-                fragmentTransaction.replace(R.id.container, new PetSitterFindFragment());
+            case 4: //도움주기 화면
+                webViewFragment =  WebViewFragment.createWebViewFragment("http://58.226.2.45/petSitter?native=android");
+                fragmentTransaction.replace(R.id.container, webViewFragment);
                 break;
-            case 6:
-                //TIP 화면
+            case 6: //TIP 화면
+                webViewFragment =  WebViewFragment.createWebViewFragment("http://58.226.2.45/tip?native=android");
+                fragmentTransaction.replace(R.id.container, webViewFragment);
                 break;
             case 7:
-                fragmentTransaction.replace(R.id.container, new WebViewTest());
+                webViewFragment = WebViewFragment.createWebViewFragment("http://58.226.2.45/market?native=android");
+                fragmentTransaction.replace(R.id.container, webViewFragment);
                 //지름/중고장터 정보 화면 intro
                 break;
             case 8:

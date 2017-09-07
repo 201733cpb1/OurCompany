@@ -67,7 +67,6 @@ public class PetDeleteDialog extends Dialog implements View.OnClickListener, Tas
                         .add("animalNo",pet.getPetNo()+"")
                         .build();
                 Request request = new Request.Builder()
-                        .addHeader("Cookie", User.getIstance().getCookie())
                         .url("http://58.226.2.45/Servlet/deleteAnimal")
                         .post(body)
                         .build();

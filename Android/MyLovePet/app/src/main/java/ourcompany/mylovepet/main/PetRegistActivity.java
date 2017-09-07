@@ -226,7 +226,6 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
                 .build();
 
         Request request = new Request.Builder()
-                .addHeader("Cookie",User.getIstance().getCookie())
                 .url("http://58.226.2.45/Servlet/createAnimal")
                 .post(body)
                 .build();

@@ -5,8 +5,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.IOException;
+import net.daum.android.map.util.PersistentKeyValueStore;
 
+import java.io.IOException;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+
+import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -27,7 +32,13 @@ public class ServerTaskManager extends AsyncTask<Void,Void, byte[]> {
         this.request = request;
         this.taskListener = taskListener;
         this.context = context;
-        okHttpClient = new OkHttpClient();
+
+        CookieManager cookieManager = new WebkitCookieManagerProxy(null, CookiePolicy.ACCEPT_ALL);
+
+        okHttpClient = new OkHttpClient()
+                .newBuilder()
+                .cookieJar(new JavaNetCookieJar(cookieManager))
+                .build();
     }
 
     @Override
@@ -49,10 +60,6 @@ public class ServerTaskManager extends AsyncTask<Void,Void, byte[]> {
                 Log.d("body",response.body().string());
                 cancel(true);
             }else {
-                String cookie = response.header("Set-Cookie");
-                if(cookie != null){
-                    User.getIstance().setCookie(cookie);
-                }
                 bytes = response.body().bytes();
             }
         } catch (IOException e) {

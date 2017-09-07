@@ -1,6 +1,7 @@
 package ourcompany.mylovepet.main;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -163,7 +164,6 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void listenerInit(){
-
         //ID체크 리스너 초기화
         idCheckTaskListener = new TaskListener() {
             @Override
@@ -274,6 +274,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
         new ServerTaskManager(request,idCheckTaskListener,getApplicationContext()).execute();
     }
+
 
     private void subNameCheckExecute(){
         RequestBody body= new FormBody.Builder()

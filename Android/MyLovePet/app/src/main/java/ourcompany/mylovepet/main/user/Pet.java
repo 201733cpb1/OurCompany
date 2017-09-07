@@ -6,7 +6,7 @@ package ourcompany.mylovepet.main.user;
 
 public class Pet {
     private final int petNo;
-    private int petKind;
+    private String petKind;
     private int serialNo;
     private String name;
     private String gender;
@@ -31,7 +31,7 @@ public class Pet {
         return petNo;
     }
 
-    public int getPetKind() {
+    public String getPetKind() {
         return petKind;
     }
 
@@ -65,7 +65,7 @@ public class Pet {
 
     public static class Builder{
         private final int petNo;
-        private int petKind;
+        private String petKind;
         private int serialNo;
         private String name;
         private String gender;
@@ -78,7 +78,7 @@ public class Pet {
             this.petNo = petNo;
         }
 
-        public Builder petKind(int petKind){
+        public Builder petKind(String petKind){
             this.petKind = petKind;
             return this;
         }

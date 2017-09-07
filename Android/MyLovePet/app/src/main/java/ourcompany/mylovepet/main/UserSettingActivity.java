@@ -191,7 +191,6 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
     private void getPushState(){
         RequestBody body= new FormBody.Builder().build();
         Request request = new Request.Builder()
-                .addHeader("Cookie", User.getIstance().getCookie())
                 .url("http://58.226.2.45/Servlet/userPushState")
                 .post(body)
                 .build();
@@ -203,7 +202,6 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
                 .add("isReceive",pushState+"")
                 .build();
         Request request = new Request.Builder()
-                .addHeader("Cookie", User.getIstance().getCookie())
                 .url("http://58.226.2.45/Servlet/userPushState")
                 .post(body)
                 .build();

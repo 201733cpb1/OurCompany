@@ -88,8 +88,12 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         textViewWalk = (TextView)view.findViewById(R.id.textViewWalk);
         textViewHeartrate = (TextView)view.findViewById(R.id.textViewHeartrate);
         ((TextView)view.findViewById(R.id.textViewPetName)).setText(petManager.getPet(petIndex).getName());
-        ((TextView)view.findViewById(R.id.textViewMeal)).setText(petManager.getPet(petIndex).getLastMealDate());
 
+        if(!petManager.getPet(petIndex).getLastMealDate().equals("null")){
+            ((TextView)view.findViewById(R.id.textViewMeal)).setText(petManager.getPet(petIndex).getLastMealDate());
+        }else {
+            ((TextView)view.findViewById(R.id.textViewMeal)).setText("최근 정보 없음");
+        }
 
         int lastDayOfMonth = DateTime.now().dayOfMonth().withMaximumValue().getDayOfMonth();
 
