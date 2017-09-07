@@ -266,7 +266,7 @@ public class CalendarView2 extends LinearLayout
 			}
 
 
-			// clear styling
+			// clearPet styling
 			((TextView)view).setTypeface(null, Typeface.NORMAL);
 			((TextView)view).setTextColor(Color.BLACK);
 

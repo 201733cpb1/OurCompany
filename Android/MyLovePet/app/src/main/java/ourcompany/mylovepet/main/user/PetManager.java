@@ -28,7 +28,7 @@ public class PetManager {
         return pets.length;
     }
 
-    public void clear(){
+    public void clearPet(){
         pets = new Pet[0];
     }
 }

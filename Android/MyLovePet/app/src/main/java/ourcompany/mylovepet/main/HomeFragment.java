@@ -39,7 +39,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by REOS on 2017-07-07.
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener, OnBackKeyPressListener{
+public class HomeFragment extends Fragment implements View.OnClickListener, OnBackKeyPressListener {
 
     //플로팅 버튼 변수
     boolean isFloat = false;
@@ -61,14 +61,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
     PetManager petManager;
 
 
-    public HomeFragment(){
+    public HomeFragment() {
         petManager = User.getIstance().getPetManager();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home,container,false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         init(view);
         listenerInit();
@@ -104,7 +104,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
         rightCursor = view.findViewById(R.id.rightCursor);
 
         //viewPager 참조
-        viewPager = (ViewPager)view.findViewById(R.id.viewPager);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -115,13 +115,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
             public void onPageSelected(int position) {
                 int pageSize = viewPager.getAdapter().getCount();
 
-                if(position == 0 ){
+                if (position == 0) {
                     leftCursor.setVisibility(View.INVISIBLE);
                     rightCursor.setVisibility(View.VISIBLE);
-                }else if(position == (pageSize-1)){
+                } else if (position == (pageSize - 1)) {
                     leftCursor.setVisibility(View.VISIBLE);
                     rightCursor.setVisibility(View.INVISIBLE);
-                }else {
+                } else {
                     leftCursor.setVisibility(View.VISIBLE);
                     rightCursor.setVisibility(View.VISIBLE);
                 }
@@ -134,11 +134,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
         });
     }
 
-    private void listenerInit(){
+    private void listenerInit() {
         getPetsTaskListener = new TaskListener() {
             // TaskListener 메소드
             @Override
-            public void preTask() { }
+            public void preTask() {
+            }
 
             @Override
             public void postTask(byte[] bytes) {
@@ -148,34 +149,31 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
                     JSONArray jsonArray = jsonObject.getJSONArray("AnimalList");
                     if (jsonArray != null) {
                         petManager = User.getIstance().getPetManager();
-                        petManager.clear();
+                        petManager.clearPet();
                         int length = jsonArray.length();
                         Pet[] pets = new Pet[length];
                         for (int i = 0; i < length; i++) {
-                            try {
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                Pet pet = new Pet.Builder(object.getInt("iAnimalNo"))
-                                        .petKind(object.getString("iAnimalKind"))
-                                        .serialNo(object.getInt("iSerialNo"))
-                                        .name(object.getString("strName"))
-                                        .gender(object.getString("strGender"))
-                                        .birth(object.getString("strBirth"))
-                                        .photoFileNo(object.getString("strPhoto"))
-                                        .lastMealDate(object.getString("lastMeal"))
-                                        .walkCount(object.getInt("walkCount"))
-                                        .build();
-                                pets[i] = pet;
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            Pet pet = new Pet.Builder(object.getInt("iAnimalNo"))
+                                    .petKind(object.getString("iAnimalKind"))
+                                    .serialNo(object.getInt("iSerialNo"))
+                                    .name(object.getString("strName"))
+                                    .gender(object.getString("strGender"))
+                                    .birth(object.getString("strBirth"))
+                                    .photoFileNo(object.getString("strPhoto"))
+                                    .lastMealDate(object.getString("lastMeal"))
+                                    .walkCount(object.getInt("walkCount"))
+                                    .build();
+                            pets[i] = pet;
                         }
                         petManager.setPets(pets);
-                        viewPager.setAdapter(new PetInfoAdapter(getChildFragmentManager()));
+                        viewPager.setAdapter(new PetInfoFragmentAdapter(getChildFragmentManager()));
                         viewPager.setOffscreenPageLimit(pets.length);
                         //펫이 2마리 이상이면 오른쪽 커서를 보이게 한다
-                        if (pets.length > 1){
+                        if (pets.length > 1) {
+                            leftCursor.setVisibility(View.INVISIBLE);
                             rightCursor.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             rightCursor.setVisibility(View.INVISIBLE);
                             leftCursor.setVisibility(View.INVISIBLE);
                         }
@@ -183,7 +181,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
-                }finally {
+                } finally {
                     getPetsTask = null;
                 }
             }
@@ -200,16 +198,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
     @Override
     public void onStart() {
         getPetsExecute();
-        ((MainActivity)getActivity()).setOnBackKeyPressListener(this);
+        ((MainActivity) getActivity()).setOnBackKeyPressListener(this);
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        if(getPetsTask != null){
+        if (getPetsTask != null) {
             getPetsTask.cancel(true);
         }
-        ((MainActivity)getActivity()).setOnBackKeyPressListener(null);
+        ((MainActivity) getActivity()).setOnBackKeyPressListener(null);
         super.onStop();
     }
 
@@ -222,11 +220,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
                 break;
             case R.id.floatingButtonAdd:
                 intent = new Intent(getContext(), PetRegistActivity.class);
-                startActivityForResult(intent,100);
+                startActivityForResult(intent, 100);
                 break;
             case R.id.floatingButtonDel:
                 Pet pet = petManager.getPet(viewPager.getCurrentItem());
-                Dialog dialog = new PetDeleteDialog(getContext(),pet);
+                Dialog dialog = new PetDeleteDialog(getContext(), pet);
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
@@ -245,11 +243,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             getPetsExecute();
             return;
         }
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     //플로팅 버튼이 눌렀을떄의 동작
@@ -282,8 +280,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
     //플로팅 버튼이 눌렀을떄의 동작 끝
 
     //펫 정보 요청
-    protected void getPetsExecute(){
-        RequestBody body= new FormBody.Builder().build();
+    protected void getPetsExecute() {
+        RequestBody body = new FormBody.Builder().build();
         Request request = new Request.Builder()
                 .url("http://58.226.2.45/Servlet/animalInfo")
                 .post(body)
@@ -300,16 +298,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_FINE_LOCATION};
 
-        ActivityCompat.requestPermissions(getActivity(),permissionValues,1);
+        ActivityCompat.requestPermissions(getActivity(), permissionValues, 1);
     }
 
     // 액티비티가 받는 뒤로가기 이벤트를 받기위한 인터페이스
     @Override
     public boolean onBack() {
-        if(isFloat){
+        if (isFloat) {
             closeFloatingButton();
             return true;
-        }else {
+        } else {
             return false;
         }
     }

@@ -10,12 +10,12 @@ import ourcompany.mylovepet.main.user.User;
  * Created by REOS on 2017-05-28.
  */
 
-public class PetInfoAdapter extends FragmentPagerAdapter {
+public class PetInfoFragmentAdapter extends FragmentPagerAdapter {
 
 
     Fragment[] fragments;
 
-    public PetInfoAdapter(FragmentManager fm) {
+    public PetInfoFragmentAdapter(FragmentManager fm) {
         super(fm);
         //user 클래스에 들어있는 펫 정보를 가져온다.
         int length = User.getIstance().getPetManager().getSize();

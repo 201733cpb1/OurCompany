@@ -188,6 +188,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dlDrawer.closeDrawers();
     }
 
+
+
     public boolean chkGpsService() {
         Intent intent ;
         //GPS가 켜져 있는지 확인함.
