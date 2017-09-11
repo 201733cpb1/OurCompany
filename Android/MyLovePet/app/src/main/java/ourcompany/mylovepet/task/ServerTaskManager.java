@@ -33,11 +33,10 @@ public class ServerTaskManager extends AsyncTask<Void,Void, byte[]> {
         this.taskListener = taskListener;
         this.context = context;
 
-        CookieManager cookieManager = new WebkitCookieManagerProxy(null, CookiePolicy.ACCEPT_ALL);
 
         okHttpClient = new OkHttpClient()
                 .newBuilder()
-                .cookieJar(new JavaNetCookieJar(cookieManager))
+                .cookieJar(new CookieController())
                 .build();
     }
 

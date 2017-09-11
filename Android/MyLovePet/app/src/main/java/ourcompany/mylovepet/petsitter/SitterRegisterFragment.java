@@ -14,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -326,6 +329,13 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
 
             TextView textViewPetName = (TextView)view.findViewById(R.id.textViewPetName);
             textViewPetName.setText(pets[position].getName());
+            ImageView profilePicture = (ImageView)view.findViewById(R.id.profile_picture);
+
+            String strFileNo = User.getIstance().getPetManager().getPet(position).getPhotoFileNo();
+            Picasso.with(getContext())
+                    .load("http://58.226.2.45/Servlet/animalProfileDownload?fileNo="+strFileNo)
+                    .error(R.drawable.defaultprofileimage)
+                    .into(profilePicture);
 
             view.findViewById(R.id.buttonAdd).setOnClickListener(addListener);
 
