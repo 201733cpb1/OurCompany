@@ -1,4 +1,4 @@
-package ourcompany.mylovepet;
+package ourcompany.mylovepet.webview;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
+import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.main.MainActivity;
 import ourcompany.mylovepet.main.OnBackKeyPressListener;
 

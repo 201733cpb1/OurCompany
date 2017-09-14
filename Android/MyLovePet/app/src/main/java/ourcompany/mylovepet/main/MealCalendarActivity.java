@@ -30,6 +30,7 @@ import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.customView.CalendarView2;
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
@@ -108,22 +109,6 @@ public class MealCalendarActivity extends AppCompatActivity {
             @Override
             public void onDayLongPress(Date date)
             {
-                /*DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                layout.removeView(et);
-                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
-                param.gravity = Gravity.CENTER;
-                et = new EditText(getApplicationContext());
-                et.setTextColor(Color.BLACK);
-                et.setTextSize(13);
-                et.setPadding(10,0,0,0);
-                et.setLayoutParams(param);
-
-                et.setText(""); // 입력한 먹이 출력
-                et.setBackgroundResource(R.drawable.rect);
-
-                d = date; // 선택한 날
-
-                layout.addView(et);*/
                 selectDate = LocalDate.fromDateFields(date);
                 String note = notes.get(selectDate);
 
@@ -139,6 +124,8 @@ public class MealCalendarActivity extends AppCompatActivity {
             public void setEvents() {
                 HashSet<Date> dateSets = localDateSetToDateSet(notes.keySet());
                 calendarView.updateCalendar(dateSets);
+                noteUpdate(calendarView.getMonth(), null);
+
             }
         });
 
@@ -165,9 +152,6 @@ public class MealCalendarActivity extends AppCompatActivity {
                             String note = jsonObject.getString("Text");
                             notes.put(localDate, note);
                         }
-                        Toast.makeText(getApplicationContext(),"업로드 성공",Toast.LENGTH_SHORT).show();
-                    }else {
-                        Toast.makeText(getApplicationContext(),"업로드 실패",Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e ) {
                     e.printStackTrace();
@@ -217,7 +201,7 @@ public class MealCalendarActivity extends AppCompatActivity {
     }
 
 
-    private void noteUpdate(String date, String text){
+    public void noteUpdate(String date, String text){
         FormBody.Builder builder= new FormBody.Builder()
                 .add("animalNo", petNo+"")
                 .add("date",date);
@@ -227,7 +211,7 @@ public class MealCalendarActivity extends AppCompatActivity {
         RequestBody body = builder.build();
 
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/animalMeal")
+                .url(ServerURL.MEAL_UPDATE_URL)
                 .post(body)
                 .build();
 

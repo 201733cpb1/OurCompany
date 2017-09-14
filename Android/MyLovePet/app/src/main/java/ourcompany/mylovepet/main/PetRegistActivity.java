@@ -24,6 +24,7 @@ import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
@@ -210,7 +211,7 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
     private void serialNoExecute(){
         RequestBody body= new FormBody.Builder().add("serialNo",strSerialNo).build();
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/checkSerial")
+                .url(ServerURL.CHECK_SERIAL_NO_URL)
                 .post(body)
                 .build();
         new ServerTaskManager(request,serialNoTask,getApplicationContext()).execute();
@@ -226,7 +227,7 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/createAnimal")
+                .url(ServerURL.CREATE_PET_URL)
                 .post(body)
                 .build();
         new ServerTaskManager(request,petRegisterTask,getApplicationContext()).execute();

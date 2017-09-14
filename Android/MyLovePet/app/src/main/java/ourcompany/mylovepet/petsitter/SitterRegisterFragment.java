@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +36,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import ourcompany.mylovepet.R;
 
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.main.HomeFragment;
 import ourcompany.mylovepet.main.user.Pet;
 import ourcompany.mylovepet.main.user.PetManager;
@@ -239,7 +239,7 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/addPetsitter")
+                .url(ServerURL.PET_SITTER_ADD_URL)
                 .post(body)
                 .build();
 
@@ -333,7 +333,7 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
 
             String strFileNo = User.getIstance().getPetManager().getPet(position).getPhotoFileNo();
             Picasso.with(getContext())
-                    .load("http://58.226.2.45/Servlet/animalProfileDownload?fileNo="+strFileNo)
+                    .load(ServerURL.PROFILE_DOWNLOAD_URL + strFileNo)
                     .error(R.drawable.defaultprofileimage)
                     .into(profilePicture);
 

@@ -16,6 +16,7 @@ import android.webkit.WebView;
  */
 
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 
 public class PostSearchDialog extends Dialog{
 
@@ -43,7 +44,7 @@ public class PostSearchDialog extends Dialog{
         webView.addJavascriptInterface(new JavaScriptMethods(),"android");
         webView.setWebChromeClient(new WebChromeClient());
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webView.loadUrl("http://58.226.2.45/postSearch.jsp");
+        webView.loadUrl(ServerURL.POST_SEARCH_URL);
     }
 
 

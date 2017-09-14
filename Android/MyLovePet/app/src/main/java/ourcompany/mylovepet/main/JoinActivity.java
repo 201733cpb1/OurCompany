@@ -25,6 +25,7 @@ import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.customView.PostSearchDialog;
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
@@ -269,7 +270,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 .add("type","idCheck")
                 .add("id",strId).build();
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/overlapCheck")
+                .url(ServerURL.OVER_CHECK_URL)
                 .post(body)
                 .build();
         new ServerTaskManager(request,idCheckTaskListener,getApplicationContext()).execute();
@@ -281,7 +282,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 .add("type","subNameCheck")
                 .add("subNameCheck",strSubName).build();
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/overlapCheck")
+                .url(ServerURL.OVER_CHECK_URL)
                 .post(body)
                 .build();
         new ServerTaskManager(request,subNameCheckTaskListener,getApplicationContext()).execute();
@@ -300,7 +301,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 .add("Token",  FirebaseInstanceId.getInstance().getToken())
                 .build();
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/join")
+                .url(ServerURL.JOIN_URL)
                 .post(body)
                 .build();
         new ServerTaskManager(request,joinTaskListener,getApplicationContext()).execute();

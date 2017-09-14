@@ -17,6 +17,7 @@ import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.main.user.Pet;
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.ServerTaskManager;
@@ -67,7 +68,7 @@ public class PetDeleteDialog extends Dialog implements View.OnClickListener, Tas
                         .add("animalNo",pet.getPetNo()+"")
                         .build();
                 Request request = new Request.Builder()
-                        .url("http://58.226.2.45/Servlet/deleteAnimal")
+                        .url(ServerURL.PET_DELETE_URL)
                         .post(body)
                         .build();
                 deleteTask = new ServerTaskManager(request,this,getContext().getApplicationContext());

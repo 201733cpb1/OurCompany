@@ -31,6 +31,7 @@ import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
@@ -164,9 +165,6 @@ public class PetWalkActivity extends AppCompatActivity implements TaskListener{
 
 
     private void walkUpdateExecute() {
-        Log.d("sss", dateTimeFormatter.print(startTimeDate));
-        Log.d("sss", dateTimeFormatter.print(startTimeDate));
-
         RequestBody body = new FormBody.Builder()
                 .add("animalNo", petNo + "")
                 .add("startTime", dateTimeFormatter.print(startTimeDate))
@@ -175,7 +173,7 @@ public class PetWalkActivity extends AppCompatActivity implements TaskListener{
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/createWalk")
+                .url(ServerURL.WALK_UPDATE_URL)
                 .post(body)
                 .build();
 

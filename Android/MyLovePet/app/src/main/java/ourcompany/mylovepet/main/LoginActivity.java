@@ -19,6 +19,7 @@ import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
@@ -163,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .add("token", token)
                 .build();
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/login")
+                .url(ServerURL.LOGIN_URL)
                 .post(body)
                 .build();
         loginTask = new ServerTaskManager(request, loginTaskListener, getApplicationContext());

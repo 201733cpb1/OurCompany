@@ -65,8 +65,7 @@ public class CalendarView2 extends LinearLayout
 	};
 
 	Date selectedDate;
-	View selectedCell;
-    int selectedCellColor;
+
 
 	// month-season association (northern hemisphere, sorry australia :)
 	int[] monthSeason = new int[] {2, 2, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2};
@@ -175,6 +174,13 @@ public class CalendarView2 extends LinearLayout
 	public void updateCalendar()
 	{
 		updateCalendar(null);
+	}
+
+	public String getMonth(){
+		String month;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd");
+		month = simpleDateFormat.format(currentDate.getTime());
+		return month;
 	}
 
 	/**

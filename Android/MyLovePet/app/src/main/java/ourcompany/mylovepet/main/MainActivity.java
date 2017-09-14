@@ -3,7 +3,7 @@ package ourcompany.mylovepet.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -21,19 +21,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
-import ourcompany.mylovepet.WebViewFragment;
-import ourcompany.mylovepet.board.TipBoardFragment;
+import ourcompany.mylovepet.ServerURL;
+import ourcompany.mylovepet.webview.WebViewFragment;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.daummap.GpsMapActivity;
 import ourcompany.mylovepet.daummap.Intro;
 import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 
 /**
@@ -47,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ActionBarDrawerToggle dtToggle;
 
     FragmentManager fragmentManager;
+
+    ListView listview;
 
     OnBackKeyPressListener onBackKeyPressListener;
 
@@ -63,11 +63,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         findViewById(R.id.myInfo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(R.id.container,new MyPageFragment()).commit();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                WebViewFragment webViewFragment = WebViewFragment.createWebViewFragment(ServerURL.MY_PAGE_URL);
+                fragmentTransaction.replace(R.id.container, webViewFragment).commit();
                 dlDrawer.closeDrawers();
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void toolbarInit() {
@@ -86,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.naviView);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ListView listview;
         ListViewAdapter adapter;
 
         // Adapter 생성
@@ -94,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // 리스트뷰 참조 및 Adapter
         listview = (ListView) findViewById(R.id.listView);
-        listview.setAdapter(adapter);
+
 
         adapter.addItem("펫 정보");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.home), "홈"); //1
@@ -107,12 +113,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tip), "TIP"); //6
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.used), "중고장터"); //7
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //8
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //9
 
+        listview.setAdapter(adapter);
         listview.setOnItemClickListener(this);
 
-        ((TextView)findViewById(R.id.nickName)).setText(User.getIstance().getSunName() + " 님");
-
+        ((TextView)findViewById(R.id.nickName)).setText(User.getIstance().getSunName() + "님\n환영 합니다");
     }
 
     @Override
@@ -163,15 +168,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragmentTransaction.replace(R.id.container,new SitterRegisterFragment());
                 break;
             case 4: //도움주기 화면
-                webViewFragment =  WebViewFragment.createWebViewFragment("http://58.226.2.45/petSitter?native=android");
+                webViewFragment =  WebViewFragment.createWebViewFragment(ServerURL.PET_SITTER_URL);
                 fragmentTransaction.replace(R.id.container, webViewFragment);
                 break;
             case 6: //TIP 화면
-                webViewFragment =  WebViewFragment.createWebViewFragment("http://58.226.2.45/tip?native=android");
+                webViewFragment =  WebViewFragment.createWebViewFragment(ServerURL.TIP_URL);
                 fragmentTransaction.replace(R.id.container, webViewFragment);
                 break;
             case 7:
-                webViewFragment = WebViewFragment.createWebViewFragment("http://58.226.2.45/market?native=android");
+                webViewFragment = WebViewFragment.createWebViewFragment(ServerURL.MARKET_URL);
                 fragmentTransaction.replace(R.id.container, webViewFragment);
                 //지름/중고장터 정보 화면 intro
                 break;

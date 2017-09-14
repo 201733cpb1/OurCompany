@@ -35,6 +35,7 @@ import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.main.user.PetManager;
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.ServerTaskManager;
@@ -359,7 +360,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                     .addFormDataPart("file",file.getName(),RequestBody.create(MediaType.parse("image/jpg"), file))
                     .build();
             Request request = new Request.Builder()
-                    .url("http://58.226.2.45/Servlet/animalProfileUpload")
+                    .url(ServerURL.PROFILE_UPLOAD_URL)
                     .post(multipartBody)
                     .build();
             new ServerTaskManager(request, profileUploadTaskListener, getContext().getApplicationContext()).execute();
@@ -369,7 +370,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
     private void proFileDownloadExecute(){
         String strFileNo = User.getIstance().getPetManager().getPet(petIndex).getPhotoFileNo();
         Picasso.with(getContext())
-                .load("http://58.226.2.45/Servlet/animalProfileDownload?fileNo="+strFileNo)
+                .load(ServerURL.PROFILE_DOWNLOAD_URL + strFileNo)
                 .error(R.drawable.defaultprofileimage)
                 .into(profile);
 
@@ -381,7 +382,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 .add("serialNo",serialNo+"")
                 .build();
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/getCondition")
+                .url(ServerURL.GET_CONDITION_URL)
                 .post(body)
                 .build();
         new ServerTaskManager(request, getConditionTaskListener, getContext().getApplicationContext()).execute();

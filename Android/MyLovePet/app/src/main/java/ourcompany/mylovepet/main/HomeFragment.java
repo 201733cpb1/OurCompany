@@ -27,6 +27,7 @@ import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.main.user.Pet;
 import ourcompany.mylovepet.main.user.PetManager;
 import ourcompany.mylovepet.main.user.User;
@@ -283,7 +284,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnBa
     protected void getPetsExecute() {
         RequestBody body = new FormBody.Builder().build();
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/animalInfo")
+                .url(ServerURL.GET_PETS_URL)
                 .post(body)
                 .build();
         getPetsTask = new ServerTaskManager(request, getPetsTaskListener, getContext().getApplicationContext());

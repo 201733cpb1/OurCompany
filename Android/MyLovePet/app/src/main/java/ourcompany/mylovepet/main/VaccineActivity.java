@@ -31,6 +31,7 @@ import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.customView.CalendarView;
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
@@ -341,7 +342,7 @@ public class VaccineActivity extends AppCompatActivity{
         RequestBody body = builder.build();
 
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/vaccineInfo")
+                .url(ServerURL.VACCINE_INFO_URL)
                 .post(body)
                 .build();
 
@@ -357,7 +358,7 @@ public class VaccineActivity extends AppCompatActivity{
         RequestBody body = builder.build();
 
         Request request = new Request.Builder()
-                .url("http://58.226.2.45/Servlet/createVaccine")
+                .url(ServerURL.VACCINE_ADD_URL)
                 .post(body)
                 .build();
 
