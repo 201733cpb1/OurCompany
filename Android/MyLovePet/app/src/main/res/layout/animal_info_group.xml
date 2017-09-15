@@ -7,7 +7,7 @@
         android:id="@+id/profile_picture"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@drawable/defaultprofileimage" />
+        android:src="@drawable/image" />
     <TextView
         android:id="@+id/textViewPetName"
         android:layout_width="match_parent"

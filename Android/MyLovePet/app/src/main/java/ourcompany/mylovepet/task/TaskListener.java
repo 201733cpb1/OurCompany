@@ -8,9 +8,8 @@ import okhttp3.Response;
 
 public interface TaskListener {
 
-    void preTask();
-
-    void postTask(byte[] bytes);
-
-    void fairTask();
+    public void preTask();
+    public void postTask(Response response);
+    public void cancelTask();
+    public void fairTask();
 }

@@ -6,14 +6,12 @@ package ourcompany.mylovepet.main.user;
 
 public class Pet {
     private final int petNo;
-    private String petKind;
+    private int petKind;
     private int serialNo;
     private String name;
     private String gender;
     private String birth;
-    private String photoFileNo;
-    private String lastMealDate;
-    private int walkCount;
+    private String photo_URL;
 
     private Pet(Builder builder){
         this.petNo = builder.petNo;
@@ -22,16 +20,14 @@ public class Pet {
         this.name = builder.name;
         this.gender = builder.gender;
         this.birth = builder.birth;
-        this.photoFileNo = builder.photoFileNo;
-        this.lastMealDate = builder.lastMealDate;
-        this.walkCount = builder.walkCount;
+        this.photo_URL = builder.photo_URL;
     }
 
     public int getPetNo() {
         return petNo;
     }
 
-    public String getPetKind() {
+    public int getPetKind() {
         return petKind;
     }
 
@@ -51,34 +47,24 @@ public class Pet {
         return birth;
     }
 
-    public String getPhotoFileNo() {
-        return photoFileNo;
-    }
-
-    public String getLastMealDate(){
-        return lastMealDate;
-    }
-
-    public int getWalkCount(){
-        return walkCount;
+    public String getPhoto_URL() {
+        return photo_URL;
     }
 
     public static class Builder{
         private final int petNo;
-        private String petKind;
+        private int petKind;
         private int serialNo;
         private String name;
         private String gender;
         private String birth;
-        private String photoFileNo;
-        private String lastMealDate;
-        private int walkCount;
+        private String photo_URL;
 
         public Builder(int petNo){
             this.petNo = petNo;
         }
 
-        public Builder petKind(String petKind){
+        public Builder petKind(int petKind){
             this.petKind = petKind;
             return this;
         }
@@ -103,18 +89,8 @@ public class Pet {
             return this;
         }
 
-        public Builder photoFileNo(String photoFileNo){
-            this.photoFileNo = photoFileNo;
-            return this;
-        }
-
-        public Builder lastMealDate(String lastMealDate){
-            this.lastMealDate = lastMealDate;
-            return this;
-        }
-
-        public Builder walkCount(int walkCount){
-            this.walkCount = walkCount;
+        public Builder photo_URL(String photo_URL){
+            this.photo_URL = photo_URL;
             return this;
         }
 

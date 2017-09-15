@@ -8,15 +8,12 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.joda.time.LocalDate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,9 +61,6 @@ public class CalendarView2 extends LinearLayout
 			R.color.spring
 	};
 
-	Date selectedDate;
-
-
 	// month-season association (northern hemisphere, sorry australia :)
 	int[] monthSeason = new int[] {2, 2, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2};
 
@@ -89,8 +83,6 @@ public class CalendarView2 extends LinearLayout
 	{
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(R.layout.meal_calendar, this);
-
-        selectedDate = LocalDate.now().toDate();
 
 		loadDateFormat(attrs);
 		assignUiElements();
@@ -146,25 +138,12 @@ public class CalendarView2 extends LinearLayout
 			}
 		});
 
-
 		// long-pressing a day
 		grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> view, View cell, int position, long id) {
-                /*if(selectedCell != null){
-                    ((TextView)selectedCell).setTextColor(selectedCellColor);
-                    ((TextView)selectedCell).setTypeface(null,Typeface.NORMAL);
-                }
-                selectedCellColor = ((TextView)cell).getTextColors().getDefaultColor();
-                selectedCell = cell;
-                ((TextView)cell).setTextColor(getResources().getColor(R.color.selectedDay));
-                ((TextView)cell).setTypeface(null,Typeface.BOLD);*/
-
-                selectedDate = (Date) view.getItemAtPosition(position);
-                eventHandler.onDayLongPress(selectedDate);
-
-                ((ArrayAdapter)grid.getAdapter()).notifyDataSetChanged();
+				eventHandler.onDayLongPress((Date) view.getItemAtPosition(position));
 			}
 		});
 	}
@@ -174,13 +153,6 @@ public class CalendarView2 extends LinearLayout
 	public void updateCalendar()
 	{
 		updateCalendar(null);
-	}
-
-	public String getMonth(){
-		String month;
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd");
-		month = simpleDateFormat.format(currentDate.getTime());
-		return month;
 	}
 
 	/**
@@ -271,8 +243,7 @@ public class CalendarView2 extends LinearLayout
 				}
 			}
 
-
-			// clearPet styling
+			// clear styling
 			((TextView)view).setTypeface(null, Typeface.NORMAL);
 			((TextView)view).setTextColor(Color.BLACK);
 
@@ -281,11 +252,11 @@ public class CalendarView2 extends LinearLayout
 				// if this day is outside current month, grey it out
 				((TextView)view).setTextColor(getResources().getColor(R.color.greyed_out));
 			}
-			else if (month == selectedDate.getMonth() && day == selectedDate.getDate())
+			else if (day == today.getDate())
 			{
-                // if it is today, set it to blue/bold
+				// if it is today, set it to blue/bold
 				((TextView)view).setTypeface(null, Typeface.BOLD);
-				((TextView)view).setTextColor(getResources().getColor(R.color.selectedDay));
+				((TextView)view).setTextColor(getResources().getColor(R.color.today));
 			}
 
 			// set text
