@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\libs\joda-time-2.9.9.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f7b520c458572890807d143670c9b24f4de90897">
+        <dex dex="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\build\intermediates\pre-dexed\debug\joda-time-2.9.9_1638d60d125e6cccf3c6445dfb6c2f22fbe5a2db.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\libs\json-simple-1.1.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="5d6f9b6a9ddca2a28c0216cc44efb2e20d9c23b5">
+        <dex dex="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\build\intermediates\pre-dexed\debug\json-simple-1.1.1_2a85db6feeb4204c73aa7dc8b46b56b7955a1c85.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\libs\libDaumMapAndroid.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b365841bba8bc2d592e4b22008885a6f0cd1c77d">
+        <dex dex="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\build\intermediates\pre-dexed\debug\libDaumMapAndroid_e793ccec9eebf87ee455c11e6994d91eb653e2fa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\libs\picasso-2.5.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\build\intermediates\pre-dexed\debug\picasso-2.5.2_75f5d2308fd2dd97c068d5a59c4474ae155da0c3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\libs\MPAndroidChart-v3.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="369f9aa48a629b4e92557b37326f42dc3de796e4">
+        <dex dex="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\build\intermediates\pre-dexed\debug\MPAndroidChart-v3.0.1_5a0c9d7bc9fa0ec982d915c5d624a62510df222a.jar" />
+    </item>
+
+</items>

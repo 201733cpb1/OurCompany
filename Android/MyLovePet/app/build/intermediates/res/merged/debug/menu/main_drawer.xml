@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:title="펫 관리">
+            <menu>
+                <item
+                    android:id="@+id/main"
+                    android:title="홈" />
+                <item
+                    android:id="@+id/statistics"
+                    android:title="통계" />
+            </menu>
+        </item>
+
+        <item android:title="펫 시터 게시판">
+            <menu>
+                <item
+                    android:id="@+id/add"
+                    android:title="펫 등록" />
+                <item
+                    android:id="@+id/buttonSearch"
+                    android:title="펫 조회" />
+            </menu>
+        </item>
+
+        <item android:title="게시판">
+            <menu>
+                <item
+                    android:id="@+id/tip"
+                    android:title="Tip" />
+                <item
+                    android:id="@+id/usedboard"
+                    android:title="중고장터" />
+            </menu>
+        </item>
+    </group>
+
+</menu>
