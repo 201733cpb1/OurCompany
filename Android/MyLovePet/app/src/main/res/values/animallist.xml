@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string-array name="pets">
+        <item>개</item>
+        <item>고양이</item>
+    </string-array>
+
+    <string-array name="dog">
+        <item>진돗개</item>
+        <item>푸들</item>
+        <item>시츄</item>
+    </string-array>
+
+    <string-array name="cat">
+        <item>고양이 1</item>
+        <item>고양이 2</item>
+        <item>고양이 3</item>
+    </string-array>
+
+</resources>
