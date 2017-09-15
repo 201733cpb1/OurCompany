@@ -209,4 +209,49 @@ public class VaccineActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+<<<<<<< HEAD
+=======
+
+
+    private void getDate(){
+        FormBody.Builder builder= new FormBody.Builder()
+                .add("animalNo",petNo+"");
+
+        RequestBody body = builder.build();
+
+        Request request = new Request.Builder()
+                .url("http://58.226.2.45/Servlet/vaccineInfo")
+                .post(body)
+                .build();
+
+        new ServerTaskManager(request,getTask,getApplicationContext()).execute();
+    }
+
+    private void addDate(LocalDate date, int count){
+        FormBody.Builder builder= new FormBody.Builder()
+                .add("animalNo",petNo+"")
+                .add("count",count+"")
+                .add("date", dateTimeFormatDate.print(date));
+
+        RequestBody body = builder.build();
+
+        Request request = new Request.Builder()
+                .url("http://58.226.2.45/Servlet/createVaccine")
+                .post(body)
+                .build();
+
+        new ServerTaskManager(request,addTask,getApplicationContext()).execute();
+    }
+
+
+    //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+>>>>>>> parent of 936c985... URL 클래스
 }

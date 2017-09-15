@@ -39,11 +39,14 @@ public class MyBoardFragment extends Fragment {
     }
 
 
+<<<<<<< HEAD
 
     public PAGE getPage() {
         return page;
     }
 
+=======
+>>>>>>> parent of 936c985... URL 클래스
     public void setPage(PAGE page) {
         this.page = page;
     }

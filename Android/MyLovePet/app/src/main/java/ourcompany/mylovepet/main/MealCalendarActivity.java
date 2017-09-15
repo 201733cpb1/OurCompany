@@ -51,7 +51,11 @@ public class MealCalendarActivity extends AppCompatActivity
             @Override
             public void onDayLongPress(Date date)
             {
+<<<<<<< HEAD
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+=======
+                /*DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+>>>>>>> parent of 936c985... URL 클래스
                 layout.removeView(et);
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
                 param.gravity = Gravity.CENTER;
@@ -66,16 +70,36 @@ public class MealCalendarActivity extends AppCompatActivity
 
                 d = date; // 선택한 날
 
+<<<<<<< HEAD
                 layout.addView(et);
             }
             @Override
             public void setEvents() {
                 cv.updateCalendar(events);
+=======
+                layout.addView(et);*/
+                selectDate = LocalDate.fromDateFields(date);
+                String note = notes.get(selectDate);
+
+                if(note == null){
+                    editTextNote.setText("");
+                }else {
+                    editTextNote.setText(note);
+                }
+
+                Toast.makeText(getApplicationContext(),selectDate.toString(),Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void setEvents() {
+                HashSet<Date> dateSets = localDateSetToDateSet(notes.keySet());
+                calendarView.updateCalendar(dateSets);
+>>>>>>> parent of 936c985... URL 클래스
             }
         });
 
         findViewById(R.id.meal_update).setOnClickListener(new View.OnClickListener() { // 원하는 날짜에 마커 표시
             @Override
+<<<<<<< HEAD
             public void onClick(View v) {
                 Date a = new Date();
                 int compare = a.compareTo(d);
@@ -90,9 +114,93 @@ public class MealCalendarActivity extends AppCompatActivity
                     events.add(d);
                     Toast.makeText(MealCalendarActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                     cv.updateCalendar(events);
+=======
+            public void preTask() {
+                lockButton();
+            }
+
+            @Override
+            public void postTask(byte[] bytes) {
+                try {
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
+                    jsonObject = jsonObject.getJSONObject("report");
+                    boolean result = jsonObject.getBoolean("result");
+                    if(result){
+                        notes = new HashMap<>();
+                        JSONArray jsonArray = jsonObject.getJSONArray("value");
+                        for(int i = 0 ; i < jsonArray.length(); i++){
+                            jsonObject = jsonArray.getJSONObject(i);
+                            LocalDate localDate = LocalDate.parse(jsonObject.getString("Date"));
+                            String note = jsonObject.getString("Text");
+                            notes.put(localDate, note);
+                        }
+                        Toast.makeText(getApplicationContext(),"업로드 성공",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getApplicationContext(),"업로드 실패",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e ) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+                }finally {
+                    unLockButton();
+                    calendarView.updateCalendar(localDateSetToDateSet(notes.keySet()));
+>>>>>>> parent of 936c985... URL 클래스
                 }
 
             }
+<<<<<<< HEAD
         });
+=======
+            //통신 메소드 end
+        };
+
+    }
+
+    //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private HashSet<Date> localDateSetToDateSet(Set<LocalDate> localDateSets){
+        HashSet<Date> dateSets = new HashSet<>();
+
+        for(LocalDate date: localDateSets){
+            dateSets.add(date.toDate());
+        }
+        return dateSets;
+    }
+
+    private void lockButton(){
+        buttonUpdate.setEnabled(false);
+    }
+
+    private void unLockButton(){
+        buttonUpdate.setEnabled(true);
+    }
+
+
+    private void noteUpdate(String date, String text){
+        FormBody.Builder builder= new FormBody.Builder()
+                .add("animalNo", petNo+"")
+                .add("date",date);
+        if(text != null){
+            builder.add("text",text);
+        }
+        RequestBody body = builder.build();
+
+        Request request = new Request.Builder()
+                .url("http://58.226.2.45/Servlet/animalMeal")
+                .post(body)
+                .build();
+
+        new ServerTaskManager(request, noteUpdateTaskListener, getApplicationContext()).execute();
+>>>>>>> parent of 936c985... URL 클래스
     }
 }

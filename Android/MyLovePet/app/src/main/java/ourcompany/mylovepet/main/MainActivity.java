@@ -3,6 +3,10 @@ package ourcompany.mylovepet.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+<<<<<<< HEAD
+=======
+import android.net.Uri;
+>>>>>>> parent of 936c985... URL 클래스
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -20,11 +24,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
+<<<<<<< HEAD
+=======
+import ourcompany.mylovepet.WebViewFragment;
+import ourcompany.mylovepet.board.TipBoardFragment;
+>>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.daummap.GpsMapActivity;
 import ourcompany.mylovepet.daummap.Intro;
@@ -44,7 +54,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     FragmentManager fragmentManager;
 
+<<<<<<< HEAD
     Intent intent;
+=======
+    OnBackKeyPressListener onBackKeyPressListener;
+>>>>>>> parent of 936c985... URL 클래스
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,10 +115,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.petsitter), "도움주기"); //5
 
         adapter.addItem("편의 기능");
+<<<<<<< HEAD
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tip), "TIP"); //7
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.used), "중고장터"); //8
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //9
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //10
+=======
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tip), "TIP"); //6
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.used), "중고장터"); //7
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //8
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //9
+>>>>>>> parent of 936c985... URL 클래스
 
         listview.setOnItemClickListener(this);
 
@@ -150,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 2:
                 //통계 화면
                 break;
+<<<<<<< HEAD
             case 4:
                 //펫시터 구하기 화면
                 fragmentTransaction.replace(R.id.container,new SitterRegisterFragment());
@@ -160,6 +182,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case 7:
                 //TIP 화면
+=======
+            case 4: //도움주기 화면
+                webViewFragment =  WebViewFragment.createWebViewFragment("http://58.226.2.45/petSitter?native=android");
+                fragmentTransaction.replace(R.id.container, webViewFragment);
+                break;
+            case 6: //TIP 화면
+                webViewFragment =  WebViewFragment.createWebViewFragment("http://58.226.2.45/tip?native=android");
+                fragmentTransaction.replace(R.id.container, webViewFragment);
+                break;
+            case 7:
+                webViewFragment = WebViewFragment.createWebViewFragment("http://58.226.2.45/market?native=android");
+                fragmentTransaction.replace(R.id.container, webViewFragment);
+                //지름/중고장터 정보 화면 intro
+>>>>>>> parent of 936c985... URL 클래스
                 break;
             case 8:
                 fragmentTransaction.replace(R.id.container, new WebViewTest());

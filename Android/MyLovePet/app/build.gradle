@@ -46,7 +46,15 @@ dependencies {
     compile 'com.mikhaellopez:circularimageview:3.0.2'
     compile files('libs/libDaumMapAndroid.jar')
     compile 'com.google.firebase:firebase-messaging:9.0.2'
+
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
+<<<<<<< HEAD
+=======
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.1'
+
+    compile files('libs/picasso-2.5.2.jar')
+>>>>>>> parent of 936c985... URL 클래스
 }
 
 

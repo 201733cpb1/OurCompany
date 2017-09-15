@@ -29,6 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import ourcompany.mylovepet.R;
+<<<<<<< HEAD
+=======
+import ourcompany.mylovepet.task.ServerTaskManager;
+import ourcompany.mylovepet.task.TaskListener;
+>>>>>>> parent of 936c985... URL 클래스
 
 import static ourcompany.mylovepet.R.id.chart;
 
@@ -207,6 +212,118 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
             //다이얼 로그 끝
         }
     }
+<<<<<<< HEAD
+=======
+
+
+    private void getStatistics(String strStart, String strEnd, int dateType){
+        RequestBody body = new FormBody.Builder()
+                .add("serialNo", serialNo+"")
+                .add("startDate",strStart)
+                .add("endDate",strEnd)
+                .add("date",dateType+"").build();
+
+        Request request = new Request.Builder()
+                .url("http://58.226.2.45/Servlet/avgCondition")
+                .post(body)
+                .build();
+
+        new ServerTaskManager(request,this,getApplicationContext()).execute();
+    }
+
+    @Override
+    public void preTask() {
+    }
+
+    @Override
+    public void postTask(byte[] bytes) {
+        try {
+            String body = new String(bytes, Charset.forName("utf-8"));
+            JSONObject jsonObject = new JSONObject(body);
+            jsonObject = jsonObject.getJSONObject("report");
+            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            statistics.clear();
+            if(jsonArray.length() == 0){
+                Toast.makeText(this,"정보 없음",Toast.LENGTH_SHORT).show();
+            }
+            for(int i = 0; i < jsonArray.length(); i++){
+                jsonObject = jsonArray.getJSONObject(i);
+                String date = jsonObject.getString("date");
+
+                double avgStep = jsonObject.getDouble("avgStep");
+                double avgTemp = jsonObject.getDouble("avgTemp");
+                double avgHeart = jsonObject.getDouble("avgHeart");
+
+                AvgStatistic statistic = new AvgStatistic();
+                statistic.setDate(LocalDate.parse(date));
+                statistic.setAvgStep(avgStep);
+                statistic.setAvgTemp(avgTemp);
+                statistic.setAvgHeart(avgHeart);
+                statistics.add(statistic);
+            }
+            updateChart();
+        } catch (JSONException e ) {
+            e.printStackTrace();
+            Toast.makeText(this, "서버 통신 오류", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void fairTask() {
+
+    }
+
+    //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private class AvgStatistic{
+
+        private LocalDate date;
+        private double avgStep;
+        private double avgTemp;
+        private double avgHeart;
+
+        public double getAvgStep() {
+            return avgStep;
+        }
+
+        public void setAvgStep(double avgStep) {
+            this.avgStep = avgStep;
+        }
+
+        public double getAvgTemp() {
+            return avgTemp;
+        }
+
+        public void setAvgTemp(double avgTemp) {
+            this.avgTemp = avgTemp;
+        }
+
+        public double getAvgHeart() {
+            return avgHeart;
+        }
+
+        public void setAvgHeart(double avgHeart) {
+            this.avgHeart = avgHeart;
+        }
+
+        public LocalDate getDate() {
+            return date;
+        }
+
+        public void setDate(LocalDate date) {
+            this.date = date;
+        }
+    }
+
+>>>>>>> parent of 936c985... URL 클래스
 }
 
 

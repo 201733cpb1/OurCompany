@@ -37,6 +37,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
 
+<<<<<<< HEAD
+=======
+import ourcompany.mylovepet.main.HomeFragment;
+>>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.main.user.Pet;
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
@@ -231,8 +235,12 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
                 .build();
 
         Request request = new Request.Builder()
+<<<<<<< HEAD
                 .addHeader("Cookie",User.getIstance().getCookie())
                 .url("http://58.237.8.179/Servlet/addPetsitter")
+=======
+                .url("http://58.226.2.45/Servlet/addPetsitter")
+>>>>>>> parent of 936c985... URL 클래스
                 .post(body)
                 .build();
 
@@ -398,6 +406,16 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
 
             TextView textViewPetName = (TextView)view.findViewById(R.id.textViewPetName);
             textViewPetName.setText(pets[position].getName());
+<<<<<<< HEAD
+=======
+            ImageView profilePicture = (ImageView)view.findViewById(R.id.profile_picture);
+
+            String strFileNo = User.getIstance().getPetManager().getPet(position).getPhotoFileNo();
+            Picasso.with(getContext())
+                    .load("http://58.226.2.45/Servlet/animalProfileDownload?fileNo="+strFileNo)
+                    .error(R.drawable.defaultprofileimage)
+                    .into(profilePicture);
+>>>>>>> parent of 936c985... URL 클래스
 
             view.findViewById(R.id.buttonAdd).setOnClickListener(addListener);
 

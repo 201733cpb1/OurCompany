@@ -17,6 +17,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ourcompany.mylovepet.R;
+<<<<<<< HEAD
+=======
+import ourcompany.mylovepet.task.ServerTaskManager;
+import ourcompany.mylovepet.task.TaskListener;
+>>>>>>> parent of 936c985... URL 클래스
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static android.location.LocationManager.NETWORK_PROVIDER;
@@ -122,4 +127,58 @@ public class PetWalkActivity extends AppCompatActivity {
             }
         });
     }
+<<<<<<< HEAD
+=======
+
+    //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void walkUpdateExecute() {
+        Log.d("sss", dateTimeFormatter.print(startTimeDate));
+        Log.d("sss", dateTimeFormatter.print(startTimeDate));
+
+        RequestBody body = new FormBody.Builder()
+                .add("animalNo", petNo + "")
+                .add("startTime", dateTimeFormatter.print(startTimeDate))
+                .add("endTime", dateTimeFormatter.print(endTimeDate))
+                .add("distance", Float.toString(dist) + "")
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://58.226.2.45/Servlet/createWalk")
+                .post(body)
+                .build();
+
+        new ServerTaskManager(request, this, getApplicationContext()).execute();
+    }
+
+    @Override
+    public void preTask() {
+
+    }
+
+    @Override
+    public void postTask(byte[] bytes) {
+        try {
+            String body = new String(bytes, Charset.forName("utf-8"));
+            JSONObject jsonObject = new JSONObject(body);
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void fairTask() {
+
+    }
+>>>>>>> parent of 936c985... URL 클래스
 }

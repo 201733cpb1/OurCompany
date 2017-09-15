@@ -296,7 +296,11 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 .add("type","idCheck")
                 .add("id",strId).build();
         Request request = new Request.Builder()
+<<<<<<< HEAD
                 .url("http://58.237.8.179/Servlet/overlapCheck")
+=======
+                .url("http://58.226.2.45/Servlet/overlapCheck")
+>>>>>>> parent of 936c985... URL 클래스
                 .post(body)
                 .build();
         new RequestTask(request,idCheckTaskListener,getApplicationContext()).execute();
@@ -307,7 +311,11 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 .add("type","subNameCheck")
                 .add("subNameCheck",strSubName).build();
         Request request = new Request.Builder()
+<<<<<<< HEAD
                 .url("http://58.237.8.179/Servlet/overlapCheck")
+=======
+                .url("http://58.226.2.45/Servlet/overlapCheck")
+>>>>>>> parent of 936c985... URL 클래스
                 .post(body)
                 .build();
         new RequestTask(request,subNameCheckTaskListener,getApplicationContext()).execute();
@@ -324,7 +332,11 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 .add("zoneCode",strZoneCode)
                 .add("email",strEmail).build();
         Request request = new Request.Builder()
+<<<<<<< HEAD
                 .url("http://58.237.8.179/Servlet/join")
+=======
+                .url("http://58.226.2.45/Servlet/join")
+>>>>>>> parent of 936c985... URL 클래스
                 .post(body)
                 .build();
         new RequestTask(request,joinTaskListener,getApplicationContext()).execute();

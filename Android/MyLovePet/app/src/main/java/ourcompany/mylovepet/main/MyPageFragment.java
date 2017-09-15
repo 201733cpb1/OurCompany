@@ -13,6 +13,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ourcompany.mylovepet.R;
+<<<<<<< HEAD
+=======
+import ourcompany.mylovepet.main.user.PetManager;
+>>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.main.user.User;
 
 /**
@@ -28,6 +32,15 @@ public class MyPageFragment extends Fragment implements View.OnClickListener,
 
     MyBoardFragment myBoardFragment;
 
+<<<<<<< HEAD
+=======
+    PetManager petManager;
+
+    public MyPageFragment(){
+        petManager = User.getIstance().getPetManager();
+    }
+
+>>>>>>> parent of 936c985... URL 클래스
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,10 +53,15 @@ public class MyPageFragment extends Fragment implements View.OnClickListener,
         TextView textViewNickName = (TextView)view.findViewById(R.id.nickName);
         TextView textViewPetCount = (TextView)view.findViewById(R.id.petCount);
 
+<<<<<<< HEAD
 
         textViewNickName.setText("닉네임 : "+user.getSunName()+" 님");
         textViewPetCount.setText("나의 펫 수 : " + user.getPets().length);
 
+=======
+        textViewNickName.setText("닉네임 : "+user.getSunName()+" 님");
+        textViewPetCount.setText("나의 펫 수 : " + petManager.getSize()+"");
+>>>>>>> parent of 936c985... URL 클래스
 
         return view;
     }
