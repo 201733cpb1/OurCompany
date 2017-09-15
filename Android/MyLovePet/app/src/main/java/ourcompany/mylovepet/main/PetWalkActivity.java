@@ -18,7 +18,10 @@ import java.util.Date;
 
 import ourcompany.mylovepet.R;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 >>>>>>> parent of 936c985... URL 클래스

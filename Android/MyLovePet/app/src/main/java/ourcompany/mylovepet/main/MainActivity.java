@@ -4,6 +4,10 @@ package ourcompany.mylovepet.main;
 import android.content.DialogInterface;
 import android.content.Intent;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+import android.net.Uri;
+>>>>>>> parent of 936c985... URL 클래스
 =======
 import android.net.Uri;
 >>>>>>> parent of 936c985... URL 클래스
@@ -31,6 +35,11 @@ import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+import ourcompany.mylovepet.WebViewFragment;
+import ourcompany.mylovepet.board.TipBoardFragment;
+>>>>>>> parent of 936c985... URL 클래스
 =======
 import ourcompany.mylovepet.WebViewFragment;
 import ourcompany.mylovepet.board.TipBoardFragment;
@@ -55,8 +64,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentManager fragmentManager;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     Intent intent;
 =======
+=======
+>>>>>>> parent of 936c985... URL 클래스
     OnBackKeyPressListener onBackKeyPressListener;
 >>>>>>> parent of 936c985... URL 클래스
 
@@ -125,6 +137,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.used), "중고장터"); //7
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //8
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //9
+<<<<<<< HEAD
+>>>>>>> parent of 936c985... URL 클래스
+=======
 >>>>>>> parent of 936c985... URL 클래스
 
         listview.setOnItemClickListener(this);

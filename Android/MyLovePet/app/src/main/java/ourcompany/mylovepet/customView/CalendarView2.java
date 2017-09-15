@@ -67,6 +67,9 @@ public class CalendarView2 extends LinearLayout
 	View selectedCell;
     int selectedCellColor;
 
+<<<<<<< HEAD
+>>>>>>> parent of 936c985... URL 클래스
+=======
 >>>>>>> parent of 936c985... URL 클래스
 	// month-season association (northern hemisphere, sorry australia :)
 	int[] monthSeason = new int[] {2, 2, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2};

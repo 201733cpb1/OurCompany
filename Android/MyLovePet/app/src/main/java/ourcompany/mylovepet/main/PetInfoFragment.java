@@ -34,7 +34,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.main.user.PetManager;
 >>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.main.user.User;
@@ -321,9 +324,12 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
             RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
             Request request = new Request.Builder()
 <<<<<<< HEAD
+<<<<<<< HEAD
                     .url("http://58.237.8.179/Servlet/getCondition")
                     .post(body)
 =======
+=======
+>>>>>>> parent of 936c985... URL 클래스
                     .url("http://58.226.2.45/Servlet/animalProfileUpload")
                     .post(multipartBody)
 >>>>>>> parent of 936c985... URL 클래스

@@ -54,6 +54,9 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.1'
 
     compile files('libs/picasso-2.5.2.jar')
+<<<<<<< HEAD
+>>>>>>> parent of 936c985... URL 클래스
+=======
 >>>>>>> parent of 936c985... URL 클래스
 }
 

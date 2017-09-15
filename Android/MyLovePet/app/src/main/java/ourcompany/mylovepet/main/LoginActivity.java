@@ -109,7 +109,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .build();
         Request request = new Request.Builder()
 <<<<<<< HEAD
+<<<<<<< HEAD
                 .url("http://58.237.8.179/Servlet/login")
+=======
+                .url("http://58.226.2.45/Servlet/login")
+>>>>>>> parent of 936c985... URL 클래스
 =======
                 .url("http://58.226.2.45/Servlet/login")
 >>>>>>> parent of 936c985... URL 클래스

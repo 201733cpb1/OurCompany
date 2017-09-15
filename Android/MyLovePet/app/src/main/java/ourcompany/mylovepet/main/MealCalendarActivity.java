@@ -52,7 +52,11 @@ public class MealCalendarActivity extends AppCompatActivity
             public void onDayLongPress(Date date)
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+=======
+                /*DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+>>>>>>> parent of 936c985... URL 클래스
 =======
                 /*DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 >>>>>>> parent of 936c985... URL 클래스
@@ -71,12 +75,15 @@ public class MealCalendarActivity extends AppCompatActivity
                 d = date; // 선택한 날
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 layout.addView(et);
             }
             @Override
             public void setEvents() {
                 cv.updateCalendar(events);
 =======
+=======
+>>>>>>> parent of 936c985... URL 클래스
                 layout.addView(et);*/
                 selectDate = LocalDate.fromDateFields(date);
                 String note = notes.get(selectDate);
@@ -93,6 +100,9 @@ public class MealCalendarActivity extends AppCompatActivity
             public void setEvents() {
                 HashSet<Date> dateSets = localDateSetToDateSet(notes.keySet());
                 calendarView.updateCalendar(dateSets);
+<<<<<<< HEAD
+>>>>>>> parent of 936c985... URL 클래스
+=======
 >>>>>>> parent of 936c985... URL 클래스
             }
         });
