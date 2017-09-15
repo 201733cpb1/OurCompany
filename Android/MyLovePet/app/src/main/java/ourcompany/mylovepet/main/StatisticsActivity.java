@@ -30,8 +30,11 @@ import java.util.List;
 
 import ourcompany.mylovepet.R;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.task.ServerTaskManager;

@@ -5,7 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 import android.os.Bundle;
@@ -32,7 +35,10 @@ import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.WebViewFragment;
@@ -57,8 +63,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentManager fragmentManager;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     Intent intent;
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
     OnBackKeyPressListener onBackKeyPressListener;
@@ -133,6 +142,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //8
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //9
 
+<<<<<<< HEAD
+>>>>>>> parent of 936c985... URL 클래스
+=======
 >>>>>>> parent of 936c985... URL 클래스
         listview.setOnItemClickListener(this);
 

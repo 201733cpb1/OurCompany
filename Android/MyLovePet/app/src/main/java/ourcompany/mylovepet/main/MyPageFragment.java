@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿package ourcompany.mylovepet.main;
+=======
+package ourcompany.mylovepet.main;
+>>>>>>> parent of 936c985... URL 클래스
 =======
 package ourcompany.mylovepet.main;
 >>>>>>> parent of 936c985... URL 클래스
@@ -19,8 +23,11 @@ import android.widget.TextView;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.main.user.PetManager;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import ourcompany.mylovepet.main.user.PetManager;
 import ourcompany.mylovepet.main.user.PetManager;
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.main.user.User;
@@ -56,15 +63,21 @@ public class MyPageFragment extends Fragment implements View.OnClickListener,
         TextView textViewNickName = (TextView)view.findViewById(R.id.nickName);
         TextView textViewPetCount = (TextView)view.findViewById(R.id.petCount);
 <<<<<<< HEAD
+<<<<<<< HEAD
         textViewNickName.setText("닉네임 : "+user.getSunName()+" 님");
         textViewPetCount.setText("나의 펫 수 : " + petManager.getSize()+"");
 
 
 =======
+=======
+>>>>>>> parent of 936c985... URL 클래스
 
         textViewNickName.setText("닉네임 : "+user.getSunName()+" 님");
         textViewPetCount.setText("나의 펫 수 : " + petManager.getSize()+"");
 
+<<<<<<< HEAD
+>>>>>>> parent of 936c985... URL 클래스
+=======
 >>>>>>> parent of 936c985... URL 클래스
         return view;
     }

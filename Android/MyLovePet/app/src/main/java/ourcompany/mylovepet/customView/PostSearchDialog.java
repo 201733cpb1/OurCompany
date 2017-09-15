@@ -44,7 +44,11 @@ public class PostSearchDialog extends Dialog{
         webView.setWebChromeClient(new WebChromeClient());
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 <<<<<<< HEAD
+<<<<<<< HEAD
         webView.loadUrl("http://58.237.8.179/postSearch.jsp");
+=======
+        webView.loadUrl("http://58.226.2.45/postSearch.jsp");
+>>>>>>> parent of 936c985... URL 클래스
 =======
         webView.loadUrl("http://58.226.2.45/postSearch.jsp");
 >>>>>>> parent of 936c985... URL 클래스

@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿package ourcompany.mylovepet.main;
+=======
+package ourcompany.mylovepet.main;
+>>>>>>> parent of 936c985... URL 클래스
 =======
 package ourcompany.mylovepet.main;
 >>>>>>> parent of 936c985... URL 클래스
@@ -43,9 +47,12 @@ public class MyBoardFragment extends Fragment {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public PAGE getPage() {
         return page;
     }
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 
