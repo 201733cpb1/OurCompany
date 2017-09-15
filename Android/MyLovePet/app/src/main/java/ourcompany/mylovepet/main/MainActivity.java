@@ -129,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listview.setAdapter(adapter);
 
         adapter.addItem("펫 정보");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "홈"); //1
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "통계"); //2
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.home), "홈"); //1
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.statistic), "통계"); //2
 
         adapter.addItem("펫 시터");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "구하기"); //4
