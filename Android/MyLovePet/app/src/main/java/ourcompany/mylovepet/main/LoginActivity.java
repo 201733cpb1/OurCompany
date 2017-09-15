@@ -1,4 +1,4 @@
-package ourcompany.mylovepet.main;
+﻿package ourcompany.mylovepet.main;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,7 +19,7 @@ import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.R
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
@@ -108,15 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .add("pass",strPassword)
                 .build();
         Request request = new Request.Builder()
-<<<<<<< HEAD
-<<<<<<< HEAD
                 .url("http://58.237.8.179/Servlet/login")
-=======
-                .url("http://58.226.2.45/Servlet/login")
->>>>>>> parent of 936c985... URL 클래스
-=======
-                .url("http://58.226.2.45/Servlet/login")
->>>>>>> parent of 936c985... URL 클래스
                 .post(body)
                 .build();
         loginTask = new RequestTask(request,this,getApplicationContext());

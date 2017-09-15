@@ -1,4 +1,4 @@
-package ourcompany.mylovepet.main;
+﻿package ourcompany.mylovepet.main;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -51,15 +51,8 @@ public class MealCalendarActivity extends AppCompatActivity
             @Override
             public void onDayLongPress(Date date)
             {
-<<<<<<< HEAD
-<<<<<<< HEAD
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-=======
-                /*DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
->>>>>>> parent of 936c985... URL 클래스
-=======
-                /*DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
->>>>>>> parent of 936c985... URL 클래스
+
                 layout.removeView(et);
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
                 param.gravity = Gravity.CENTER;
@@ -73,17 +66,11 @@ public class MealCalendarActivity extends AppCompatActivity
                 et.setBackgroundResource(R.drawable.rect);
 
                 d = date; // 선택한 날
-
-<<<<<<< HEAD
-<<<<<<< HEAD
                 layout.addView(et);
             }
             @Override
             public void setEvents() {
                 cv.updateCalendar(events);
-=======
-=======
->>>>>>> parent of 936c985... URL 클래스
                 layout.addView(et);*/
                 selectDate = LocalDate.fromDateFields(date);
                 String note = notes.get(selectDate);
@@ -100,16 +87,12 @@ public class MealCalendarActivity extends AppCompatActivity
             public void setEvents() {
                 HashSet<Date> dateSets = localDateSetToDateSet(notes.keySet());
                 calendarView.updateCalendar(dateSets);
-<<<<<<< HEAD
->>>>>>> parent of 936c985... URL 클래스
-=======
->>>>>>> parent of 936c985... URL 클래스
             }
         });
 
         findViewById(R.id.meal_update).setOnClickListener(new View.OnClickListener() { // 원하는 날짜에 마커 표시
             @Override
-<<<<<<< HEAD
+
             public void onClick(View v) {
                 Date a = new Date();
                 int compare = a.compareTo(d);
@@ -124,7 +107,7 @@ public class MealCalendarActivity extends AppCompatActivity
                     events.add(d);
                     Toast.makeText(MealCalendarActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                     cv.updateCalendar(events);
-=======
+
             public void preTask() {
                 lockButton();
             }
@@ -155,13 +138,12 @@ public class MealCalendarActivity extends AppCompatActivity
                 }finally {
                     unLockButton();
                     calendarView.updateCalendar(localDateSetToDateSet(notes.keySet()));
->>>>>>> parent of 936c985... URL 클래스
+
                 }
 
             }
-<<<<<<< HEAD
+
         });
-=======
             //통신 메소드 end
         };
 
@@ -211,6 +193,5 @@ public class MealCalendarActivity extends AppCompatActivity
                 .build();
 
         new ServerTaskManager(request, noteUpdateTaskListener, getApplicationContext()).execute();
->>>>>>> parent of 936c985... URL 클래스
     }
 }

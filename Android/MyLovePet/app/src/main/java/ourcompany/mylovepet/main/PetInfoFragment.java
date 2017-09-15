@@ -1,4 +1,4 @@
-package ourcompany.mylovepet.main;
+﻿package ourcompany.mylovepet.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,13 +33,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.main.user.PetManager;
->>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
@@ -323,16 +317,10 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
             int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
             RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
             Request request = new Request.Builder()
-<<<<<<< HEAD
-<<<<<<< HEAD
                     .url("http://58.237.8.179/Servlet/getCondition")
                     .post(body)
-=======
-=======
->>>>>>> parent of 936c985... URL 클래스
                     .url("http://58.226.2.45/Servlet/animalProfileUpload")
                     .post(multipartBody)
->>>>>>> parent of 936c985... URL 클래스
                     .build();
             try {
                 Response response = client.newCall(request).execute();
@@ -343,26 +331,23 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
             return null;
         }
 
-<<<<<<< HEAD
         @Override
         protected void onPostExecute(Response response) {
             if(response == null || response.code() != 200) {
                 Toast.makeText(getContext(), "업데이트 실패 다시 시도해주세요", Toast.LENGTH_SHORT).show();
                 return;
             }
-=======
+
     private void proFileDownloadExecute(){
         String strFileNo = User.getIstance().getPetManager().getPet(petIndex).getPhotoFileNo();
         Picasso.with(getContext())
                 .load("http://58.226.2.45/Servlet/animalProfileDownload?fileNo="+strFileNo)
                 .error(R.drawable.defaultprofileimage)
                 .into(profile);
->>>>>>> parent of 936c985... URL 클래스
+
 
             try {
                 JSONObject jsonObject = new JSONObject(response.body().string());
-
-<<<<<<< HEAD
                 jsonObject = jsonObject.getJSONObject("Condition");
                 int temperate = jsonObject.getInt("avgtemp");
                 int step = jsonObject.getInt("step");
@@ -385,7 +370,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
             }
             swipeRefreshLayout.setRefreshing(false);
         }
-=======
+
     private void getConditionExecute(){
         int serialNo = petManager.getPet(petIndex).getSerialNo();
         RequestBody body= new FormBody.Builder()
@@ -396,7 +381,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 .post(body)
                 .build();
         new ServerTaskManager(request, getConditionTaskListener, getContext().getApplicationContext()).execute();
->>>>>>> parent of 936c985... URL 클래스
+
     }
 
 }

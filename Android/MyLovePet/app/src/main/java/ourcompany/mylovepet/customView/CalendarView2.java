@@ -1,4 +1,4 @@
-package ourcompany.mylovepet.customView;
+﻿package ourcompany.mylovepet.customView;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -61,16 +61,11 @@ public class CalendarView2 extends LinearLayout
 			R.color.spring
 	};
 
-<<<<<<< HEAD
-=======
+
 	Date selectedDate;
 	View selectedCell;
     int selectedCellColor;
 
-<<<<<<< HEAD
->>>>>>> parent of 936c985... URL 클래스
-=======
->>>>>>> parent of 936c985... URL 클래스
 	// month-season association (northern hemisphere, sorry australia :)
 	int[] monthSeason = new int[] {2, 2, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2};
 

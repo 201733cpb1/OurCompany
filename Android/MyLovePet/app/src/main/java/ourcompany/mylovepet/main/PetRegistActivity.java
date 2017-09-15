@@ -1,4 +1,4 @@
-package ourcompany.mylovepet.main;
+﻿package ourcompany.mylovepet.main;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -222,15 +222,7 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
     private void serialNoExecute(){
         RequestBody body= new FormBody.Builder().add("serialNo",strSerialNo).build();
         Request request = new Request.Builder()
-<<<<<<< HEAD
-<<<<<<< HEAD
-                .url("http://58.237.8.179/Servlet/checkSerial")
-=======
                 .url("http://58.226.2.45/Servlet/checkSerial")
->>>>>>> parent of 936c985... URL 클래스
-=======
-                .url("http://58.226.2.45/Servlet/checkSerial")
->>>>>>> parent of 936c985... URL 클래스
                 .post(body)
                 .build();
         new RequestTask(request,serialNoTask,getApplicationContext()).execute();
@@ -246,16 +238,8 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
                 .build();
 
         Request request = new Request.Builder()
-<<<<<<< HEAD
-<<<<<<< HEAD
                 .addHeader("Cookie",User.getIstance().getCookie())
-                .url("http://58.237.8.179/Servlet/createAnimal")
-=======
                 .url("http://58.226.2.45/Servlet/createAnimal")
->>>>>>> parent of 936c985... URL 클래스
-=======
-                .url("http://58.226.2.45/Servlet/createAnimal")
->>>>>>> parent of 936c985... URL 클래스
                 .post(body)
                 .build();
         new RequestTask(request,petRegisterTask,getApplicationContext()).execute();

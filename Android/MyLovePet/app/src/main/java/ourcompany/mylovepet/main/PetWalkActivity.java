@@ -1,4 +1,4 @@
-package ourcompany.mylovepet.main;
+﻿package ourcompany.mylovepet.main;
 
 import android.Manifest;
 import android.content.Context;
@@ -17,15 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ourcompany.mylovepet.R;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
->>>>>>> parent of 936c985... URL 클래스
-
 import static android.location.LocationManager.GPS_PROVIDER;
 import static android.location.LocationManager.NETWORK_PROVIDER;
 
@@ -130,8 +123,6 @@ public class PetWalkActivity extends AppCompatActivity {
             }
         });
     }
-<<<<<<< HEAD
-=======
 
     //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
     @Override
@@ -183,5 +174,4 @@ public class PetWalkActivity extends AppCompatActivity {
     public void fairTask() {
 
     }
->>>>>>> parent of 936c985... URL 클래스
 }

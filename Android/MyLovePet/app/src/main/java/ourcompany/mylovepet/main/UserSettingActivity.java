@@ -1,4 +1,4 @@
-package ourcompany.mylovepet.main;
+﻿package ourcompany.mylovepet.main;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,15 +14,10 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import ourcompany.mylovepet.R;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
->>>>>>> parent of 936c985... URL 클래스
+
 
 public class UserSettingActivity extends AppCompatActivity implements OnClickListener {
     Button profile,pass;
@@ -111,9 +106,6 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
         return super.onOptionsItemSelected(item);
     }
 
-<<<<<<< HEAD
-
-=======
     private void getPushState(){
         RequestBody body= new FormBody.Builder().build();
         Request request = new Request.Builder()
@@ -133,6 +125,4 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
                 .build();
         new ServerTaskManager(request,setPushTask,getApplicationContext()).execute();
     }
->>>>>>> parent of 936c985... URL 클래스
-
 }
