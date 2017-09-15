@@ -39,7 +39,10 @@ import ourcompany.mylovepet.R;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.main.HomeFragment;
@@ -240,8 +243,11 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
         Request request = new Request.Builder()
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                 .addHeader("Cookie",User.getIstance().getCookie())
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 =======

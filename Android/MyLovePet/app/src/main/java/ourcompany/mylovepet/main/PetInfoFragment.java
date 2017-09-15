@@ -319,8 +319,11 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
             Request request = new Request.Builder()
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     .url("http://58.237.8.179/Servlet/getCondition")
                     .post(body)
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 =======

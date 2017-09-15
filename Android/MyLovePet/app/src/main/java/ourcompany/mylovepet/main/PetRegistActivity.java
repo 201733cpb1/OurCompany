@@ -240,7 +240,10 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
         Request request = new Request.Builder()
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 .addHeader("Cookie",User.getIstance().getCookie())
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 =======

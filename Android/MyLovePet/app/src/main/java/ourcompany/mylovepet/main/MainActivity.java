@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.net.Uri;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 =======
@@ -36,7 +39,10 @@ import android.widget.Toast;
 import ourcompany.mylovepet.R;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 =======
@@ -64,8 +70,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     Intent intent;
+=======
+>>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
 =======
@@ -143,6 +152,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //9
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 936c985... URL 클래스
+=======
 >>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
