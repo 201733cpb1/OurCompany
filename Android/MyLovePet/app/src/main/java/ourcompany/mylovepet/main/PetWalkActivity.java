@@ -8,10 +8,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,8 +32,6 @@ public class PetWalkActivity extends AppCompatActivity {
     LocationManager locationManager;
     LocationListener locationListener;
 
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_walk);
@@ -50,10 +45,6 @@ public class PetWalkActivity extends AppCompatActivity {
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        ActionBar actionBar =  getSupportActionBar();
-        actionBar.setTitle("펫 산책");
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         walkstart.setOnClickListener(new Button.OnClickListener(){
             @Override
@@ -131,17 +122,4 @@ public class PetWalkActivity extends AppCompatActivity {
             }
         });
     }
-
-    //툴바에 있는 뒤로가기 버튼이 눌렀을때 해야할 동작을 정의
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 }
-
-

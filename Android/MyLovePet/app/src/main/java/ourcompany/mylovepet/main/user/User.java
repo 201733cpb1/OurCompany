@@ -17,15 +17,9 @@ public class User {
         return instance;
     }
 
-    private User(){
-        pets = new Pet[0];
-    }
-
     private String cookie;
     private Pet[] pets;
     private String name;
-    private String sunName;
-
 
     public String getName() {
         return name;
@@ -42,6 +36,10 @@ public class User {
     public void setSunName(String sunName) {
         this.sunName = sunName;
     }
+
+    private String sunName;
+
+    private User(){}
 
     public String getCookie() {
         return cookie;

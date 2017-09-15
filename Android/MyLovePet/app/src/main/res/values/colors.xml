@@ -17,7 +17,7 @@
 
 
     <color name="gray">#EEEEEE</color>
-    <color name="selectedDay">#4b82ff</color>
+    <color name="today">#4b82ff</color>
     <color name="greyed_out">#c7c7c7</color>
 
     <color name="summer">#649bf4</color>

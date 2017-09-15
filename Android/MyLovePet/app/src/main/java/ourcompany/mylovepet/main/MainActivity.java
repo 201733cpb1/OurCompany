@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     FragmentManager fragmentManager;
 
+    Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,8 +93,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listview.setAdapter(adapter);
 
         adapter.addItem("펫 정보");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.home), "홈"); //1
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.statistic), "통계"); //2
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "홈"); //1
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "통계"); //2
 
         adapter.addItem("펫 시터");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "구하기"); //4
@@ -140,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent;
         FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
         switch (position) {
             case 1:

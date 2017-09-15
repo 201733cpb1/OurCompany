@@ -72,7 +72,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_petinfo,container,false);
+        View view = inflater.inflate(R.layout.fragment_animalinfo,container,false);
 
         swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -90,9 +90,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         view.findViewById(R.id.viewMeal).setOnClickListener(this);
         view.findViewById(R.id.viewVaccination).setOnClickListener(this);
         view.findViewById(R.id.viewTemperature).setOnClickListener(this);
-        view.findViewById(R.id.viewActiveMass).setOnClickListener(this);
-        view.findViewById(R.id.viewHeartrate).setOnClickListener(this);
-        view.findViewById(R.id.button_self_diagnosis).setOnClickListener(this);
 
         int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
         RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
@@ -121,7 +118,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 break;
             case R.id.viewMeal:
                 intent = new Intent(getContext(), MealCalendarActivity.class);
-                intent.putExtra("petNo",User.getIstance().getPet(petIndex).getPetNo());
                 startActivity(intent);
                 break;
             case R.id.viewVaccination:
@@ -130,17 +126,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 break;
             case R.id.viewTemperature:
                 intent = new Intent(getContext(),StatisticsActivity.class);
-                intent.putExtra("asd","온도");
-                startActivity(intent);
-                break;
-            case R.id.viewActiveMass:
-                intent = new Intent(getContext(),StatisticsActivity.class);
-                intent.putExtra("asd","걸음수");
-                startActivity(intent);
-                break;
-            case R.id.viewHeartrate:
-                intent = new Intent(getContext(),StatisticsActivity.class);
-                intent.putExtra("asd","심박수");
                 startActivity(intent);
                 break;
             case R.id.profile_picture:
@@ -166,16 +151,14 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 // 다이얼로그 보여주기
                 alertDialog.show();
                 break;
-            case R.id.button_self_diagnosis:
-                intent = new Intent(getContext(),Self_DiagnosisActivity.class);
-                startActivity(intent);
-                break;
         }
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         switch (requestCode){
             case REQUEST_TAKE_PHOTO: // 앨범 이미지 가져오기
                 album = true;
@@ -223,7 +206,6 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 this.sendBroadcast(mediaScanIntent); // 동기화
                 break;*/
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void dispatchTakePictureIntent() {

@@ -34,7 +34,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="30dp"
-                android:src="@drawable/defaultprofileimage" />
+                android:src="@drawable/image" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,7 +51,6 @@
                     android:src="@drawable/temperature" />
 
                 <ImageView
-                    android:id="@+id/viewActiveMass"
                     android:layout_width="0dp"
                     android:layout_height="115dp"
                     android:layout_gravity="center_horizontal"
@@ -59,7 +58,6 @@
                     android:src="@drawable/activemass" />
 
                 <ImageView
-                    android:id="@+id/viewHeartrate"
                     android:layout_width="0dp"
                     android:layout_height="115dp"
                     android:layout_gravity="left"
@@ -196,8 +194,7 @@
                     android:gravity="center"
                     android:text="자가 진단"
                     android:textSize="30dp"
-                    android:textStyle="bold"
-                    android:id="@+id/button_self_diagnosis"/>
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="0dp"

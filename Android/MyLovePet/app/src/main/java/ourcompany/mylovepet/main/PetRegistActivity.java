@@ -168,12 +168,12 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void cancelTask() {
-                buttonSerial.setEnabled(true);
+
             }
 
             @Override
             public void fairTask() {
-                buttonSerial.setEnabled(true);
+
             }
         };
 

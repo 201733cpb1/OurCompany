@@ -1,14 +1,12 @@
 package ourcompany.mylovepet.main;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -43,10 +41,8 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
     YAxis yAxis;
     YAxis yAxisLeft;
     EditText start_temp,end_temp;
-    TextView iden;
     LocalDate s_Date, e_Date;
     DateTimeFormatter dateTimeFormat;
-    String Statistic;
     int count;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +52,8 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         lineChart = (LineChart) findViewById(chart);
         start_temp = (EditText) findViewById(R.id.start_temp_statistic);
         end_temp = (EditText) findViewById(R.id.end_temp_statistic);
-        iden = (TextView) findViewById(R.id.iden);
         dateTimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-        Intent intent = getIntent();
-
-        Statistic = intent.getStringExtra("asd");
-
-        iden.setText(Statistic);
-
-/*        if(Statistic.equals("온도")){
-
-        }else if(Statistic.equals("걸음수")){
-
-        }else if(Statistic.equals("심박수")){
-
-        }*/
         start_temp.setOnClickListener(this);
         end_temp.setOnClickListener(this);
 
@@ -97,10 +79,10 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         int year2 = Integer.parseInt(token2[0]);
         int month2 = Integer.parseInt(token2[1]);
         int day2 = Integer.parseInt(token2[2]);
-        int[] test = {26,21,23,32,12,56,78,43,12,34,56,78,99};
+
         for(int i = 0;i<cnt;i++){
 
-            numMap.put(i,day+"");
+            numMap.put(i,day+""); // 여기 i 값에 온도를 넣어주면 됨
 
             if(month ==1||month==3||month==5||month==7||month==8||month==10||month==12){
                 if(day == 31){
@@ -130,7 +112,7 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
             numArr[i] = i;
         }
 
-        for(int num : numArr){ entries.add(new Entry(num, test[num])); }  // test[num] 이 부분에 값배열을 넣어주면 됨
+        for(int num : numArr){ entries.add(new Entry(num, num)); }
 
         lineDataSet = new LineDataSet(entries, "temperature");
         lineDataSet.setLineWidth(2);
@@ -150,9 +132,7 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextColor(Color.BLACK);
         xAxis.enableGridDashedLine(16, 12, 0);
-
         xAxis.setLabelCount(cnt); // x 축 갯수
-
         xAxis.setGranularity(1);
         xAxis.setTextSize(20);
         xAxis.setValueFormatter(new IAxisValueFormatter() {

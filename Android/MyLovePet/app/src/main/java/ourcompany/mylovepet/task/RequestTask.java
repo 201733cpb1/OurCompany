@@ -48,10 +48,14 @@ public class RequestTask extends AsyncTask<Void,Void, Response> {
 
     @Override
     protected void onPostExecute(Response response) {
-
-
-
         if(response == null || response.code() != 200) {
+            if (response != null){
+                try {
+                    Log.d(response.body().string(),"dd");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             Toast.makeText(context, "서버 통신 실패", Toast.LENGTH_SHORT).show();
             taskListener.fairTask();
         }else {

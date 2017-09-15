@@ -1,8 +1,6 @@
 package ourcompany.mylovepet.main;
 
 import android.Manifest;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -58,6 +56,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
     //AsyncTask 클래스
     RequestTask getPetsTask;
 
+    String[] p = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,};
+
     public HomeFragment(){}
 
     @Nullable
@@ -66,8 +67,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
         init(view);
-        permissionSetting();
-
+        permissionSetting(p);
         return view;
     }
 
@@ -78,11 +78,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
     }
 
     @Override
-    public void onStop() {
+    public void onPause() {
         if(getPetsTask != null){
             getPetsTask.cancel(true);
         }
-        super.onStop();
+        super.onPause();
     }
 
     private void init(View view) {
@@ -154,16 +154,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
                 startActivityForResult(intent,100);
                 break;
             case R.id.floatingButtonDel:
-                Pet pet = User.getIstance().getPets()[viewPager.getCurrentItem()];
-                Dialog dialog = new PetDeleteDialog(getContext(),pet);
-                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        getPetsExecute();
-                    }
-                });
-                dialog.show();
-                closeFloatingButton();
+                Pet[] pets = User.getIstance().getPets();
+                int petNo = pets[viewPager.getCurrentItem()].getPetNo();
                 break;
             case R.id.floatingButtonSet:
                 intent = new Intent(getContext(), PetListActivity.class);
@@ -224,16 +216,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
         getPetsTask = new RequestTask(request,this,getContext().getApplicationContext());
         getPetsTask.execute();
     }
-
-    // 권한 되어있는지 요청 하여 없을 시 셋팅(최초 셋팅)
-    public void permissionSetting() {
-        String[] permissionValues = new String[]{
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_FINE_LOCATION};
-
-        ActivityCompat.requestPermissions(getActivity(),permissionValues,1);
+// 권한 되어있는지 요청 하여 없을 시 셋팅(최초 셋팅)
+    public void permissionSetting(String[] permissionValues) {
+               ActivityCompat.requestPermissions(getActivity(),permissionValues,1);
     }
 
     // TaskListener 메소드
@@ -274,9 +259,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
                 //펫이 2마리 이상이면 오른쪽 커서를 보이게 한다
                 if (pets.length > 1){
                     rightCursor.setVisibility(View.VISIBLE);
-                }else {
-                    rightCursor.setVisibility(View.INVISIBLE);
-                    leftCursor.setVisibility(View.INVISIBLE);
                 }
             }
         } catch (JSONException | IOException e ) {
@@ -298,5 +280,79 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
 
     }
     // TaskListener 메소드 end
+
+
+    //유저의 펫 정보를 가져오고 AnimalInfoFragment클래스를 생성하여 viewPager에 등록
+    private class GetPets extends AsyncTask<String, Void, Response> {
+
+        private OkHttpClient client = new OkHttpClient();
+
+        @Override
+        public Response doInBackground(String... params) {
+            RequestBody body= new FormBody.Builder().build();
+            Request request = new Request.Builder()
+                    .addHeader("Cookie", User.getIstance().getCookie())
+                    .url("http://58.237.8.179/Servlet/animalInfo")
+                    .post(body)
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                return response;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Response response) {
+            if(response == null || response.code() != 200) {
+                Toast.makeText(getContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try {
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                JSONArray jsonArray;
+                jsonArray = jsonObject.getJSONArray("AnimalList");
+
+                if (jsonArray != null) {
+                    User user = User.getIstance();
+                    int length = jsonArray.length();
+                    Pet[] pets = new Pet[length];
+                    for (int i = 0; i < length; i++) {
+                        try {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            Pet.Builder builder = new Pet.Builder(object.getInt("iAnimalNo"));
+                            builder.petKind(object.getInt("iAnimalIndex"))
+                                    .serialNo(object.getInt("iSerialNo"))
+                                    .name(object.getString("strName"))
+                                    .gender(object.getString("strGender"))
+                                    .birth(object.getString("strBirth"))
+                                    .photo_URL(object.getString("strPhoto"));
+                            Pet pet = builder.build();
+                            pets[i] = pet;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    user.setPets(pets);
+                    viewPager.setAdapter(new PetInfoAdapter(getChildFragmentManager()));
+                    viewPager.setOffscreenPageLimit(pets.length);
+
+                    //펫이 2마리 이상이면 오른쪽 커서를 보이게 한다
+                    if (pets.length > 1){
+                        rightCursor.setVisibility(View.VISIBLE);
+                    }
+
+                }
+
+            } catch (JSONException | IOException e ) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
 
 }

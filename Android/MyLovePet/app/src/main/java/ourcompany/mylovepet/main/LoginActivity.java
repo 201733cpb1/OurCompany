@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +21,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
 import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.pushAlram.FirebaseInstanceIDService;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
 
@@ -106,13 +103,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void loginExecute(final String strId, final String strPassword){
 
-        SharedPreferences sharedPreferences = getSharedPreferences("token",0);
-        String token = sharedPreferences.getString("token",null);
-
         RequestBody body= new FormBody.Builder()
                 .add("id",strId)
                 .add("pass",strPassword)
-                .add("token", token)
                 .build();
         Request request = new Request.Builder()
                 .url("http://58.237.8.179/Servlet/login")
@@ -162,8 +155,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginTask = null;
         unLockView();
         try {
-            String str = response.body().string();
-            JSONObject jsonObject = new JSONObject(str);
+            JSONObject jsonObject = new JSONObject(response.body().string());
             jsonObject = jsonObject.getJSONObject("loginResult");
             boolean isSuccessed = false;
             isSuccessed = jsonObject.getBoolean("isSuccessed");
@@ -196,7 +188,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void fairTask() {
-        unLockView();
+
     }
     // TaskListener  메소드 end
 
