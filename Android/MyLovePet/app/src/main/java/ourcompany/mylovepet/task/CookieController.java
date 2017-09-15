@@ -60,12 +60,13 @@ public class CookieController implements CookieJar {
     public List<Cookie> loadForRequest(HttpUrl url) {
         List<Cookie> list = new ArrayList<>();
         //url주소에 해당하는 쿠키매니저로 부터 꺼내오고 ; 구분자로 쿠키를 분리한다.
-        String[] cookies = cookieManager
-                .getCookie(url.uri().toString())
-                .split(";");
+        String cookie = cookieManager.getCookie(url.uri().toString());
 
-        for(String cookie : cookies){
-            list.add(Cookie.parse(url,cookie));
+        if(cookie != null){
+            String[] cookies = cookie.split(";");
+            for(String c : cookies){
+                list.add(Cookie.parse(url,c));
+            }
         }
 
         return list;

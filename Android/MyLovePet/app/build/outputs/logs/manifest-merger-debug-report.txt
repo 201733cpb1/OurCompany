@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:2:1-84:12
+ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:2:1-85:12
 	package
 		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:3:5-35
 		INJECTED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml
@@ -60,7 +60,7 @@ ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app
 	android:name
 		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:17:22-73
 application
-ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:20:5-82:19
+ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:20:5-83:19
 MERGED from [com.google.firebase:firebase-core:9.0.0] C:\Users\REOS\.android\build-cache\4538c537109ff125d74b685e4ef60b607efc2a9f\output\AndroidManifest.xml:5:5-20
 MERGED from [com.google.firebase:firebase-analytics:9.0.0] C:\Users\REOS\.android\build-cache\0f2377ce6e18dd29008043e6740e354cf361bdb0\output\AndroidManifest.xml:26:5-41:19
 MERGED from [com.google.firebase:firebase-analytics-impl:9.0.0] C:\Users\REOS\.android\build-cache\da5b5a65d458506aae5c34330161a775bd81da4a\output\AndroidManifest.xml:26:5-41:19
@@ -80,8 +80,8 @@ MERGED from [com.google.android.gms:play-services-basement:9.0.2] C:\Users\REOS\
 MERGED from [com.android.support:support-v4:25.3.1] C:\Users\REOS\.android\build-cache\31509171bc9355c88fb86bf7101775a100323949\output\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\REOS\.android\build-cache\26de443dfad1ef140d7e643cb3239fbc277e9caa\output\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\REOS\.android\build-cache\0c4a04235c1ece791decd76fc80b476805670dfe\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\REOS\.android\build-cache\244256657853b6b7bb0e78d568e90eb5ce5b7cb5\output\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\REOS\.android\build-cache\cc62a92373ab811f7540e609a840a1a5f3d040e7\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\REOS\.android\build-cache\244256657853b6b7bb0e78d568e90eb5ce5b7cb5\output\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-compat:25.3.1] C:\Users\REOS\.android\build-cache\287355a9ad0ec66647b75325889886e7e47a0958\output\AndroidManifest.xml:29:5-20
 	android:label
 		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:23:9-41
@@ -194,25 +194,25 @@ ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app
 	android:name
 		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:65:19-57
 service#ourcompany.mylovepet.pushAlram.FirebaseMessagingService
-ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:68:9-73:19
+ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:69:9-74:19
 	android:name
-		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:69:13-63
+		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:70:13-63
 intent-filter#com.google.firebase.MESSAGING_EVENT
-ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:70:13-72:29
+ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:71:13-73:29
 action#com.google.firebase.MESSAGING_EVENT
-ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:71:17-77
+ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:72:17-77
 	android:name
-		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:71:25-75
+		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:72:25-75
 service#ourcompany.mylovepet.pushAlram.FirebaseInstanceIDService
-ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:75:9-80:19
+ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:76:9-81:19
 	android:name
-		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:76:13-64
+		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:77:13-64
 intent-filter#com.google.firebase.INSTANCE_ID_EVENT
-ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:77:13-79:29
+ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:78:13-80:29
 action#com.google.firebase.INSTANCE_ID_EVENT
-ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:78:17-79
+ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:79:17-79
 	android:name
-		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:78:25-77
+		ADDED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml:79:25-77
 uses-sdk
 INJECTED from C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.google.firebase:firebase-core:9.0.0] C:\Users\REOS\.android\build-cache\4538c537109ff125d74b685e4ef60b607efc2a9f\output\AndroidManifest.xml:4:5-42
@@ -224,7 +224,6 @@ MERGED from [com.android.support:design:25.3.1] C:\Users\REOS\.android\build-cac
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\REOS\.android\build-cache\4e0a1c0fa05b499c7595b75c2a7fb4d6e3be77ba\output\AndroidManifest.xml:21:5-23:78
 MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\REOS\.android\build-cache\ba3a434301b9242220a8b16a82528e27187dbe72\output\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\REOS\.android\build-cache\8c971486fddb2952f954124e632f2aaa97253f12\output\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\REOS\.android\build-cache\97d049148f4f03162d6325305082eed6c32e5853\output\AndroidManifest.xml:20:5-43
 MERGED from [com.android.support:transition:25.3.1] C:\Users\REOS\.android\build-cache\2df0ea1898191f391fd933c43058d71d12eeadcc\output\AndroidManifest.xml:20:5-44
 MERGED from [com.mikhaellopez:circularimageview:3.0.2] C:\Users\REOS\.android\build-cache\e652422a78e6c091451a001e7ebe7c886a96bd59\output\AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.firebase:firebase-messaging:9.0.2] C:\Users\REOS\.android\build-cache\44c45588b316a862286d4639464a3685554443ae\output\AndroidManifest.xml:18:5-42
@@ -235,8 +234,9 @@ MERGED from [com.google.android.gms:play-services-basement:9.0.2] C:\Users\REOS\
 MERGED from [com.android.support:support-v4:25.3.1] C:\Users\REOS\.android\build-cache\31509171bc9355c88fb86bf7101775a100323949\output\AndroidManifest.xml:21:5-23:54
 MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\REOS\.android\build-cache\26de443dfad1ef140d7e643cb3239fbc277e9caa\output\AndroidManifest.xml:21:5-23:60
 MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\REOS\.android\build-cache\0c4a04235c1ece791decd76fc80b476805670dfe\output\AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\REOS\.android\build-cache\244256657853b6b7bb0e78d568e90eb5ce5b7cb5\output\AndroidManifest.xml:21:5-23:58
 MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\REOS\.android\build-cache\cc62a92373ab811f7540e609a840a1a5f3d040e7\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\REOS\.android\build-cache\97d049148f4f03162d6325305082eed6c32e5853\output\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\REOS\.android\build-cache\244256657853b6b7bb0e78d568e90eb5ce5b7cb5\output\AndroidManifest.xml:21:5-23:58
 MERGED from [com.android.support:support-compat:25.3.1] C:\Users\REOS\.android\build-cache\287355a9ad0ec66647b75325889886e7e47a0958\output\AndroidManifest.xml:21:5-23:58
 	tools:overrideLibrary
 		ADDED from [com.android.support:design:25.3.1] C:\Users\REOS\.android\build-cache\e1c08fec9189331637ef7ea9d2c0662fbff777a2\output\AndroidManifest.xml:23:9-59
@@ -287,13 +287,13 @@ ADDED from [com.android.support:design:25.3.1] C:\Users\REOS\.android\build-cach
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\REOS\.android\build-cache\4e0a1c0fa05b499c7595b75c2a7fb4d6e3be77ba\output\AndroidManifest.xml:25:5-27:34
 MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\REOS\.android\build-cache\ba3a434301b9242220a8b16a82528e27187dbe72\output\AndroidManifest.xml:22:5-24:34
 MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\REOS\.android\build-cache\8c971486fddb2952f954124e632f2aaa97253f12\output\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\REOS\.android\build-cache\97d049148f4f03162d6325305082eed6c32e5853\output\AndroidManifest.xml:22:5-24:34
 MERGED from [com.android.support:transition:25.3.1] C:\Users\REOS\.android\build-cache\2df0ea1898191f391fd933c43058d71d12eeadcc\output\AndroidManifest.xml:22:5-24:34
 MERGED from [com.android.support:support-v4:25.3.1] C:\Users\REOS\.android\build-cache\31509171bc9355c88fb86bf7101775a100323949\output\AndroidManifest.xml:25:5-27:34
 MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\REOS\.android\build-cache\26de443dfad1ef140d7e643cb3239fbc277e9caa\output\AndroidManifest.xml:25:5-27:34
 MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\REOS\.android\build-cache\0c4a04235c1ece791decd76fc80b476805670dfe\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\REOS\.android\build-cache\244256657853b6b7bb0e78d568e90eb5ce5b7cb5\output\AndroidManifest.xml:25:5-27:34
 MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\REOS\.android\build-cache\cc62a92373ab811f7540e609a840a1a5f3d040e7\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\REOS\.android\build-cache\97d049148f4f03162d6325305082eed6c32e5853\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\REOS\.android\build-cache\244256657853b6b7bb0e78d568e90eb5ce5b7cb5\output\AndroidManifest.xml:25:5-27:34
 MERGED from [com.android.support:support-compat:25.3.1] C:\Users\REOS\.android\build-cache\287355a9ad0ec66647b75325889886e7e47a0958\output\AndroidManifest.xml:25:5-27:34
 	android:value
 		ADDED from [com.android.support:design:25.3.1] C:\Users\REOS\.android\build-cache\e1c08fec9189331637ef7ea9d2c0662fbff777a2\output\AndroidManifest.xml:27:9-31

@@ -64,6 +64,7 @@
         <activity android:name=".daummap.MapActivity" android:hardwareAccelerated="false" />
         <activity android:name=".daummap.GpsMapActivity"/>
 
+
         <!--푸쉬알람 추가-->
         <service
             android:name=".pushAlram.FirebaseMessagingService">

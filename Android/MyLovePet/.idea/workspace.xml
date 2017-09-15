@@ -57,48 +57,81 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="VaccineActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/VaccineActivity.java">
+      <file leaf-file-name="User.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/user/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="353" column="41" selection-start-line="353" selection-start-column="41" selection-end-line="353" selection-end-column="41" />
+            <state relative-caret-position="650">
+              <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/LoginActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="962">
+              <caret line="156" column="75" selection-start-line="156" selection-start-column="75" selection-end-line="156" selection-end-column="75" />
               <folding>
-                <element signature="method#getDate#0;class#VaccineActivity#0" expanded="false" />
-                <element signature="method#dayCalculation#0;class#VaccineActivity#0" expanded="false" />
-                <element signature="e#2010#2021#0" expanded="false" />
-                <element signature="method#dateCalculation#0;class#VaccineActivity#0" expanded="false" />
-                <element signature="method#onCreate#0;class#VaccineActivity#0" expanded="false" />
-                <element signature="class#6464:7773" expanded="false" />
-                <element signature="method#onDayLongPress#0;class#6464:7773" expanded="false" />
-                <element signature="method#listenerInit#0;class#VaccineActivity#0" expanded="false" />
-                <element signature="class#8352:9453" expanded="false" />
-                <element signature="method#preTask#0;class#8352:9453" expanded="false" />
-                <element signature="method#postTask#0;class#8352:9453" expanded="false" />
-                <element signature="method#fairTask#0;class#8352:9453" expanded="false" />
-                <element signature="class#9478:10578" expanded="false" />
-                <element signature="method#preTask#0;class#9478:10578" expanded="false" />
-                <element signature="method#postTask#0;class#9478:10578" expanded="false" />
-                <element signature="method#fairTask#0;class#9478:10578" expanded="false" />
-                <element signature="method#showScheduleMessage#0;class#VaccineActivity#0" expanded="false" />
-                <element signature="class#10822:10957" expanded="false" />
-                <element signature="method#onClick#0;class#10822:10957" expanded="false" />
-                <element signature="method#showAlramMessage#0;class#VaccineActivity#0" expanded="false" />
-                <element signature="class#11264:11399" expanded="false" />
-                <element signature="method#onClick#0;class#11264:11399" expanded="false" />
-                <element signature="class#11448:11583" expanded="false" />
-                <element signature="method#onClick#0;class#11448:11583" expanded="false" />
-                <element signature="method#getDate#1;class#VaccineActivity#0" expanded="false" />
-                <element signature="method#onOptionsItemSelected#0;class#VaccineActivity#0" expanded="false" />
+                <element signature="docComment;class#LoginActivity#0" expanded="false" />
+                <element signature="method#onCreate#0;class#LoginActivity#0" expanded="false" />
+                <element signature="method#inIt#0;class#LoginActivity#0" expanded="false" />
+                <element signature="method#listenerInit#0;class#LoginActivity#0" expanded="false" />
+                <element signature="class#1746:3597" expanded="false" />
+                <element signature="method#postTask#0;class#1746:3597" expanded="false" />
+                <element signature="e#2552#2563#0" expanded="false" />
+                <element signature="method#onDestroy#0;class#LoginActivity#0" expanded="false" />
+                <element signature="method#onStart#0;class#LoginActivity#0" expanded="false" />
+                <element signature="method#loadAccount#0;class#LoginActivity#0" expanded="false" />
+                <element signature="method#saveAccount#0;class#LoginActivity#0" expanded="false" />
+                <element signature="method#loginExecute#0;class#LoginActivity#0" expanded="false" />
+                <element signature="method#loginExecute#1;class#LoginActivity#0" expanded="false" />
+                <element signature="method#lockView#0;class#LoginActivity#0" expanded="false" />
+                <element signature="method#unLockView#0;class#LoginActivity#0" expanded="false" />
+                <element signature="method#onClick#0;class#LoginActivity#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerURL.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/ServerURL.java">
+      <file leaf-file-name="FirebaseInstanceIDService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/pushAlram/FirebaseInstanceIDService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="582">
-              <caret line="29" column="55" selection-start-line="29" selection-start-column="55" selection-end-line="29" selection-end-column="77" />
+            <state relative-caret-position="624">
+              <caret line="42" column="24" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="520">
+              <caret line="38" column="53" selection-start-line="38" selection-start-column="53" selection-end-line="38" selection-end-column="53" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-manifest">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CookieController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/CookieController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="581">
+              <caret line="68" column="13" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FirebaseMessagingService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/pushAlram/FirebaseMessagingService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="676">
+              <caret line="39" column="36" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -2264,7 +2297,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/JsonManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/DownloadManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/PetUpdateDialog.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/PetInfoUpdateDialog.java" />
@@ -2279,7 +2311,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_tip_board.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/PersistentCookieStore.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/cc.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/user/User.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/petsitter/PetSitterFindFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/board/TipBoardFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/WebViewFragment.java" />
@@ -2289,7 +2320,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/ServerTaskManager2.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/WebkitCookieManagerProxy2.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/ServerTaskManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/CookieController.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/pet.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_mypage.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/MyPageFragment.java" />
@@ -2315,6 +2345,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/customView/Recycle.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/customView/CalendarView2.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/MealCalendarActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/user/User.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/CookieController.java" />
       </list>
     </option>
   </component>
@@ -2378,6 +2411,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="PackagesPane">
+        <subPane />
+      </pane>
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2385,15 +2422,47 @@
               <option name="myItemId" value="MyLovePet" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Gradle Scripts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidBuildScriptsGroupNode" />
+              <option name="myItemId" value="MyLovePet" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="MyLovePet" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyLovePet" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mylovepet" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -2402,10 +2471,6 @@
       <pane id="ProjectPane">
         <subPane />
       </pane>
-      <pane id="PackagesPane">
-        <subPane />
-      </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2418,12 +2483,12 @@
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\libs" />
-      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\res\anim" />
-      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\res\menu" />
-      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\java\ourcompany\mylovepet\test" />
-      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\res\layout" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\java\ourcompany\mylovepet\main\userinfo" />
+      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\java\ourcompany\mylovepet\main" />
+      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\java\ourcompany\mylovepet\search" />
+      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\res\xml" />
+      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\res" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="ourcompany.mylovepet.test" />
@@ -2436,12 +2501,12 @@
       <recent name="ourcompany.mylovepet.main" />
       <recent name="ourcompany.mylovepet.temp" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\java\ourcompany\mylovepet\main\userinfo" />
-      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\java\ourcompany\mylovepet\main" />
-      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\java\ourcompany\mylovepet\search" />
-      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\res\xml" />
-      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\res" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\libs" />
+      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\res\anim" />
+      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\res\menu" />
+      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\java\ourcompany\mylovepet\test" />
+      <recent name="C:\Users\REOS\Desktop\AndroidProject\OurCompany\Android\MyLovePet\app\src\main\res\layout" />
     </key>
   </component>
   <component name="RunManager" selected="Android App.app">
@@ -2780,7 +2845,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32887402" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21962096" sideWeight="0.4968017" order="12" side_tool="false" content_ui="tabs" />
@@ -2788,7 +2853,7 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40914157" sideWeight="0.53411514" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44147158" sideWeight="0.46588486" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3768116" sideWeight="0.46588486" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26532888" sideWeight="0.48720682" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32552955" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -2834,28 +2899,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.8.0/db21293949e200f08d5325e8a8eefdcc9134b752/okhttp-3.8.0-sources.jar!/okhttp3/internal/http/BridgeInterceptor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/WebkitCookieManagerProxy.java" />
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-25/android/webkit/WebViewFactoryProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-840">
-          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-25/android/webkit/WebViewFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="198" column="64" selection-start-line="198" selection-start-column="64" selection-end-line="198" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-25/android/webkit/CookieManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
@@ -2875,26 +2918,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_petinfo.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="29" column="50" selection-start-line="29" selection-start-column="50" selection-end-line="29" selection-end-column="50" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/pet.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="13" column="41" selection-start-line="13" selection-start-column="41" selection-end-line="13" selection-end-column="41" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_petinfo.xml" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/pet.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/market/MarketFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
@@ -2903,53 +2928,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/board/TipBoardFragment.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_mypage.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-416">
-          <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/CookieController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="53" column="37" selection-start-line="53" selection-start-column="37" selection-end-line="53" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_mypage.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/JoinActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="349">
           <caret line="276" column="5" selection-start-line="276" selection-start-column="5" selection-end-line="276" selection-end-column="5" />
-          <folding>
-            <element signature="docComment;class#JoinActivity#0" expanded="false" />
-            <element signature="class#Position#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#getPosition#0;class#Position#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#onCreate#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#init#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#listenerInit#0;class#JoinActivity#0" expanded="false" />
-            <element signature="class#5940:7130" expanded="false" />
-            <element signature="method#postTask#0;class#5940:7130" expanded="false" />
-            <element signature="class#7172:8366" expanded="false" />
-            <element signature="method#postTask#0;class#7172:8366" expanded="false" />
-            <element signature="class#8400:9528" expanded="false" />
-            <element signature="method#preTask#0;class#8400:9528" expanded="false" />
-            <element signature="method#postTask#0;class#8400:9528" expanded="false" />
-            <element signature="method#fairTask#0;class#8400:9528" expanded="false" />
-            <element signature="method#idCheckExecute#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#subNameCheckExecute#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#joinExecute#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#isNotNull#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#nextPage#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#backPage#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#changeTitle#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#onClick#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#onOptionsItemSelected#0;class#JoinActivity#0" expanded="false" />
-            <element signature="method#onBackPressed#0;class#JoinActivity#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2957,7 +2940,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="286" column="44" selection-start-line="286" selection-start-column="44" selection-end-line="286" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2967,7 +2949,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="343">
           <caret line="70" column="53" selection-start-line="70" selection-start-column="53" selection-end-line="70" selection-end-column="53" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2996,26 +2977,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="343">
           <caret line="378" column="39" selection-start-line="378" selection-start-column="39" selection-end-line="378" selection-end-column="39" />
-          <folding>
-            <element signature="docComment;class#PetInfoFragment#0" expanded="false" />
-            <element signature="e#2232#2241#0" expanded="false" />
-            <element signature="method#listenerInit#0;class#PetInfoFragment#0" expanded="false" />
-            <element signature="class#4381:6011" expanded="false" />
-            <element signature="method#preTask#0;class#4381:6011" expanded="false" />
-            <element signature="method#postTask#0;class#4381:6011" expanded="false" />
-            <element signature="method#fairTask#0;class#4381:6011" expanded="false" />
-            <element signature="class#6054:7164" expanded="false" />
-            <element signature="method#preTask#0;class#6054:7164" expanded="false" />
-            <element signature="method#postTask#0;class#6054:7164" expanded="false" />
-            <element signature="method#fairTask#0;class#6054:7164" expanded="false" />
-            <element signature="method#onClick#0;class#PetInfoFragment#0" expanded="false" />
-            <element signature="method#onActivityResult#0;class#PetInfoFragment#0" expanded="false" />
-            <element signature="method#getAlbumImage#0;class#PetInfoFragment#0" expanded="false" />
-            <element signature="method#captureImage#0;class#PetInfoFragment#0" expanded="false" />
-            <element signature="method#createImageFile#0;class#PetInfoFragment#0" expanded="false" />
-            <element signature="method#cropImage#0;class#PetInfoFragment#0" expanded="false" />
-            <element signature="method#proFileUploadExecute#0;class#PetInfoFragment#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3023,7 +2984,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="245">
           <caret line="231" column="25" selection-start-line="231" selection-start-column="25" selection-end-line="231" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3031,7 +2991,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="426">
           <caret line="175" column="46" selection-start-line="175" selection-start-column="46" selection-end-line="175" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3046,7 +3005,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="426">
           <caret line="346" column="52" selection-start-line="346" selection-start-column="52" selection-end-line="346" selection-end-column="52" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3068,7 +3026,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="556">
           <caret line="205" column="45" selection-start-line="205" selection-start-column="45" selection-end-line="205" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3083,7 +3040,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
           <caret line="338" column="42" selection-start-line="338" selection-start-column="42" selection-end-line="338" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3101,20 +3057,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/pushAlram/FirebaseInstanceIDService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-927">
-          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/pushAlram/FirebaseMessagingService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/webview/WebViewFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
@@ -3126,62 +3068,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="806">
           <caret line="47" column="5" selection-start-line="47" selection-start-column="5" selection-end-line="47" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="125" column="79" selection-start-line="125" selection-start-column="79" selection-end-line="125" selection-end-column="79" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="81" column="31" selection-start-line="81" selection-start-column="31" selection-end-line="81" selection-end-column="31" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1352">
-          <caret line="52" column="55" selection-start-line="52" selection-start-column="55" selection-end-line="52" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
+    <entry file="file://$PROJECT_DIR$/build.gradle" />
+    <entry file="file://$PROJECT_DIR$/app/build.gradle" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="67" column="86" selection-start-line="67" selection-start-column="86" selection-end-line="67" selection-end-column="86" />
-          <folding>
-            <element signature="docComment;class#MainActivity#0" expanded="false" />
-            <element signature="e#2597#2598#0" expanded="true" />
-            <element signature="e#2628#2629#0" expanded="true" />
-            <element signature="e#2991#3047#0" expanded="false" />
-            <element signature="method#onCreateOptionsMenu#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onOptionsItemSelected#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onBackPressed#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#setOnBackKeyPressListener#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#onItemClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#chkGpsService#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#7764:7936" expanded="false" />
-            <element signature="method#onClick#0;class#7764:7936" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3206,16 +3102,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_meal_cal_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="14" column="47" selection-start-line="14" selection-start-column="47" selection-end-line="14" selection-end-column="47" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_meal_cal_main.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/customView/ViewHolder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="286">
@@ -3227,7 +3114,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="789">
           <caret line="189" column="5" selection-start-line="189" selection-start-column="5" selection-end-line="189" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3235,9 +3121,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="711">
           <caret line="185" column="76" selection-start-line="185" selection-start-column="63" selection-end-line="185" selection-end-column="76" />
-          <folding>
-            <element signature="class#3983:5686" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3248,46 +3131,93 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/VaccineActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="354" column="38" selection-start-line="354" selection-start-column="38" selection-end-line="354" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/ServerURL.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="582">
           <caret line="29" column="55" selection-start-line="29" selection-start-column="55" selection-end-line="29" selection-end-column="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/user/PetManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/user/Note.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/user/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="650">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/VaccineActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/LoginActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="353" column="41" selection-start-line="353" selection-start-column="41" selection-end-line="353" selection-end-column="41" />
+        <state relative-caret-position="962">
+          <caret line="156" column="75" selection-start-line="156" selection-start-column="75" selection-end-line="156" selection-end-column="75" />
           <folding>
-            <element signature="method#getDate#0;class#VaccineActivity#0" expanded="false" />
-            <element signature="method#dayCalculation#0;class#VaccineActivity#0" expanded="false" />
-            <element signature="e#2010#2021#0" expanded="false" />
-            <element signature="method#dateCalculation#0;class#VaccineActivity#0" expanded="false" />
-            <element signature="method#onCreate#0;class#VaccineActivity#0" expanded="false" />
-            <element signature="class#6464:7773" expanded="false" />
-            <element signature="method#onDayLongPress#0;class#6464:7773" expanded="false" />
-            <element signature="method#listenerInit#0;class#VaccineActivity#0" expanded="false" />
-            <element signature="class#8352:9453" expanded="false" />
-            <element signature="method#preTask#0;class#8352:9453" expanded="false" />
-            <element signature="method#postTask#0;class#8352:9453" expanded="false" />
-            <element signature="method#fairTask#0;class#8352:9453" expanded="false" />
-            <element signature="class#9478:10578" expanded="false" />
-            <element signature="method#preTask#0;class#9478:10578" expanded="false" />
-            <element signature="method#postTask#0;class#9478:10578" expanded="false" />
-            <element signature="method#fairTask#0;class#9478:10578" expanded="false" />
-            <element signature="method#showScheduleMessage#0;class#VaccineActivity#0" expanded="false" />
-            <element signature="class#10822:10957" expanded="false" />
-            <element signature="method#onClick#0;class#10822:10957" expanded="false" />
-            <element signature="method#showAlramMessage#0;class#VaccineActivity#0" expanded="false" />
-            <element signature="class#11264:11399" expanded="false" />
-            <element signature="method#onClick#0;class#11264:11399" expanded="false" />
-            <element signature="class#11448:11583" expanded="false" />
-            <element signature="method#onClick#0;class#11448:11583" expanded="false" />
-            <element signature="method#getDate#1;class#VaccineActivity#0" expanded="false" />
-            <element signature="method#onOptionsItemSelected#0;class#VaccineActivity#0" expanded="false" />
+            <element signature="docComment;class#LoginActivity#0" expanded="false" />
+            <element signature="method#onCreate#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#inIt#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#listenerInit#0;class#LoginActivity#0" expanded="false" />
+            <element signature="class#1746:3597" expanded="false" />
+            <element signature="method#postTask#0;class#1746:3597" expanded="false" />
+            <element signature="e#2552#2563#0" expanded="false" />
+            <element signature="method#onDestroy#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#onStart#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#loadAccount#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#saveAccount#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#loginExecute#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#loginExecute#1;class#LoginActivity#0" expanded="false" />
+            <element signature="method#lockView#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#unLockView#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#onClick#0;class#LoginActivity#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/pushAlram/FirebaseMessagingService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="676">
+          <caret line="39" column="36" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/pushAlram/FirebaseInstanceIDService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="42" column="24" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="520">
+          <caret line="38" column="53" selection-start-line="38" selection-start-column="53" selection-end-line="38" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/CookieController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="581">
+          <caret line="68" column="13" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>

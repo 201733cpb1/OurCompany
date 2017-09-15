@@ -18,11 +18,9 @@ public class User {
     }
 
     private User(){
-        pets = new Pet[0];
         petManager = new PetManager();
     }
 
-    private Pet[] pets;
     private String name;
     private String sunName;
 
