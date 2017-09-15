@@ -238,7 +238,10 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
                 .build();
 
         Request request = new Request.Builder()
+<<<<<<< HEAD
                 .addHeader("Cookie",User.getIstance().getCookie())
+=======
+>>>>>>> parent of 936c985... URL 클래스
                 .url("http://58.226.2.45/Servlet/createAnimal")
                 .post(body)
                 .build();

@@ -29,8 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import ourcompany.mylovepet.R;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 import static ourcompany.mylovepet.R.id.chart;

@@ -317,8 +317,11 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
             int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
             RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
             Request request = new Request.Builder()
+<<<<<<< HEAD
                     .url("http://58.237.8.179/Servlet/getCondition")
                     .post(body)
+=======
+>>>>>>> parent of 936c985... URL 클래스
                     .url("http://58.226.2.45/Servlet/animalProfileUpload")
                     .post(multipartBody)
                     .build();

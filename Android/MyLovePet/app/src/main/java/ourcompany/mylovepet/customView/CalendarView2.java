@@ -61,7 +61,10 @@ public class CalendarView2 extends LinearLayout
 			R.color.spring
 	};
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 936c985... URL 클래스
 	Date selectedDate;
 	View selectedCell;
     int selectedCellColor;

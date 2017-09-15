@@ -37,6 +37,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
 
+<<<<<<< HEAD
+=======
+import ourcompany.mylovepet.main.HomeFragment;
+>>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.main.user.Pet;
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
@@ -231,8 +235,11 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
                 .build();
 
         Request request = new Request.Builder()
+<<<<<<< HEAD
 
                 .addHeader("Cookie",User.getIstance().getCookie())
+=======
+>>>>>>> parent of 936c985... URL 클래스
                 .url("http://58.226.2.45/Servlet/addPetsitter")
                 .post(body)
                 .build();

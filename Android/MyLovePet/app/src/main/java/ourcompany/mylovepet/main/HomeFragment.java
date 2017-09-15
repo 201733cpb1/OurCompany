@@ -209,8 +209,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
     private void getPetsExecute(){
         RequestBody body= new FormBody.Builder().build();
         Request request = new Request.Builder()
+<<<<<<< HEAD
                 .addHeader("Cookie", User.getIstance().getCookie())
                 .url("http://58.237.8.179/Servlet/animalInfo")
+=======
+                .url("http://58.226.2.45/Servlet/animalInfo")
+>>>>>>> parent of 936c985... URL 클래스
                 .post(body)
                 .build();
         getPetsTask = new RequestTask(request,this,getContext().getApplicationContext());
