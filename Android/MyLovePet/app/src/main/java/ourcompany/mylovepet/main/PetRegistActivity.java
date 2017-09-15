@@ -1,6 +1,5 @@
 package ourcompany.mylovepet.main;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,16 +18,15 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
 /**
@@ -147,10 +145,11 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
             }
 
             @Override
-            public void postTask(Response response) {
+            public void postTask(byte[] bytes) {
                 try {
                     boolean isAble = false;
-                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
                     jsonObject = jsonObject.getJSONObject("CheckResult");
                     isAble = jsonObject.getBoolean("isMattched");
                     if (isAble) {
@@ -158,7 +157,7 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
                     } else
                         Toast.makeText(getApplicationContext(), "사용 불가능한 시리얼 번호 입니다.", Toast.LENGTH_SHORT).show();
 
-                } catch (JSONException | IOException e ) {
+                } catch (JSONException e ) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
                 }finally {
@@ -167,13 +166,8 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
             }
 
             @Override
-            public void cancelTask() {
-
-            }
-
-            @Override
             public void fairTask() {
-
+                buttonSerial.setEnabled(true);
             }
         };
 
@@ -184,29 +178,25 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
             }
 
             @Override
-            public void postTask(Response response) {
+            public void postTask(byte[] bytes) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
                     jsonObject = jsonObject.getJSONObject("CreateAnimalReulst");
                     boolean isSuccessed;
                     isSuccessed = jsonObject.getBoolean("isSuccessed");
                     if(isSuccessed) {
                         Toast.makeText(getApplicationContext(), "펫 추가 완료", Toast.LENGTH_SHORT).show();
-                        setResult(HomeFragment.SUCCESS_PET_ADD);
+                        setResult(RESULT_OK);
                         finish();
                     }
                     else
                         Toast.makeText(getApplicationContext(), "펫 추가 실패", Toast.LENGTH_SHORT).show();
 
-                } catch (JSONException | IOException e ) {
+                } catch (JSONException e ) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void cancelTask() {
-
             }
 
             @Override
@@ -214,7 +204,6 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
 
             }
         };
-
     }
 
 
@@ -222,10 +211,10 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
     private void serialNoExecute(){
         RequestBody body= new FormBody.Builder().add("serialNo",strSerialNo).build();
         Request request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/checkSerial")
+                .url(ServerURL.CHECK_SERIAL_NO_URL)
                 .post(body)
                 .build();
-        new RequestTask(request,serialNoTask,getApplicationContext()).execute();
+        new ServerTaskManager(request,serialNoTask,getApplicationContext()).execute();
     }
 
     private void petRegisterExecute(){
@@ -238,11 +227,10 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
                 .build();
 
         Request request = new Request.Builder()
-                .addHeader("Cookie",User.getIstance().getCookie())
-                .url("http://58.237.8.179/Servlet/createAnimal")
+                .url(ServerURL.CREATE_PET_URL)
                 .post(body)
                 .build();
-        new RequestTask(request,petRegisterTask,getApplicationContext()).execute();
+        new ServerTaskManager(request,petRegisterTask,getApplicationContext()).execute();
     }
     //서버 통신 메소드
 
@@ -365,118 +353,6 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
             return true;
         }
 
-    }
-
-
-    private class AddPet extends AsyncTask<String, Void, Response> {
-
-        private OkHttpClient client = new OkHttpClient();
-
-        @Override
-        public Response doInBackground(String... params) {
-            RequestBody body= new FormBody.Builder()
-                    .add("AnimalIndex",-1+"")
-                    .add("SerialNo", strSerialNo)
-                    .add("Name", strPetName)
-                    .add("Gender", strGender)
-                    .add("Birth", strBirth)
-                    .build();
-
-            Request request = new Request.Builder()
-                    .addHeader("Cookie",User.getIstance().getCookie())
-                    .url("http://58.237.8.179/Servlet/createAnimal")
-                    .post(body)
-                    .build();
-
-            try {
-                Response response = client.newCall(request).execute();
-                return response;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Response response) {
-            if(response == null || response.code() != 200) {
-                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                jsonObject = jsonObject.getJSONObject("CreateAnimalReulst");
-                boolean isSuccessed;
-                isSuccessed = jsonObject.getBoolean("isSuccessed");
-                if(isSuccessed) {
-                    Toast.makeText(getApplicationContext(), "펫 추가 완료", Toast.LENGTH_SHORT).show();
-                    setResult(HomeFragment.SUCCESS_PET_ADD);
-                    finish();
-                }
-                else
-                    Toast.makeText(getApplicationContext(), "펫 추가 실패", Toast.LENGTH_SHORT).show();
-
-            } catch (JSONException | IOException e ) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
-            }
-
-
-        }
-
-    }
-
-    private class SerialNoCheck extends AsyncTask<String, Void, Response> {
-
-        private OkHttpClient client = new OkHttpClient();
-
-        @Override
-        protected void onPreExecute() {
-            buttonSerial.setEnabled(false);
-        }
-
-        @Override
-        public Response doInBackground(String... params) {
-            RequestBody body= new FormBody.Builder().add("serialNo",strSerialNo).build();
-            Request request = new Request.Builder()
-                    .url("http://58.237.8.179/Servlet/checkSerial")
-                    .post(body)
-                    .build();
-            try {
-                Response response = client.newCall(request).execute();
-                return response;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Response response) {
-            buttonSerial.setEnabled(true);
-            if(response == null || response.code() != 200) {
-                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                boolean isAble = false;
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                jsonObject = jsonObject.getJSONObject("CheckResult");
-                isAble = jsonObject.getBoolean("isMattched");
-                if (isAble) {
-                    nextPage();
-                } else
-                    Toast.makeText(getApplicationContext(), "사용 불가능한 시리얼 번호 입니다.", Toast.LENGTH_SHORT).show();
-
-            } catch (JSONException | IOException e ) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
-            }
-
-
-        }
     }
 
 }

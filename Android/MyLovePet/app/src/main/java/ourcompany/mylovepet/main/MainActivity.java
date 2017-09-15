@@ -1,8 +1,9 @@
-package ourcompany.mylovepet.main;
+﻿package ourcompany.mylovepet.main;
 
 
 import android.content.DialogInterface;
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -25,11 +26,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
+import ourcompany.mylovepet.webview.WebViewFragment;
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.daummap.GpsMapActivity;
 import ourcompany.mylovepet.daummap.Intro;
 import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.petsitter.PetSitterFindFragment;
 import ourcompany.mylovepet.petsitter.SitterRegisterFragment;
 
 /**
@@ -44,7 +46,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     FragmentManager fragmentManager;
 
-    Intent intent;
+    ListView listview;
+
+    OnBackKeyPressListener onBackKeyPressListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,11 +63,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         findViewById(R.id.myInfo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(R.id.container,new MyPageFragment()).commit();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                WebViewFragment webViewFragment = WebViewFragment.createWebViewFragment(ServerURL.MY_PAGE_URL);
+                fragmentTransaction.replace(R.id.container, webViewFragment).commit();
                 dlDrawer.closeDrawers();
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void toolbarInit() {
@@ -82,34 +93,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.naviView);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ListView listview;
         ListViewAdapter adapter;
 
         // Adapter 생성
         adapter = new ListViewAdapter();
 
-        // 리스트뷰 참조 및 Adapter달기
+        // 리스트뷰 참조 및 Adapter
         listview = (ListView) findViewById(R.id.listView);
-        listview.setAdapter(adapter);
+
 
         adapter.addItem("펫 정보");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "홈"); //1
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "통계"); //2
 
         adapter.addItem("펫 시터");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "구하기"); //4
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.petsitter), "도움주기"); //5
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.walk), "구하기"); //3
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.petsitter), "도움주기"); //4
 
         adapter.addItem("편의 기능");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tip), "TIP"); //7
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.used), "중고장터"); //8
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //9
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //10
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tip), "TIP"); //6
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.used), "중고장터"); //7
+        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //8
 
+        listview.setAdapter(adapter);
         listview.setOnItemClickListener(this);
 
-        ((TextView)findViewById(R.id.nickName)).setText(User.getIstance().getSunName() + " 님");
-
+        ((TextView)findViewById(R.id.nickName)).setText(User.getIstance().getSunName() + "님\n환영 합니다");
     }
 
     @Override
@@ -135,51 +144,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-
+        if(onBackKeyPressListener != null){
+            if(onBackKeyPressListener.onBack()){
+                return;
+            }
+        }
         super.onBackPressed();
+    }
+
+    public void setOnBackKeyPressListener(OnBackKeyPressListener onBackKeyPressListener){
+        this.onBackKeyPressListener = onBackKeyPressListener;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent;
         FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
+        WebViewFragment webViewFragment;
         switch (position) {
-            case 1:
-                //홈화면
+            case 1: //홈화면
                 fragmentTransaction.replace(R.id.container,new HomeFragment());
                 break;
-            case 2:
-                //통계 화면
-                break;
-            case 4:
-                //펫시터 구하기 화면
+            case 3: //펫시터 구하기 화면
                 fragmentTransaction.replace(R.id.container,new SitterRegisterFragment());
                 break;
-            case 5:
-                //도움주기 화면
-                fragmentTransaction.replace(R.id.container, new PetSitterFindFragment());
+            case 4: //도움주기 화면
+                webViewFragment =  WebViewFragment.createWebViewFragment(ServerURL.PET_SITTER_URL);
+                fragmentTransaction.replace(R.id.container, webViewFragment);
+                break;
+            case 6: //TIP 화면
+                webViewFragment =  WebViewFragment.createWebViewFragment(ServerURL.TIP_URL);
+                fragmentTransaction.replace(R.id.container, webViewFragment);
                 break;
             case 7:
-                //TIP 화면
+                webViewFragment = WebViewFragment.createWebViewFragment(ServerURL.MARKET_URL);
+                fragmentTransaction.replace(R.id.container, webViewFragment);
+                //지름/중고장터 정보 화면 intro
                 break;
             case 8:
-                fragmentTransaction.replace(R.id.container, new WebViewTest());
-                //지름/중고장터 정보 화면 intro
-
-                break;
-            case 9:
                 chkGpsService();  //탐색 화면
                 break;
-            case 10:
+            case 9:
                 intent = new Intent(this, GpsMapActivity.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
                 startActivity(intent);
                 //SNS 화면
-                break;
-            case 11:
                 break;
         }
         fragmentTransaction.commit();
         dlDrawer.closeDrawers();
     }
+
+
 
     public boolean chkGpsService() {
         Intent intent ;

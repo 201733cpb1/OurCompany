@@ -2,21 +2,22 @@ package ourcompany.mylovepet.petsitter;
 
 
 import android.app.DatePickerDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -26,20 +27,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.HashSet;
 
 import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
 
+import ourcompany.mylovepet.ServerURL;
+import ourcompany.mylovepet.main.HomeFragment;
 import ourcompany.mylovepet.main.user.Pet;
+import ourcompany.mylovepet.main.user.PetManager;
 import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
 public class SitterRegisterFragment extends Fragment implements View.OnClickListener, TaskListener{
@@ -55,6 +57,12 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
     HashSet<Integer> petNoSet;
 
     View leftCursor, rightCursor;
+
+    PetManager petManager;
+
+    public SitterRegisterFragment(){
+        petManager = User.getIstance().getPetManager();
+    }
 
     @Nullable
     @Override
@@ -97,14 +105,14 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
 
         viewPager = (ViewPager)view.findViewById(R.id.viewPagerPetList);
 
-        Pet[] pets = User.getIstance().getPets();
+        Pet[] pets = petManager.getPets();
 
         viewPager.setAdapter(new PetViewPager(getActivity().getLayoutInflater(), pets));
         //좌우 페이지를 저장해두는 최대 갯수를 설정
         viewPager.setOffscreenPageLimit(pets.length);
 
         //오른쪽 커서를 보이게 한다.
-        if(pets.length > 0){
+        if(pets.length > 1){
             rightCursor.setVisibility(View.VISIBLE);
         }
 
@@ -118,7 +126,7 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
             public void onPageSelected(int position) {
                 int pageSize = viewPager.getAdapter().getCount();
 
-                if(position == 0 ){
+                if( position == 0 ){
                     leftCursor.setVisibility(View.INVISIBLE);
                     rightCursor.setVisibility(View.VISIBLE);
                 }else if(position == (pageSize-1)){
@@ -231,12 +239,15 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
                 .build();
 
         Request request = new Request.Builder()
-                .addHeader("Cookie",User.getIstance().getCookie())
-                .url("http://58.237.8.179/Servlet/addPetsitter")
+                .url(ServerURL.PET_SITTER_ADD_URL)
                 .post(body)
                 .build();
 
-        new RequestTask(request,this,getContext().getApplicationContext()).execute();
+        new ServerTaskManager(request,this,getContext().getApplicationContext()).execute();
+    }
+
+    private void finish(){
+        getFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
     }
 
 
@@ -246,27 +257,24 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
     }
 
     @Override
-    public void postTask(Response response) {
+    public void postTask(byte[] bytes) {
         try {
-            JSONObject jsonObject = new JSONObject(response.body().string());
+            String body = new String(bytes, Charset.forName("utf-8"));
+            JSONObject jsonObject = new JSONObject(body);
             jsonObject = jsonObject.getJSONObject("AddPetSitter");
             boolean isSuccessed = false;
             isSuccessed = jsonObject.getBoolean("isSuccessed");
 
             if(isSuccessed){
-                Toast.makeText(getContext(),"글 등록 완료",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"글 등록 완료",Toast.LENGTH_LONG).show();
             }else {
-                Toast.makeText(getContext(),"등록 실패",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"등록 실패",Toast.LENGTH_LONG).show();
             }
-        } catch (JSONException | IOException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void cancelTask() {
-
+        finish();
     }
 
     @Override
@@ -275,81 +283,6 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
     }
     // taskListener 메소드 end
 
-
-
-    private class AddPetSitter extends AsyncTask<String, Void, Response> {
-
-        private OkHttpClient client = new OkHttpClient();
-
-        String strSDate,strEDate,strBody, strTitle;
-
-        JSONArray jsonArray;
-
-        @Override
-        protected void onPreExecute() {
-            strSDate = startDateEditText.getText().toString();
-            strEDate = endDateEditText.getText().toString();
-            strTitle = editTextTitle.getText().toString();
-            strBody = editTextBody.getText().toString();
-
-            jsonArray = new JSONArray();
-
-            for(int no : petNoSet){
-                jsonArray.put(no);
-            }
-        }
-
-        @Override
-        public Response doInBackground(String... params) {
-            RequestBody body= new FormBody.Builder()
-                    .add("Date", strSDate)
-                    .add("Term", strEDate)
-                    .add("Title", strTitle)
-                    .add("Feedback", strBody)
-                    .add("petList", jsonArray.toString())
-                    .build();
-
-            Request request = new Request.Builder()
-                    .addHeader("Cookie",User.getIstance().getCookie())
-                    .url("http://58.237.8.179/Servlet/addPetsitter")
-                    .post(body)
-                    .build();
-
-            try {
-                Response response = client.newCall(request).execute();
-                return response;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Response response) {
-            if(response == null || response.code() != 200) {
-                Toast.makeText(getContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                jsonObject = jsonObject.getJSONObject("AddPetSitter");
-                boolean isSuccessed = false;
-                isSuccessed = jsonObject.getBoolean("isSuccessed");
-
-                if(isSuccessed){
-                    Toast.makeText(getContext(),"글 등록 완료",Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getContext(),"등록 실패",Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException | IOException e) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
-            }
-
-
-        }
-    }
 
     private class PetViewPager extends PagerAdapter{
 
@@ -363,7 +296,6 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
                 petNoSet.add(pets[position].getPetNo());
                 ((Button)v).setText("취소");
                 v.setOnClickListener(deleteListener);
-                Log.d("테스트",petNoSet.toString());
                 updatePetCount();
             }
         };
@@ -375,7 +307,6 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
                 petNoSet.remove(pets[position].getPetNo());
                 ((Button)v).setText("추가");
                 v.setOnClickListener(addListener);
-                Log.d("테스트",petNoSet.toString());
                 updatePetCount();
             }
         };
@@ -398,6 +329,13 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
 
             TextView textViewPetName = (TextView)view.findViewById(R.id.textViewPetName);
             textViewPetName.setText(pets[position].getName());
+            ImageView profilePicture = (ImageView)view.findViewById(R.id.profile_picture);
+
+            String strFileNo = User.getIstance().getPetManager().getPet(position).getPhotoFileNo();
+            Picasso.with(getContext())
+                    .load(ServerURL.PROFILE_DOWNLOAD_URL + strFileNo)
+                    .error(R.drawable.defaultprofileimage)
+                    .into(profilePicture);
 
             view.findViewById(R.id.buttonAdd).setOnClickListener(addListener);
 

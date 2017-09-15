@@ -13,34 +13,37 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
 
 /**
  * Created by REOS on 2017-05-08.
  */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, TaskListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText editTextId;
     private EditText editTextPassword;
     private Button buttonLogin;
 
-    private RequestTask loginTask;
+    private ServerTaskManager loginTask;
+
+    private TaskListener loginTaskListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         inIt();
+        listenerInit();
     }
 
     private void inIt(){
@@ -51,6 +54,57 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonLogin.setOnClickListener(this);
         findViewById(R.id.buttonJoin).setOnClickListener(this);
         findViewById(R.id.buttonSearch).setOnClickListener(this);
+    }
+
+    private void listenerInit(){
+        loginTaskListener = new TaskListener() {
+            // TaskListener  메소드
+            @Override
+            public void preTask() {
+                lockView();
+            }
+
+            @Override
+            public void postTask(byte[] bytes) {
+                loginTask = null;
+                unLockView();
+                try {
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
+                    jsonObject = jsonObject.getJSONObject("loginResult");
+                    boolean isSuccessed = false;
+                    isSuccessed = jsonObject.getBoolean("isSuccessed");
+                    if (isSuccessed){
+                        //유저 정보 클래스 불러오기
+                        User user = User.getIstance();
+                        //세션 정보를 저장
+                        //유저 정보 저장
+                        user.setName(jsonObject.getString("name"));
+                        user.setSunName(jsonObject.getString("subName"));
+                        //아이디 비밀번호 저장
+                        saveAccount();
+                        //메인 화면 실행
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        finish();
+                    }else {
+                        Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e ) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "잘못된 데이터", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            public void cancelTask(){
+                unLockView();
+            }
+
+            @Override
+            public void fairTask() {
+                unLockView();
+            }
+            // TaskListener  메소드 end
+        };
     }
 
     @Override
@@ -94,7 +148,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     //자동 로그인 end
 
-
     private void loginExecute(){
         final String strId = editTextId.getText().toString();
         final String strPassword = editTextPassword.getText().toString();
@@ -102,19 +155,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loginExecute(final String strId, final String strPassword){
+        SharedPreferences sharedPreferences = getSharedPreferences("token",0);
+        String token = sharedPreferences.getString("token",null);
 
         RequestBody body= new FormBody.Builder()
                 .add("id",strId)
                 .add("pass",strPassword)
+                .add("token", token)
                 .build();
         Request request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/login")
+                .url(ServerURL.LOGIN_URL)
                 .post(body)
                 .build();
-        loginTask = new RequestTask(request,this,getApplicationContext());
+        loginTask = new ServerTaskManager(request, loginTaskListener, getApplicationContext());
         loginTask.execute();
     }
-
 
     private void lockView(){
         buttonLogin.setEnabled(false);
@@ -142,120 +197,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
-
-
-    // TaskListener  메소드
-    @Override
-    public void preTask() {
-        lockView();
-    }
-
-    @Override
-    public void postTask(Response response) {
-        loginTask = null;
-        unLockView();
-        try {
-            JSONObject jsonObject = new JSONObject(response.body().string());
-            jsonObject = jsonObject.getJSONObject("loginResult");
-            boolean isSuccessed = false;
-            isSuccessed = jsonObject.getBoolean("isSuccessed");
-            if (isSuccessed){
-                //유저 정보 클래스 불러오기
-                User user = User.getIstance();
-                //세션 정보를 저장
-                String cookie = response.header("Set-Cookie");
-                user.setCookie(cookie);
-                //유저 정보 저장
-                user.setName(jsonObject.getString("name"));
-                user.setSunName(jsonObject.getString("subName"));
-                //아이디 비밀번호 저장
-                saveAccount();
-                //메인 화면 실행
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                finish();
-            }else {
-                Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show();
-            }
-        } catch (JSONException | IOException e ) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "잘못된 데이터", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void cancelTask(){
-        unLockView();
-    }
-
-    @Override
-    public void fairTask() {
-
-    }
-    // TaskListener  메소드 end
-
-
-
-
-    /*private class Login extends AsyncTask<String, Void, Response> {
-
-        private OkHttpClient client = new OkHttpClient();
-
-        @Override
-        protected void onPreExecute() {
-            buttonLogin.setEnabled(false);
-        }
-
-        @Override
-        public Response doInBackground(String... params) {
-            RequestBody body= new FormBody.Builder().add("id",strId).add("pass",strPassword).build();
-            Request loginTask = new Request.Builder()
-                    .url("http://58.237.8.179/Servlet/login")
-                    .post(body)
-                    .build();
-            try {
-                Response response = client.newCall(loginTask).execute();
-                return response;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Response response) {
-            buttonLogin.setEnabled(true);
-            if(response == null || response.code() != 200) {
-                Toast.makeText(getApplicationContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                JSONObject jsonObject = new JSONObject(response.body().string());
-                jsonObject = jsonObject.getJSONObject("loginResult");
-                boolean isSuccessed = false;
-                isSuccessed = jsonObject.getBoolean("isSuccessed");
-                if (isSuccessed){
-                    //아이디 비밀번호 저장
-                    saveAccount();
-                    //유저 정보 클래스 불러오기
-                    User user = User.getIstance();
-                    //세션 정보를 저장
-                    String cookie = response.header("Set-Cookie");
-                    user.setCookie(cookie);
-                    //메인 화면 실행
-                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                    finish();
-                }else {
-                    Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException | IOException e ) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
-            }
-
-
-        }
-
-    }*/
-
 
 }

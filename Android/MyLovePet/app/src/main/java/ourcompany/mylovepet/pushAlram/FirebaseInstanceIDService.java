@@ -4,6 +4,7 @@ package ourcompany.mylovepet.pushAlram;
  * Created by 쫑티 on 2017-06-09.
  */
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -33,6 +34,15 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed token: " + refreshedToken);
 
+
+        SharedPreferences sharedPreferences = getSharedPreferences("token",0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("token",refreshedToken);
+        editor.commit();
+
+
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
@@ -49,7 +59,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        OkHttpClient client = new OkHttpClient();
+        /*OkHttpClient client = new OkHttpClient();
 
         RequestBody body = new FormBody.Builder()
                 .add("Token", token)
@@ -64,7 +74,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
             client.newCall(request).execute();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 

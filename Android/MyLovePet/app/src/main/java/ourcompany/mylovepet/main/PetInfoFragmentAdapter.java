@@ -10,21 +10,21 @@ import ourcompany.mylovepet.main.user.User;
  * Created by REOS on 2017-05-28.
  */
 
-public class PetInfoAdapter extends FragmentPagerAdapter {
+public class PetInfoFragmentAdapter extends FragmentPagerAdapter {
 
 
     Fragment[] fragments;
 
-    public PetInfoAdapter(FragmentManager fm) {
+    public PetInfoFragmentAdapter(FragmentManager fm) {
         super(fm);
         //user 클래스에 들어있는 펫 정보를 가져온다.
-        int petArraySize = User.getIstance().getPets().length;
+        int length = User.getIstance().getPetManager().getSize();
 
         //애니멀 갯수만큼 플래그먼트를 생성한다.
-        PetInfoFragment[] fragments = new PetInfoFragment[petArraySize];
+        PetInfoFragment[] fragments = new PetInfoFragment[length];
 
         //플래그먼트 초기화
-        for (int i = 0 ; i < petArraySize; i++){
+        for (int i = 0 ; i < length; i++){
             PetInfoFragment fragment = new PetInfoFragment();
             fragment.setPetIndex(i);
             fragments[i] = fragment;

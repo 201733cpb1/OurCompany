@@ -242,7 +242,7 @@ public class CalendarView extends LinearLayout
 					}
 				}
 			}
-			// clear styling
+			// clearPet styling
 			((TextView)view).setTypeface(null, Typeface.NORMAL);
 			((TextView)view).setTextColor(Color.BLACK);
 
@@ -255,7 +255,7 @@ public class CalendarView extends LinearLayout
 			{
 				// if it is today, set it to blue/bold
 				((TextView)view).setTypeface(null, Typeface.BOLD);
-				((TextView)view).setTextColor(getResources().getColor(R.color.today));
+				((TextView)view).setTextColor(getResources().getColor(R.color.selectedDay));
 			}
 
 			// set text

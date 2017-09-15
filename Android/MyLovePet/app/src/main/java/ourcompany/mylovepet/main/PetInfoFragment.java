@@ -2,9 +2,7 @@ package ourcompany.mylovepet.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -20,50 +18,59 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
+import ourcompany.mylovepet.main.user.PetManager;
 import ourcompany.mylovepet.main.user.User;
-import ourcompany.mylovepet.task.RequestTask;
+import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by REOS on 2017-05-26.
  */
 
-public class PetInfoFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener, TaskListener{
+public class PetInfoFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener{
 
-    TextView textViewTemperature, textViewWalk, textViewHeartrate;
+    private TextView textViewTemperature, textViewWalk, textViewHeartrate;
 
-    SwipeRefreshLayout swipeRefreshLayout;
+    private  SwipeRefreshLayout swipeRefreshLayout;
 
-    int petIndex;
+    private int petIndex;
 
     //포토
-    public static final int REQUEST_IMAGE_CAPTURE = 0;
-    public static final int REQUEST_TAKE_PHOTO = 1;
-    public static final int REQUEST_IMAGE_CROP = 2;
+    public static final int REQUEST_CODE_IMAGE_CAPTURE = 0;
+    public static final int REQUEST_CODE_TAKE_PHOTO = 1;
+    public static final int REQUEST_CODE_IMAGE_CROP = 2;
 
-    String mCurrentPhotoPath;
-    Uri photoURI, albumURI = null;
-    CircularImageView profile;
-    Boolean album = false;
+    private Uri originalUri, outPutUri = null;
+    private CircularImageView profile;
 
-    Request request;
+    private TaskListener getConditionTaskListener, profileUploadTaskListener;
 
+    PetManager petManager;
 
     public PetInfoFragment(){
+        petManager = User.getIstance().getPetManager();
     }
+
 
     public void setPetIndex(int petIndex){
         this.petIndex = petIndex;
@@ -72,7 +79,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_animalinfo,container,false);
+        View view = inflater.inflate(R.layout.fragment_petinfo,container,false);
 
         swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -81,7 +88,17 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         textViewTemperature = (TextView)view.findViewById(R.id.textViewTemperature);
         textViewWalk = (TextView)view.findViewById(R.id.textViewWalk);
         textViewHeartrate = (TextView)view.findViewById(R.id.textViewHeartrate);
-        ((TextView)view.findViewById(R.id.textViewPetName)).setText(User.getIstance().getPet(petIndex).getName());
+        ((TextView)view.findViewById(R.id.textViewPetName)).setText(petManager.getPet(petIndex).getName());
+
+        if(!petManager.getPet(petIndex).getLastMealDate().equals("null")){
+            ((TextView)view.findViewById(R.id.textViewMeal)).setText(petManager.getPet(petIndex).getLastMealDate());
+        }else {
+            ((TextView)view.findViewById(R.id.textViewMeal)).setText("최근 정보 없음");
+        }
+
+        int lastDayOfMonth = DateTime.now().dayOfMonth().withMaximumValue().getDayOfMonth();
+
+        ((TextView)view.findViewById(R.id.textViewWalkCount)).setText(petManager.getPet(petIndex).getWalkCount() +"/" + lastDayOfMonth);
 
         profile = (CircularImageView)view.findViewById(R.id.profile_picture);
         profile.setOnClickListener(this);
@@ -90,22 +107,91 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         view.findViewById(R.id.viewMeal).setOnClickListener(this);
         view.findViewById(R.id.viewVaccination).setOnClickListener(this);
         view.findViewById(R.id.viewTemperature).setOnClickListener(this);
+        view.findViewById(R.id.viewActiveMass).setOnClickListener(this);
+        view.findViewById(R.id.viewHeartrate).setOnClickListener(this);
+        view.findViewById(R.id.button_self_diagnosis).setOnClickListener(this);
 
-        int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
-        RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
-        request = new Request.Builder()
-                .url("http://58.237.8.179/Servlet/getCondition")
-                .post(body)
-                .build();
+        listenerInit();
 
         getConditionExecute();
+        proFileDownloadExecute();
 
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    private void listenerInit(){
+        getConditionTaskListener = new TaskListener() {
+            @Override
+            public void preTask() {
+                textViewTemperature.setText("갱신중...");
+                textViewWalk.setText("갱신중...");
+                textViewHeartrate.setText("갱신중...");
+            }
+
+            @Override
+            public void postTask(byte[] bytes) {
+                try {
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
+
+                    jsonObject = jsonObject.getJSONObject("Condition");
+                    int temperate = jsonObject.getInt("avgtemp");
+                    int step = jsonObject.getInt("step");
+                    int heartrate = jsonObject.getInt("avgheart");
+
+                    textViewTemperature.setText(temperate+"");
+                    textViewWalk.setText(step+"");
+                    textViewHeartrate.setText(heartrate+"");
+
+                    // -1 이라면 정보가 없는것.
+                    if(temperate == -1 && step == -1 && heartrate == -1){
+                        Toast.makeText(getContext(), "정보가 존재 하지 않습니다.", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e ) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+
+            @Override
+            public void fairTask() {
+
+            }
+        };
+
+        profileUploadTaskListener = new TaskListener() {
+            @Override
+            public void preTask() {
+            }
+
+            @Override
+            public void postTask(byte[] bytes) {
+                try {
+                    String body = new String(bytes, Charset.forName("utf-8"));
+                    JSONObject jsonObject = new JSONObject(body);
+                    jsonObject = jsonObject.getJSONObject("report");
+                    boolean isSuccess = jsonObject.getBoolean("result");
+                    if(isSuccess){
+                        Toast.makeText(getContext(), "프로필 업로드 완료",Toast.LENGTH_SHORT).show();
+                        ((HomeFragment)getParentFragment()).getPetsExecute();
+                    }else {
+                        Toast.makeText(getContext(), "다시 시도 해주세요",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void fairTask() {
+            }
+        };
     }
 
     @Override
@@ -114,18 +200,35 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         switch (v.getId()) {
             case R.id.viewPetWalk:
                 intent = new Intent(getContext(), PetWalkActivity.class);
+                intent.putExtra("petNo",petManager.getPet(petIndex).getPetNo());
                 startActivity(intent);
                 break;
             case R.id.viewMeal:
                 intent = new Intent(getContext(), MealCalendarActivity.class);
+                intent.putExtra("petNo",petManager.getPet(petIndex).getPetNo());
                 startActivity(intent);
                 break;
             case R.id.viewVaccination:
                 intent = new Intent(getContext(),VaccineActivity.class);
+                intent.putExtra("petNo",petManager.getPet(petIndex).getPetNo());
                 startActivity(intent);
                 break;
             case R.id.viewTemperature:
                 intent = new Intent(getContext(),StatisticsActivity.class);
+                intent.putExtra("serialNo",petManager.getPet(petIndex).getSerialNo());
+                intent.putExtra("pageType",StatisticsActivity.TEMP_PAGE);
+                startActivity(intent);
+                break;
+            case R.id.viewActiveMass:
+                intent = new Intent(getContext(),StatisticsActivity.class);
+                intent.putExtra("serialNo",petManager.getPet(petIndex).getSerialNo());
+                intent.putExtra("pageType",StatisticsActivity.WALK_PAGE);
+                startActivity(intent);
+                break;
+            case R.id.viewHeartrate:
+                intent = new Intent(getContext(),StatisticsActivity.class);
+                intent.putExtra("serialNo",petManager.getPet(petIndex).getSerialNo());
+                intent.putExtra("pageType",StatisticsActivity.HEART_PAGE);
                 startActivity(intent);
                 break;
             case R.id.profile_picture:
@@ -137,13 +240,12 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                     public void onClick(DialogInterface dialog, int id) {
                         // 프로그램을 종료한다
                         if(items[id]=="사진촬영"){
-                            dispatchTakePictureIntent();
+                            captureImage();
                         }else if(items[id]=="갤러리"){
-                            doTakeAlbumAction();
+                            getAlbumImage();
                         }else{
                             dialog.dismiss();
                         }
-                        Toast.makeText(getContext(), items[id] + " 선택했습니다.", Toast.LENGTH_SHORT).show();
                     }
                 });
                 // 다이얼로그 생성
@@ -151,215 +253,139 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 // 다이얼로그 보여주기
                 alertDialog.show();
                 break;
+            case R.id.button_self_diagnosis:
+                intent = new Intent(getContext(),Self_DiagnosisActivity.class);
+                startActivity(intent);
+                break;
         }
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode){
-            case REQUEST_TAKE_PHOTO: // 앨범 이미지 가져오기
-                album = true;
-                File albumFile = null;
-                try {
-                    albumFile = createImageFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            case REQUEST_CODE_TAKE_PHOTO: // 앨범 이미지 가져오기
+                if(resultCode == RESULT_OK){
+                    originalUri = data.getData();
+                    cropImage(originalUri);
                 }
-                if (albumFile != null) {
-                    albumURI = Uri.fromFile(albumFile); // 앨범 이미지 Crop한 결과는 새로운 위치 저장
-                }
-
-                photoURI = data.getData(); // 앨범 이미지의 경로
-                /* profile에 띄우기*/
-                Bitmap image_bitmap = null;
-                try {
-                    image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoURI);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                profile.setImageBitmap(image_bitmap);
                 break;
-            case REQUEST_IMAGE_CAPTURE:
-                Bitmap image_bitmap2 = null;
-
-                try {
-                    image_bitmap2 = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoURI);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            case REQUEST_CODE_IMAGE_CAPTURE:
+                if(resultCode == RESULT_OK){
+                    cropImage(originalUri);
                 }
-                profile.setImageBitmap(image_bitmap2);
                 break;
-            /*case REQUEST_IMAGE_CROP:
-                Bitmap photo = BitmapFactory.decodeFile(photoURI.getPath());
-                profile.setImageBitmap(photo);
-
-                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE); // 동기화
-                if (album == false) {
-                    mediaScanIntent.setData(photoURI); // 동기화
-                } else if (album == true) {
-                    album = false;
-                    mediaScanIntent.setData(albumURI); // 동기화
+            case REQUEST_CODE_IMAGE_CROP:
+                if(resultCode == RESULT_OK){
+                    proFileUploadExecute();
                 }
-                this.sendBroadcast(mediaScanIntent); // 동기화
-                break;*/
+                break;
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null)
-        {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile(); // 사진찍은 후 저장할 임시 파일//
-            } catch (IOException ex) {
-                Toast.makeText(getContext(), "createImageFile Failed", Toast.LENGTH_LONG).show();
+    private void getAlbumImage() { // 앨범 호출
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
+    }
+
+    private void captureImage() {
+        String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state)){
+            Intent takeImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if(takeImageIntent.resolveActivity(getActivity().getPackageManager()) != null){
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if(photoFile != null){
+                    originalUri =
+                            FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName(), photoFile);
+                    takeImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, originalUri);
+                    startActivityForResult(takeImageIntent, REQUEST_CODE_IMAGE_CAPTURE);
+                }
             }
-            if (photoFile != null) {
-                //photoURI = Uri.fromFile(photoFile); // 임시 파일의 위치,경로 가져옴
-                photoURI = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI); // 임시 파일 위치에 저장
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
+        }else {
+            Toast.makeText(getContext(),"저장소 오류",Toast.LENGTH_SHORT).show();
         }
     }
 
     private File createImageFile() throws IOException{
-        String imageFileName = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
-        File storageDir = new File(Environment.getExternalStorageDirectory(),imageFileName);
-        mCurrentPhotoPath = storageDir.getAbsolutePath();
-        return storageDir;
+        String imageFileName = "profileTemp.jpg";
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+ "/mylovepet/temp/");
+
+        if(!dir.exists()){
+            boolean dd = dir.mkdirs();
+        }
+        File imgFile = new File(dir,imageFileName);
+
+        return imgFile;
     }
 
-    private void doTakeAlbumAction() { // 앨범 호출
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+    private void cropImage(Uri inputUri){
+        try {
+            File file = createImageFile();
+            outPutUri = Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(outPutUri != null){
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            cropIntent.setDataAndType(inputUri,"image/*");
+            cropIntent.putExtra("scale",true);
+            cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            cropIntent.putExtra("output", outPutUri);
+            startActivityForResult(cropIntent, REQUEST_CODE_IMAGE_CROP);
+        }
+
     }
 
+    //화면을 당겨서 새로고침
     @Override
     public void onRefresh() {
         getConditionExecute();
     }
 
-    private void getConditionExecute(){
-        new RequestTask(request,this,getContext().getApplicationContext()).execute();
-    }
-
-
-    // tskListener 메소드
-    @Override
-    public void preTask() {
-        textViewTemperature.setText("갱신중...");
-        textViewWalk.setText("갱신중...");
-        textViewHeartrate.setText("갱신중...");
-    }
-
-    @Override
-    public void postTask(Response response) {
-        try {
-            JSONObject jsonObject = new JSONObject(response.body().string());
-
-            jsonObject = jsonObject.getJSONObject("Condition");
-            int temperate = jsonObject.getInt("avgtemp");
-            int step = jsonObject.getInt("step");
-            int heartrate = jsonObject.getInt("avgheart");
-
-            textViewTemperature.setText(temperate+"");
-            textViewWalk.setText(step+"");
-            textViewHeartrate.setText(heartrate+"");
-
-            // -1 이라면 정보가 없는것.
-            if(temperate == -1 && step == -1 && heartrate == -1){
-                Toast.makeText(getContext(), "정보가 존재 하지 않습니다.", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(getContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (JSONException | IOException e ) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
-        }
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void cancelTask() {
-        textViewTemperature.setText("실패");
-        textViewWalk.setText("실패");
-        textViewHeartrate.setText("실패");
-    }
-
-    @Override
-    public void fairTask() {
-
-    }
-    // tskListener 메소드 end
-
-
-    private class GetCondition extends AsyncTask<String, Void, Response> {
-
-        private OkHttpClient client = new OkHttpClient();
-
-        @Override
-        protected void onPreExecute() {
-            textViewTemperature.setText("갱신중...");
-            textViewWalk.setText("갱신중...");
-            textViewHeartrate.setText("갱신중...");
-        }
-
-        @Override
-        public Response doInBackground(String... params) {
-            int serialNo = User.getIstance().getPet(petIndex).getSerialNo();
-            RequestBody body= new FormBody.Builder().add("serialNo",serialNo+"").build();
-            Request request = new Request.Builder()
-                    .url("http://58.237.8.179/Servlet/getCondition")
-                    .post(body)
+    private void proFileUploadExecute(){
+        File file = new File(outPutUri.getPath());
+        if(file.exists()){
+            RequestBody multipartBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("animalNo", petManager.getPet(petIndex).getPetNo()+"")
+                    .addFormDataPart("file",file.getName(),RequestBody.create(MediaType.parse("image/jpg"), file))
                     .build();
-            try {
-                Response response = client.newCall(request).execute();
-                return response;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
+            Request request = new Request.Builder()
+                    .url(ServerURL.PROFILE_UPLOAD_URL)
+                    .post(multipartBody)
+                    .build();
+            new ServerTaskManager(request, profileUploadTaskListener, getContext().getApplicationContext()).execute();
         }
+    }
 
-        @Override
-        protected void onPostExecute(Response response) {
-            if(response == null || response.code() != 200) {
-                Toast.makeText(getContext(), "업데이트 실패 다시 시도해주세요", Toast.LENGTH_SHORT).show();
-                return;
-            }
+    private void proFileDownloadExecute(){
+        String strFileNo = User.getIstance().getPetManager().getPet(petIndex).getPhotoFileNo();
+        Picasso.with(getContext())
+                .load(ServerURL.PROFILE_DOWNLOAD_URL + strFileNo)
+                .error(R.drawable.defaultprofileimage)
+                .into(profile);
 
-            try {
-                JSONObject jsonObject = new JSONObject(response.body().string());
+    }
 
-                jsonObject = jsonObject.getJSONObject("Condition");
-                int temperate = jsonObject.getInt("avgtemp");
-                int step = jsonObject.getInt("step");
-                int heartrate = jsonObject.getInt("avgheart");
-
-                textViewTemperature.setText(temperate+"");
-                textViewWalk.setText(step+"");
-                textViewHeartrate.setText(heartrate+"");
-
-                // -1 이라면 정보가 없는것.
-                if(temperate == -1 && step == -1 && heartrate == -1){
-                    Toast.makeText(getContext(), "정보가 존재 하지 않습니다.", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
-                }
-
-            } catch (JSONException | IOException e ) {
-                e.printStackTrace();
-                Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
-            }
-            swipeRefreshLayout.setRefreshing(false);
-        }
+    private void getConditionExecute(){
+        int serialNo = petManager.getPet(petIndex).getSerialNo();
+        RequestBody body= new FormBody.Builder()
+                .add("serialNo",serialNo+"")
+                .build();
+        Request request = new Request.Builder()
+                .url(ServerURL.GET_CONDITION_URL)
+                .post(body)
+                .build();
+        new ServerTaskManager(request, getConditionTaskListener, getContext().getApplicationContext()).execute();
     }
 
 }

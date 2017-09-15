@@ -28,7 +28,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="ourcompany.mylovepet"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -57,6 +57,7 @@
         <activity android:name=".main.VaccineActivity"/>
         <activity android:name=".main.StatisticsActivity"/>
         <activity android:name=".main.PetRegistActivity"/>
+        <activity android:name=".main.Self_DiagnosisActivity"/>
 
 
         <activity android:name=".daummap.Intro" android:hardwareAccelerated="false" />

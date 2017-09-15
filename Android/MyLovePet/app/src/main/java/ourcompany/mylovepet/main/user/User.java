@@ -17,9 +17,17 @@ public class User {
         return instance;
     }
 
-    private String cookie;
+    private User(){
+        pets = new Pet[0];
+        petManager = new PetManager();
+    }
+
     private Pet[] pets;
     private String name;
+    private String sunName;
+
+    private PetManager petManager;
+
 
     public String getName() {
         return name;
@@ -37,28 +45,8 @@ public class User {
         this.sunName = sunName;
     }
 
-    private String sunName;
-
-    private User(){}
-
-    public String getCookie() {
-        return cookie;
-    }
-
-    public void setCookie(String cookie) {
-        this.cookie = cookie;
-    }
-
-    public Pet getPet(int position){
-        return pets[position];
-    }
-
-    public Pet[] getPets() {
-        return pets;
-    }
-
-    public void setPets(Pet[] pets) {
-        this.pets = pets;
+    public PetManager getPetManager(){
+        return petManager;
     }
 
 }

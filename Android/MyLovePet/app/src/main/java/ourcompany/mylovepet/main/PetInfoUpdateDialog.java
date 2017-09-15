@@ -14,18 +14,18 @@ import ourcompany.mylovepet.main.user.Pet;
  * Created by KDM on 2017-05-16.
  */
 
-public class PetUpdateDialog extends Dialog implements View.OnClickListener{
+public class PetInfoUpdateDialog extends Dialog implements View.OnClickListener{
 
     Pet pet;
 
-    public PetUpdateDialog(@NonNull Context context,Pet pet) {
+    public PetInfoUpdateDialog(@NonNull Context context, Pet pet) {
         super(context);
         this.pet = pet;
     }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_pet_update);
+        setContentView(R.layout.dialog_pet_info_update);
 
         EditText editTextPetName = (EditText)findViewById(R.id.editTextPetName);
         EditText editTextSerialNo = (EditText)findViewById(R.id.editTextSerialNo);
