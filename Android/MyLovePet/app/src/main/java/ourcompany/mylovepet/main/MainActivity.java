@@ -1,8 +1,9 @@
-﻿package ourcompany.mylovepet.main;
+package ourcompany.mylovepet.main;
 
 
 import android.content.DialogInterface;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.net.Uri;
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -14,6 +15,8 @@ import android.net.Uri;
 >>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -40,6 +43,7 @@ import ourcompany.mylovepet.R;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> parent of 936c985... URL 클래스
@@ -49,6 +53,8 @@ import ourcompany.mylovepet.R;
 >>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.WebViewFragment;
 import ourcompany.mylovepet.board.TipBoardFragment;
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 import ourcompany.mylovepet.customView.ListViewAdapter;
 import ourcompany.mylovepet.daummap.GpsMapActivity;
 import ourcompany.mylovepet.daummap.Intro;
@@ -71,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     Intent intent;
 =======
@@ -80,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 =======
 >>>>>>> parent of 936c985... URL 클래스
     OnBackKeyPressListener onBackKeyPressListener;
+=======
+    Intent intent;
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 
 
     @Override
@@ -138,12 +148,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         adapter.addItem("편의 기능");
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tip), "TIP"); //7
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.used), "중고장터"); //8
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.searching), "탐색"); //9
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.festival), "SNS"); //10
 
+<<<<<<< HEAD
 
 =======
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.tip), "TIP"); //6
@@ -158,6 +172,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 >>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
         listview.setOnItemClickListener(this);
 
         ((TextView)findViewById(R.id.nickName)).setText(User.getIstance().getSunName() + " 님");
@@ -201,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case 2:
                 //통계 화면
+<<<<<<< HEAD
                 break;
 <<<<<<< HEAD
 
@@ -228,6 +245,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragmentTransaction.replace(R.id.container, webViewFragment);
                 //지름/중고장터 정보 화면 intro
 >>>>>>> parent of 936c985... URL 클래스
+=======
+                break;
+            case 4:
+                //펫시터 구하기 화면
+                fragmentTransaction.replace(R.id.container,new SitterRegisterFragment());
+                break;
+            case 5:
+                //도움주기 화면
+                fragmentTransaction.replace(R.id.container, new PetSitterFindFragment());
+                break;
+            case 7:
+                //TIP 화면
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
                 break;
             case 8:
                 fragmentTransaction.replace(R.id.container, new WebViewTest());

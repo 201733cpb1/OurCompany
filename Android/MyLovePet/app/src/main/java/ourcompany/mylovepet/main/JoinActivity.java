@@ -299,6 +299,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 .url("http://58.237.8.179/Servlet/overlapCheck")
 =======
                 .url("http://58.226.2.45/Servlet/overlapCheck")
@@ -309,6 +310,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 =======
                 .url("http://58.226.2.45/Servlet/overlapCheck")
 >>>>>>> parent of 936c985... URL 클래스
+=======
+                .url("http://58.237.8.179/Servlet/overlapCheck")
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
                 .post(body)
                 .build();
         new RequestTask(request,idCheckTaskListener,getApplicationContext()).execute();
@@ -322,6 +326,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                 .url("http://58.237.8.179/Servlet/overlapCheck")
 =======
@@ -333,6 +338,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 =======
                 .url("http://58.226.2.45/Servlet/overlapCheck")
 >>>>>>> parent of 936c985... URL 클래스
+=======
+                .url("http://58.237.8.179/Servlet/overlapCheck")
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
                 .post(body)
                 .build();
         new RequestTask(request,subNameCheckTaskListener,getApplicationContext()).execute();
@@ -352,6 +360,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 .url("http://58.237.8.179/Servlet/join")
 =======
                 .url("http://58.226.2.45/Servlet/join")
@@ -362,6 +371,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 =======
                 .url("http://58.226.2.45/Servlet/join")
 >>>>>>> parent of 936c985... URL 클래스
+=======
+                .url("http://58.237.8.179/Servlet/join")
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
                 .post(body)
                 .build();
         new RequestTask(request,joinTaskListener,getApplicationContext()).execute();

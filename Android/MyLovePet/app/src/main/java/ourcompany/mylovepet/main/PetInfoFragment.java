@@ -33,7 +33,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import ourcompany.mylovepet.R;
+<<<<<<< HEAD
 import ourcompany.mylovepet.main.user.PetManager;
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.RequestTask;
 import ourcompany.mylovepet.task.TaskListener;
@@ -240,6 +243,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
+<<<<<<< HEAD
 
     @Override
     public void onRefresh() {
@@ -250,6 +254,18 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
         new RequestTask(request,this,getContext().getApplicationContext()).execute();
     }
 
+=======
+
+    @Override
+    public void onRefresh() {
+        getConditionExecute();
+    }
+
+    private void getConditionExecute(){
+        new RequestTask(request,this,getContext().getApplicationContext()).execute();
+    }
+
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 
     // tskListener 메소드
     @Override
@@ -320,6 +336,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     .url("http://58.237.8.179/Servlet/getCondition")
                     .post(body)
 =======
@@ -330,6 +347,10 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
 >>>>>>> parent of 936c985... URL 클래스
                     .url("http://58.226.2.45/Servlet/animalProfileUpload")
                     .post(multipartBody)
+=======
+                    .url("http://58.237.8.179/Servlet/getCondition")
+                    .post(body)
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
                     .build();
             try {
                 Response response = client.newCall(request).execute();
@@ -339,6 +360,7 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
             }
             return null;
         }
+<<<<<<< HEAD
 
         @Override
         protected void onPostExecute(Response response) {
@@ -391,6 +413,41 @@ public class PetInfoFragment extends Fragment implements View.OnClickListener,Sw
                 .build();
         new ServerTaskManager(request, getConditionTaskListener, getContext().getApplicationContext()).execute();
 
+=======
+
+        @Override
+        protected void onPostExecute(Response response) {
+            if(response == null || response.code() != 200) {
+                Toast.makeText(getContext(), "업데이트 실패 다시 시도해주세요", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try {
+                JSONObject jsonObject = new JSONObject(response.body().string());
+
+                jsonObject = jsonObject.getJSONObject("Condition");
+                int temperate = jsonObject.getInt("avgtemp");
+                int step = jsonObject.getInt("step");
+                int heartrate = jsonObject.getInt("avgheart");
+
+                textViewTemperature.setText(temperate+"");
+                textViewWalk.setText(step+"");
+                textViewHeartrate.setText(heartrate+"");
+
+                // -1 이라면 정보가 없는것.
+                if(temperate == -1 && step == -1 && heartrate == -1){
+                    Toast.makeText(getContext(), "정보가 존재 하지 않습니다.", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), "업데이트 완료", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException | IOException e ) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "서버 통신 오류", Toast.LENGTH_SHORT).show();
+            }
+            swipeRefreshLayout.setRefreshing(false);
+        }
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
     }
 
 }

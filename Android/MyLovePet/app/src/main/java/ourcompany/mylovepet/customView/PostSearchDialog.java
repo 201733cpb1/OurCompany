@@ -46,6 +46,7 @@ public class PostSearchDialog extends Dialog{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         webView.loadUrl("http://58.237.8.179/postSearch.jsp");
 =======
         webView.loadUrl("http://58.226.2.45/postSearch.jsp");
@@ -56,6 +57,9 @@ public class PostSearchDialog extends Dialog{
 =======
         webView.loadUrl("http://58.226.2.45/postSearch.jsp");
 >>>>>>> parent of 936c985... URL 클래스
+=======
+        webView.loadUrl("http://58.237.8.179/postSearch.jsp");
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
     }
 
 

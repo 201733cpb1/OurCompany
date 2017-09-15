@@ -212,6 +212,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 .addHeader("Cookie", User.getIstance().getCookie())
                 .url("http://58.237.8.179/Servlet/animalInfo")
 =======
@@ -223,6 +224,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Task
 =======
                 .url("http://58.226.2.45/Servlet/animalInfo")
 >>>>>>> parent of 936c985... URL 클래스
+=======
+                .addHeader("Cookie", User.getIstance().getCookie())
+                .url("http://58.237.8.179/Servlet/animalInfo")
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
                 .post(body)
                 .build();
         getPetsTask = new RequestTask(request,this,getContext().getApplicationContext());

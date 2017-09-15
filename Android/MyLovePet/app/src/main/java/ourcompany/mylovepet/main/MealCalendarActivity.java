@@ -54,6 +54,7 @@ public class MealCalendarActivity extends AppCompatActivity
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
 =======
@@ -65,6 +66,9 @@ public class MealCalendarActivity extends AppCompatActivity
 =======
                 /*DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 >>>>>>> parent of 936c985... URL 클래스
+=======
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
                 layout.removeView(et);
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
                 param.gravity = Gravity.CENTER;
@@ -78,6 +82,7 @@ public class MealCalendarActivity extends AppCompatActivity
                 et.setBackgroundResource(R.drawable.rect);
 
                 d = date; // 선택한 날
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -111,12 +116,23 @@ public class MealCalendarActivity extends AppCompatActivity
             public void setEvents() {
                 HashSet<Date> dateSets = localDateSetToDateSet(notes.keySet());
                 calendarView.updateCalendar(dateSets);
+=======
+
+                layout.addView(et);
+            }
+            @Override
+            public void setEvents() {
+                cv.updateCalendar(events);
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
             }
         });
 
         findViewById(R.id.meal_update).setOnClickListener(new View.OnClickListener() { // 원하는 날짜에 마커 표시
             @Override
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
             public void onClick(View v) {
                 Date a = new Date();
                 int compare = a.compareTo(d);
@@ -131,6 +147,7 @@ public class MealCalendarActivity extends AppCompatActivity
                     events.add(d);
                     Toast.makeText(MealCalendarActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                     cv.updateCalendar(events);
+<<<<<<< HEAD
 
             public void preTask() {
                 lockButton();
@@ -217,5 +234,11 @@ public class MealCalendarActivity extends AppCompatActivity
                 .build();
 
         new ServerTaskManager(request, noteUpdateTaskListener, getApplicationContext()).execute();
+=======
+                }
+
+            }
+        });
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
     }
 }

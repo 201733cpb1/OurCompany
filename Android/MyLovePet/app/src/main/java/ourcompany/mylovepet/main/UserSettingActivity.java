@@ -14,9 +14,12 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import ourcompany.mylovepet.R;
+<<<<<<< HEAD
 import ourcompany.mylovepet.main.user.User;
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 
 
 public class UserSettingActivity extends AppCompatActivity implements OnClickListener {
@@ -106,6 +109,7 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
         return super.onOptionsItemSelected(item);
     }
 
+<<<<<<< HEAD
     private void getPushState(){
         RequestBody body= new FormBody.Builder().build();
         Request request = new Request.Builder()
@@ -125,4 +129,8 @@ public class UserSettingActivity extends AppCompatActivity implements OnClickLis
                 .build();
         new ServerTaskManager(request,setPushTask,getApplicationContext()).execute();
     }
+=======
+
+
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 }

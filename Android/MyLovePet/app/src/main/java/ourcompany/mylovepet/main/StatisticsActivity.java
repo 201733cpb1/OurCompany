@@ -32,6 +32,7 @@ import ourcompany.mylovepet.R;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 =======
@@ -42,6 +43,9 @@ import ourcompany.mylovepet.R;
 >>>>>>> parent of 936c985... URL 클래스
 import ourcompany.mylovepet.task.ServerTaskManager;
 import ourcompany.mylovepet.task.TaskListener;
+=======
+
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 import static ourcompany.mylovepet.R.id.chart;
 
 public class StatisticsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -219,6 +223,7 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
             //다이얼 로그 끝
         }
     }
+<<<<<<< HEAD
 
 
     private void getStatistics(String strStart, String strEnd, int dateType){
@@ -327,6 +332,8 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
             this.date = date;
         }
     }
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 }
 
 

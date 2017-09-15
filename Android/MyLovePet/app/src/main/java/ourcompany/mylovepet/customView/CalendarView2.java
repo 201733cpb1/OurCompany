@@ -64,6 +64,7 @@ public class CalendarView2 extends LinearLayout
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> parent of 936c985... URL 클래스
@@ -75,6 +76,8 @@ public class CalendarView2 extends LinearLayout
 	View selectedCell;
     int selectedCellColor;
 
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 	// month-season association (northern hemisphere, sorry australia :)
 	int[] monthSeason = new int[] {2, 2, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2};
 

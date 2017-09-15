@@ -222,7 +222,11 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
     private void serialNoExecute(){
         RequestBody body= new FormBody.Builder().add("serialNo",strSerialNo).build();
         Request request = new Request.Builder()
+<<<<<<< HEAD
                 .url("http://58.226.2.45/Servlet/checkSerial")
+=======
+                .url("http://58.237.8.179/Servlet/checkSerial")
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
                 .post(body)
                 .build();
         new RequestTask(request,serialNoTask,getApplicationContext()).execute();
@@ -241,6 +245,7 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 .addHeader("Cookie",User.getIstance().getCookie())
 =======
 >>>>>>> parent of 936c985... URL 클래스
@@ -249,6 +254,10 @@ public class PetRegistActivity extends AppCompatActivity implements View.OnClick
 =======
 >>>>>>> parent of 936c985... URL 클래스
                 .url("http://58.226.2.45/Servlet/createAnimal")
+=======
+                .addHeader("Cookie",User.getIstance().getCookie())
+                .url("http://58.237.8.179/Servlet/createAnimal")
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
                 .post(body)
                 .build();
         new RequestTask(request,petRegisterTask,getApplicationContext()).execute();

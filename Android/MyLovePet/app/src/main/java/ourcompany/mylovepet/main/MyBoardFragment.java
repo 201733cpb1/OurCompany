@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿package ourcompany.mylovepet.main;
 =======
 package ourcompany.mylovepet.main;
@@ -11,6 +12,9 @@ package ourcompany.mylovepet.main;
 =======
 package ourcompany.mylovepet.main;
 >>>>>>> parent of 936c985... URL 클래스
+=======
+package ourcompany.mylovepet.main;
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,6 +57,7 @@ public class MyBoardFragment extends Fragment {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public PAGE getPage() {
         return page;
     }
@@ -62,6 +67,13 @@ public class MyBoardFragment extends Fragment {
 >>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
+=======
+
+
+    public PAGE getPage() {
+        return page;
+    }
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 
     public void setPage(PAGE page) {
         this.page = page;

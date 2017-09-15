@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿package ourcompany.mylovepet.main;
 =======
 package ourcompany.mylovepet.main;
@@ -11,6 +12,9 @@ package ourcompany.mylovepet.main;
 =======
 package ourcompany.mylovepet.main;
 >>>>>>> parent of 936c985... URL 클래스
+=======
+package ourcompany.mylovepet.main;
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ourcompany.mylovepet.R;
+<<<<<<< HEAD
 import ourcompany.mylovepet.main.user.PetManager;
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -37,6 +42,8 @@ import ourcompany.mylovepet.main.user.PetManager;
 >>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 import ourcompany.mylovepet.main.user.User;
 
 /**
@@ -52,12 +59,15 @@ public class MyPageFragment extends Fragment implements View.OnClickListener,
 
     MyBoardFragment myBoardFragment;
 
+<<<<<<< HEAD
     PetManager petManager;
 
     public MyPageFragment(){
         petManager = User.getIstance().getPetManager();
     }
 
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,6 +82,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         textViewNickName.setText("닉네임 : "+user.getSunName()+" 님");
         textViewPetCount.setText("나의 펫 수 : " + petManager.getSize()+"");
 
@@ -92,6 +103,14 @@ public class MyPageFragment extends Fragment implements View.OnClickListener,
 >>>>>>> parent of 936c985... URL 클래스
 =======
 >>>>>>> parent of 936c985... URL 클래스
+=======
+
+
+        textViewNickName.setText("닉네임 : "+user.getSunName()+" 님");
+        textViewPetCount.setText("나의 펫 수 : " + user.getPets().length);
+
+
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
         return view;
     }
 

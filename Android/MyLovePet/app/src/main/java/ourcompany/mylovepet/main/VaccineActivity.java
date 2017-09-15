@@ -210,6 +210,7 @@ public class VaccineActivity extends AppCompatActivity {
         dialog.show();
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 
@@ -254,4 +255,6 @@ public class VaccineActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 >>>>>>> parent of 936c985... URL 클래스
+=======
+>>>>>>> parent of 5c8e350... Merge branch 'AndroidUI' of https://github.com/201733cpb1/OurCompany into AndroidUI
 }
