@@ -60,9 +60,22 @@
       <file leaf-file-name="User.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/user/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
+            <state relative-caret-position="0">
               <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-              <folding />
+              <folding>
+                <element signature="e#311#312#0" expanded="false" />
+                <element signature="e#356#357#0" expanded="false" />
+                <element signature="e#478#479#0" expanded="false" />
+                <element signature="e#505#506#0" expanded="false" />
+                <element signature="e#545#546#0" expanded="false" />
+                <element signature="e#577#578#0" expanded="false" />
+                <element signature="e#611#612#0" expanded="false" />
+                <element signature="e#641#642#0" expanded="false" />
+                <element signature="e#687#688#0" expanded="false" />
+                <element signature="e#725#726#0" expanded="false" />
+                <element signature="e#765#766#0" expanded="false" />
+                <element signature="e#798#799#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -73,13 +86,20 @@
             <state relative-caret-position="962">
               <caret line="156" column="75" selection-start-line="156" selection-start-column="75" selection-end-line="156" selection-end-column="75" />
               <folding>
+                <element signature="imports" expanded="false" />
                 <element signature="docComment;class#LoginActivity#0" expanded="false" />
                 <element signature="method#onCreate#0;class#LoginActivity#0" expanded="false" />
                 <element signature="method#inIt#0;class#LoginActivity#0" expanded="false" />
                 <element signature="method#listenerInit#0;class#LoginActivity#0" expanded="false" />
                 <element signature="class#1746:3597" expanded="false" />
+                <element signature="e#1852#1853#0" expanded="false" />
+                <element signature="e#1894#1895#0" expanded="false" />
                 <element signature="method#postTask#0;class#1746:3597" expanded="false" />
                 <element signature="e#2552#2563#0" expanded="false" />
+                <element signature="e#3401#3402#0" expanded="false" />
+                <element signature="e#3445#3446#0" expanded="false" />
+                <element signature="e#3505#3506#0" expanded="false" />
+                <element signature="e#3549#3550#0" expanded="false" />
                 <element signature="method#onDestroy#0;class#LoginActivity#0" expanded="false" />
                 <element signature="method#onStart#0;class#LoginActivity#0" expanded="false" />
                 <element signature="method#loadAccount#0;class#LoginActivity#0" expanded="false" />
@@ -120,18 +140,8 @@
       <file leaf-file-name="CookieController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/CookieController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="581">
-              <caret line="68" column="13" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FirebaseMessagingService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/pushAlram/FirebaseMessagingService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="676">
-              <caret line="39" column="36" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
+            <state relative-caret-position="763">
+              <caret line="62" column="27" selection-start-line="62" selection-start-column="27" selection-end-line="62" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -2899,13 +2909,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-25/android/webkit/CookieManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="38" column="36" selection-start-line="38" selection-start-column="36" selection-end-line="38" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/ServerTaskManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="520">
@@ -3155,9 +3158,22 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/user/Note.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/main/user/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
+        <state relative-caret-position="0">
           <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#311#312#0" expanded="false" />
+            <element signature="e#356#357#0" expanded="false" />
+            <element signature="e#478#479#0" expanded="false" />
+            <element signature="e#505#506#0" expanded="false" />
+            <element signature="e#545#546#0" expanded="false" />
+            <element signature="e#577#578#0" expanded="false" />
+            <element signature="e#611#612#0" expanded="false" />
+            <element signature="e#641#642#0" expanded="false" />
+            <element signature="e#687#688#0" expanded="false" />
+            <element signature="e#725#726#0" expanded="false" />
+            <element signature="e#765#766#0" expanded="false" />
+            <element signature="e#798#799#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3166,13 +3182,20 @@
         <state relative-caret-position="962">
           <caret line="156" column="75" selection-start-line="156" selection-start-column="75" selection-end-line="156" selection-end-column="75" />
           <folding>
+            <element signature="imports" expanded="false" />
             <element signature="docComment;class#LoginActivity#0" expanded="false" />
             <element signature="method#onCreate#0;class#LoginActivity#0" expanded="false" />
             <element signature="method#inIt#0;class#LoginActivity#0" expanded="false" />
             <element signature="method#listenerInit#0;class#LoginActivity#0" expanded="false" />
             <element signature="class#1746:3597" expanded="false" />
+            <element signature="e#1852#1853#0" expanded="false" />
+            <element signature="e#1894#1895#0" expanded="false" />
             <element signature="method#postTask#0;class#1746:3597" expanded="false" />
             <element signature="e#2552#2563#0" expanded="false" />
+            <element signature="e#3401#3402#0" expanded="false" />
+            <element signature="e#3445#3446#0" expanded="false" />
+            <element signature="e#3505#3506#0" expanded="false" />
+            <element signature="e#3549#3550#0" expanded="false" />
             <element signature="method#onDestroy#0;class#LoginActivity#0" expanded="false" />
             <element signature="method#onStart#0;class#LoginActivity#0" expanded="false" />
             <element signature="method#loadAccount#0;class#LoginActivity#0" expanded="false" />
@@ -3183,14 +3206,6 @@
             <element signature="method#unLockView#0;class#LoginActivity#0" expanded="false" />
             <element signature="method#onClick#0;class#LoginActivity#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/pushAlram/FirebaseMessagingService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="676">
-          <caret line="39" column="36" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3213,10 +3228,26 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/pushAlram/FirebaseMessagingService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="39" column="36" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.8.0/db21293949e200f08d5325e8a8eefdcc9134b752/okhttp-3.8.0-sources.jar!/okhttp3/CookieJar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="676">
+          <caret line="49" column="13" selection-start-line="49" selection-start-column="13" selection-end-line="49" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ourcompany/mylovepet/task/CookieController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="581">
-          <caret line="68" column="13" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
+        <state relative-caret-position="763">
+          <caret line="62" column="27" selection-start-line="62" selection-start-column="27" selection-end-line="62" selection-end-column="27" />
           <folding />
         </state>
       </provider>

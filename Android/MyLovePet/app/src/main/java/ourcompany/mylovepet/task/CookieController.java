@@ -43,24 +43,22 @@ public class CookieController implements CookieJar {
 
     @Override
     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-        String uri = url.uri().toString();
-        ArrayList<String> cookiesList = new ArrayList<>();
-        for(Cookie c: cookies) {
-            // toString correctly generates a normal cookie string
-            cookiesList.add(c.toString());
-        }
+        String uri = url.toString();
+        Log.d("test",url.toString());
+        Log.d("test2",url.uri().toString());
 
-        for(String cookie : cookiesList){
-            cookieManager.setCookie(uri,cookie);
+        for(Cookie cookie : cookies){
+            cookieManager.setCookie(uri, cookie.toString());
         }
-
     }
 
     @Override
     public List<Cookie> loadForRequest(HttpUrl url) {
         List<Cookie> list = new ArrayList<>();
         //url주소에 해당하는 쿠키매니저로 부터 꺼내오고 ; 구분자로 쿠키를 분리한다.
-        String cookie = cookieManager.getCookie(url.uri().toString());
+        String cookie = cookieManager.getCookie(url.toString());
+
+        Log.d("test3",cookie);
 
         if(cookie != null){
             String[] cookies = cookie.split(";");
