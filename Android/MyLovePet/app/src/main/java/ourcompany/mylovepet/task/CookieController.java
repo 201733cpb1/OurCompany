@@ -16,6 +16,7 @@ import java.util.Map;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
+import okhttp3.JavaNetCookieJar;
 
 /**
  * Created by REOS on 2017-09-07.
@@ -44,8 +45,6 @@ public class CookieController implements CookieJar {
     @Override
     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
         String uri = url.toString();
-        Log.d("test",url.toString());
-        Log.d("test2",url.uri().toString());
 
         for(Cookie cookie : cookies){
             cookieManager.setCookie(uri, cookie.toString());
@@ -57,8 +56,6 @@ public class CookieController implements CookieJar {
         List<Cookie> list = new ArrayList<>();
         //url주소에 해당하는 쿠키매니저로 부터 꺼내오고 ; 구분자로 쿠키를 분리한다.
         String cookie = cookieManager.getCookie(url.toString());
-
-        Log.d("test3",cookie);
 
         if(cookie != null){
             String[] cookies = cookie.split(";");

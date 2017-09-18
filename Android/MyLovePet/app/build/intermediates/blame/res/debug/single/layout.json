@@ -48,12 +48,12 @@
         "source": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\src\\main\\res\\layout\\control_calendar_day.xml"
     },
     {
-        "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_user_set_profile.xml",
-        "source": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\src\\main\\res\\layout\\activity_user_set_profile.xml"
-    },
-    {
         "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\layout_market_snack.xml",
         "source": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\src\\main\\res\\layout\\layout_market_snack.xml"
+    },
+    {
+        "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_user_set_profile.xml",
+        "source": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\src\\main\\res\\layout\\activity_user_set_profile.xml"
     },
     {
         "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\layout_market_diets.xml",
@@ -88,12 +88,12 @@
         "source": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\src\\main\\res\\layout\\gps_map_balloon.xml"
     },
     {
-        "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_layout_tab_text.xml",
-        "source": "C:\\Users\\REOS\\.android\\build-cache\\e1c08fec9189331637ef7ea9d2c0662fbff777a2\\output\\res\\layout\\design_layout_tab_text.xml"
-    },
-    {
         "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_meal.xml",
         "source": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\src\\main\\res\\layout\\activity_meal.xml"
+    },
+    {
+        "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_layout_tab_text.xml",
+        "source": "C:\\Users\\REOS\\.android\\build-cache\\e1c08fec9189331637ef7ea9d2c0662fbff777a2\\output\\res\\layout\\design_layout_tab_text.xml"
     },
     {
         "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_linechart_noseekbar.xml",
@@ -268,16 +268,16 @@
         "source": "C:\\Users\\REOS\\.android\\build-cache\\4e0a1c0fa05b499c7595b75c2a7fb4d6e3be77ba\\output\\res\\layout\\abc_alert_dialog_title_material.xml"
     },
     {
+        "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_webview.xml",
+        "source": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\src\\main\\res\\layout\\fragment_webview.xml"
+    },
+    {
         "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_self_diagnosis.xml",
         "source": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\src\\main\\res\\layout\\activity_self_diagnosis.xml"
     },
     {
         "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_layout_snackbar_include.xml",
         "source": "C:\\Users\\REOS\\.android\\build-cache\\e1c08fec9189331637ef7ea9d2c0662fbff777a2\\output\\res\\layout\\design_layout_snackbar_include.xml"
-    },
-    {
-        "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_webview.xml",
-        "source": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\src\\main\\res\\layout\\fragment_webview.xml"
     },
     {
         "merged": "C:\\Users\\REOS\\Desktop\\AndroidProject\\OurCompany\\Android\\MyLovePet\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_media.xml",

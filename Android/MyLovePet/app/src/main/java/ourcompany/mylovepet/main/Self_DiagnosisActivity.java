@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import ourcompany.mylovepet.R;
+import ourcompany.mylovepet.ServerURL;
 
 /**
  * Created by KDM on 2017-07-17.
@@ -26,6 +27,6 @@ public class Self_DiagnosisActivity extends AppCompatActivity {
         mWebSettings = webview.getSettings();
         mWebSettings.setJavaScriptEnabled(true);
 
-        webview.loadUrl("http://mydndb13.dothome.co.kr/self_Diagnosis.html");
+        webview.loadUrl(ServerURL.SELF_DIAGNOSIS);
     }
 }
