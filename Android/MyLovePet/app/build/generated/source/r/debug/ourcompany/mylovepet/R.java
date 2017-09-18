@@ -3505,10 +3505,10 @@ containing a value of this type.
         public static final int editTextPassword=0x7f0f00a1;
         public static final int editTextPasswordCheck=0x7f0f00a5;
         public static final int editTextPetName=0x7f0f0088;
+        public static final int editTextPhone=0x7f0f00e1;
         public static final int editTextReEnterPassword=0x7f0f00fc;
         public static final int editTextSerialNo=0x7f0f0084;
         public static final int editTextSubName=0x7f0f00b1;
-        public static final int editTextTitle=0x7f0f00e1;
         public static final int editTextUpdatePassword=0x7f0f00f8;
         public static final int edit_query=0x7f0f0074;
         public static final int email_text_view=0x7f0f00a8;

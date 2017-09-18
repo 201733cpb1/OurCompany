@@ -1014,10 +1014,10 @@ int id editTextNote 0x7f0f0148
 int id editTextPassword 0x7f0f00a1
 int id editTextPasswordCheck 0x7f0f00a5
 int id editTextPetName 0x7f0f0088
+int id editTextPhone 0x7f0f00e1
 int id editTextReEnterPassword 0x7f0f00fc
 int id editTextSerialNo 0x7f0f0084
 int id editTextSubName 0x7f0f00b1
-int id editTextTitle 0x7f0f00e1
 int id editTextUpdatePassword 0x7f0f00f8
 int id edit_query 0x7f0f0074
 int id email_text_view 0x7f0f00a8

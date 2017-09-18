@@ -28,7 +28,7 @@ public class ServerURL {
     public static final String PUSH_STATE_URL = IP + "/Servlet/userPushState";
     public static final String VACCINE_INFO_URL = IP + "/Servlet/vaccineInfo";
     public static final String VACCINE_ADD_URL = IP + "/Servlet/createVaccine";
-    public static final String PET_SITTER_ADD_URL = IP + "/Servlet/addPetsitter";
+    public static final String PET_SITTER_ADD_URL = IP + "/addPetSitter";
     public static final String POST_SEARCH_URL = IP + "/postSearch.jsp";
     public static final String SELF_DIAGNOSIS = IP + "/self_Diagnosis.jsp";
 

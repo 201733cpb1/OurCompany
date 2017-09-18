@@ -82,7 +82,6 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="null"
                     style="@style/mainTextStyle" />
 
                 <TextView
@@ -144,7 +143,6 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.5"
                     android:gravity="center"
-                    android:text="구현중."
                     style="@style/mainTextStyle" />
 
                 <TextView
@@ -154,7 +152,6 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.5"
                     android:gravity="center"
-                    android:text="구현중."
                     style="@style/mainTextStyle" />
 
 
@@ -174,7 +171,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:gravity="center"
-                android:text="구현중."
                 style="@style/mainTextStyle" />
 
             <LinearLayout

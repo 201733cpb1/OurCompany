@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ import ourcompany.mylovepet.task.TaskListener;
 public class SitterRegisterFragment extends Fragment implements View.OnClickListener, TaskListener{
 
 
-    EditText editTextPetCount, editTextBody, editTextTitle;
+    EditText editTextPetCount, editTextBody, editTextPhone;
     EditText startDateEditText, endDateEditText, totalDay;
     LocalDate sDate, eDate;
     DateTimeFormatter dateTimeFormat;
@@ -76,7 +77,7 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
         //펫 카운트 뷰 찾기
         editTextPetCount = (EditText)view.findViewById(R.id.animal_count);
         editTextBody = (EditText)view.findViewById(R.id.editTextBody);
-        editTextTitle = (EditText)view.findViewById(R.id.editTextTitle);
+        editTextPhone = (EditText)view.findViewById(R.id.editTextPhone);
 
         //날짜 관련 뷰 찾기
         startDateEditText = (EditText) view.findViewById(R.id.input_sDate);
@@ -216,34 +217,41 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
     }
 
     private void registerExecute(){
-        String strSDate,strEDate,strBody, strTitle;
+        String strSDate,strEDate,strBody, strPhone;
         JSONArray jsonArray;
 
         strSDate = startDateEditText.getText().toString();
         strEDate = endDateEditText.getText().toString();
-        strTitle = editTextTitle.getText().toString();
+        strPhone = editTextPhone.getText().toString();
         strBody = editTextBody.getText().toString();
 
         jsonArray = new JSONArray();
 
         for(int no : petNoSet){
-            jsonArray.put(no);
+            jsonArray.put(no + "");
         }
 
-        RequestBody body= new FormBody.Builder()
-                .add("Date", strSDate)
-                .add("Term", strEDate)
-                .add("Title", strTitle)
-                .add("Feedback", strBody)
-                .add("petList", jsonArray.toString())
-                .build();
+        Log.d("tete",jsonArray.toString());
+
+
+        FormBody.Builder builder = new FormBody.Builder()
+                .add("date", strSDate)
+                .add("term", strEDate)
+                .add("phonenumber", strPhone)
+                .add("feedback", strBody);
+
+        for(int no : petNoSet){
+            builder.add("petlist",no+"");
+        }
+
+        RequestBody body = builder.build();
 
         Request request = new Request.Builder()
                 .url(ServerURL.PET_SITTER_ADD_URL)
                 .post(body)
                 .build();
 
-        new ServerTaskManager(request,this,getContext().getApplicationContext()).execute();
+        new ServerTaskManager(request, this, getContext().getApplicationContext()).execute();
     }
 
     private void finish(){
@@ -258,22 +266,7 @@ public class SitterRegisterFragment extends Fragment implements View.OnClickList
 
     @Override
     public void postTask(byte[] bytes) {
-        try {
-            String body = new String(bytes, Charset.forName("utf-8"));
-            JSONObject jsonObject = new JSONObject(body);
-            jsonObject = jsonObject.getJSONObject("AddPetSitter");
-            boolean isSuccessed = false;
-            isSuccessed = jsonObject.getBoolean("isSuccessed");
-
-            if(isSuccessed){
-                Toast.makeText(getContext(),"글 등록 완료",Toast.LENGTH_LONG).show();
-            }else {
-                Toast.makeText(getContext(),"등록 실패",Toast.LENGTH_LONG).show();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "서버 통신 실패", Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(getContext(),"등록 완료",Toast.LENGTH_SHORT).show();
         finish();
     }
 

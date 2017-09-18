@@ -248,18 +248,19 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.2"
                     android:gravity="center"
-                    android:text="제목"
+                    android:text="폰 번호"
                     android:textColor="@color/colorPrimary"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editTextTitle"
+                    android:id="@+id/editTextPhone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
-                    android:hint="제목을 입력하세요"
+                    android:hint="폰번호를 입력하세요"
                     android:textAlignment="center"
+                    android:inputType="phone"
                     android:textColor="@color/nonEditTextColor" />
 
                 <View
@@ -317,7 +318,8 @@
                     android:background="@drawable/base_border"
                     android:gravity="left|top"
                     android:padding="10dp"
-                    android:text="오! 안녕하세요\n땅콩버터?"
+                    android:text=""
+                    android:hint="특이사항을 입력해주세요"
                     android:textColor="@color/EditTextColor" />
                 <!-- 추후에 최대 글자수 제한 해야함 -->
 
