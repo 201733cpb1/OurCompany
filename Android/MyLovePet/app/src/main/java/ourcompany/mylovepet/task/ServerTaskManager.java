@@ -33,7 +33,6 @@ public class ServerTaskManager extends AsyncTask<Void,Void, byte[]> {
         this.taskListener = taskListener;
         this.context = context;
 
-
         okHttpClient = new OkHttpClient()
                 .newBuilder()
                 .cookieJar(new CookieController())

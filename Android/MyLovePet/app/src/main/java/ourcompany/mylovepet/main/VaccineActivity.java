@@ -77,7 +77,7 @@ public class VaccineActivity extends AppCompatActivity{
         }
         for(int i  = count ; i < 6 ;i++){
             if(localDate.isAfter(nowDate)){
-                textViewdday.setText((count+1)+"차 접종날 D-"+ (localDate.getDayOfMonth() - nowDate.getDayOfMonth()));
+                textViewdday.setText((i + 1)+"차 접종날 D-"+ (localDate.getDayOfMonth() - nowDate.getDayOfMonth()));
                 return;
             }
             localDate = localDate.plusDays(14);
